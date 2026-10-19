@@ -105,9 +105,14 @@ check transaction-or-try controllers.md 'DB::(beginTransaction|transaction)\(|\b
 check builds-json controllers.md 'response\(\)->json\(' '*.php' 0 "${CONTROLLERS[@]}"
 check queries-in-controller controllers.md '\b[A-Z]\w+::(where|query|create|find|findOrFail|all|whereIn|updateOrCreate)\(' '*.php' 0 "${CONTROLLERS[@]}"
 check passes-whole-request controllers.md '\$request->(all|input|get)\(' '*.php' 0 "${CONTROLLERS[@]}"
+check authorize-in-body controllers.md 'Gate::authorize\(|\$this->authorize\(' '*.php' 0 "${CONTROLLERS[@]}"
+# controllers.md: a controller with actions and no #[Authorize] at all; reading finds a single method that lacks it
+for controller in $(grep -rlP 'public function (index|create|store|show|edit|update|destroy|__invoke)\(' "${CONTROLLERS[@]}" 2>/dev/null); do
+    grep -q '#\[Authorize(' "$controller" || printf '%s\tno-authorize-attribute\tcontrollers.md\t1\n' "$controller"
+done
 
 # policies.md
-check names-a-permission policies.md "authorize\('[a-z]+-[a-z-]+'" '*.php' 0 "${CONTROLLERS[@]}" app/Livewire Modules/*/app/Livewire
+check names-a-permission policies.md "[aA]uthorize\(\s*'[a-z]+-[a-z-]+'" '*.php' 0 "${CONTROLLERS[@]}" app/Livewire Modules/*/app/Livewire
 check names-a-role policies.md 'hasRole\(|hasAnyRole\(' '*.php' 0 app/Http app/Policies app/Services app/Livewire Modules/*/app
 check deny-with-text policies.md 'Response::deny\(' '*.php' 0 "${POLICIES[@]}"
 
