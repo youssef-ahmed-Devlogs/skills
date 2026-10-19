@@ -1,0 +1,5 @@
+interface:
+  display_name: "Laravel Refactor Issues"
+  short_description: "Open safe refactor issues for old Laravel code"
+policy:
+  allow_implicit_invocation: false

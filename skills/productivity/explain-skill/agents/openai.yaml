@@ -1,0 +1,5 @@
+interface:
+  display_name: "Explain Skill"
+  short_description: "Explain one skill simply, with an example"
+policy:
+  allow_implicit_invocation: false

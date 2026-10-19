@@ -1,0 +1,5 @@
+interface:
+  display_name: "Delegating To CLI"
+  short_description: "Hand fixes to CLI workers, then review"
+policy:
+  allow_implicit_invocation: false

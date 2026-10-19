@@ -1,0 +1,23 @@
+{
+  "name": "youssef-ahmed",
+  "owner": {
+    "name": "Youssef Ahmed",
+    "url": "https://github.com/youssef-ahmed-Devlogs"
+  },
+  "description": "Youssef Ahmed's agent skills, as an installable plugin.",
+  "plugins": [
+    {
+      "name": "youssef-ahmed-skills",
+      "source": "./",
+      "description": "Youssef Ahmed's agent skills: hand fixes to CLI workers, refactor old code safely, and place new rules and skills well.",
+      "category": "engineering",
+      "keywords": [
+        "engineering",
+        "skills",
+        "refactor",
+        "laravel",
+        "delegation"
+      ]
+    }
+  ]
+}

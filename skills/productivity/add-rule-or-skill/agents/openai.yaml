@@ -1,0 +1,5 @@
+interface:
+  display_name: "Add Rule Or Skill"
+  short_description: "Find where a new rule or skill belongs"
+policy:
+  allow_implicit_invocation: false
