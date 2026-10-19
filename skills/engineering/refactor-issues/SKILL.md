@@ -88,7 +88,7 @@ A file whose last `refactor` issue was closed as done, and that breaks a rule ag
 
 ## 5. Grade each candidate's risk
 
-Give each candidate the review flag its change would need. When the project has the levels of a review flag, such as `.claude/rules/process/pull-requests.md`, use them. Otherwise:
+Give each candidate the review flag its change would need. When the project has the levels of a review flag, such as `.claude/rules/workflow/pull-requests.md`, use them. Otherwise:
 
 - `review-required`: the file touches sign-in, codes, tokens, roles, permissions, or who owns a record; the change needs a migration or a data change; it moves the logic of a main feature, such as checkout or sign-in, or changes how a public API answers; or no test covers logic that will change. Logic of a main feature, such as money or sign-in, stays at this level even when it only moves.
 - `review-suggested`: the change touches what people see, such as a page, a text or a JSON answer; or it only moves or renames code that no test covers, and the logic stays exactly as it is.
