@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 Each run opens the next **batch** of GitHub issues, at most 10 open at once, that bring old code in line with the rules of the project it runs in. One issue covers one file and all its breaks of those rules. The batch always comes from the safest **stage** that still has work, and inside it the simplest files go first.
 
-A Laravel project that keeps its rules in `.claude/rules/laravel`, one file per subject, can use `/laravel-refactor-issues` instead: it does the same, with a ready search for those rules.
+A Laravel project that keeps its rules in `.claude/rules/laravel`, one file per subject, can use `/laravel-refactor-issues` instead, from `youssef-ahmed-Devlogs/laravel-rules`: it does the same, with a ready search for those rules.
 
 ## The output never changes
 

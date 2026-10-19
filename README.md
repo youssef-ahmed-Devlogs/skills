@@ -53,7 +53,7 @@ codex plugin add youssef-ahmed-skills@youssef-ahmed
 
 ## Laravel
 
-- **[laravel-refactor-issues](./skills/laravel/laravel-refactor-issues/SKILL.md)**: Open the next batch of refactor issues that bring old Laravel code in line with the rules in `.claude/rules/laravel`, safest first, with a ready search for those rules.
+The Laravel skills live beside the rules they check, in [youssef-ahmed-Devlogs/laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules): `setup-laravel-rules` and `laravel-refactor-issues`.
 
 Every skill is user-invoked: it starts only when you type its name, such as `/refactor-issues`. Each one has a page in [`docs`](./docs) that says when to use it.
 

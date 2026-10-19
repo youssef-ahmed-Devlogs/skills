@@ -11,7 +11,7 @@ Type `/refactor-issues` when old code breaks rules you wrote later, and you want
 | Your situation | Where to go |
 | --- | --- |
 | A project with written code rules, in any language | `refactor-issues` |
-| A Laravel project with its rules in `.claude/rules/laravel` | [`laravel-refactor-issues`](../laravel/laravel-refactor-issues.md), which has a ready search |
+| A Laravel project with its rules in `.claude/rules/laravel` | [`laravel-refactor-issues`](https://github.com/youssef-ahmed-Devlogs/laravel-rules), which has a ready search |
 | A project with no written rules | Write the rules first: this skill stops without them |
 
 ## Prerequisites
