@@ -1,0 +1,5 @@
+interface:
+  display_name: "Setup Refactor Issues"
+  short_description: "Prepare a project for refactor issues"
+policy:
+  allow_implicit_invocation: false

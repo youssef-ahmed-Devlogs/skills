@@ -6,7 +6,6 @@ Skills are in bucket folders under `skills/`:
 
 - `engineering/`: daily code work.
 - `productivity/`: work around the code, such as rules, skills and the agent itself.
-- `laravel/`: skills for Laravel projects only.
 
 Every skill is in five places. When you add, rename or remove one, change all five in the same pull request:
 
