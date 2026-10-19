@@ -11,9 +11,9 @@ Type `/refactor-issues` when old code breaks rules you wrote later, and you want
 | Your situation | Where to go |
 | --- | --- |
 | A project with written code rules, in any language | `refactor-issues` |
-| A Laravel project with its rules in `.claude/rules/laravel` | [`laravel-refactor-issues`](https://github.com/youssef-ahmed-Devlogs/laravel-rules), which has a ready search |
+| A Laravel project | The rules and their ready checks from [laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules), then `setup-refactor-issues` and this skill |
 | A project with no written rules | Write the rules first: this skill stops without them |
 
 ## Prerequisites
 
-Written code rules in the project, and `gh`. On its first run it asks to make `docs/agents/refactor-checks.sh` from its template, so every later run checks the same things in seconds.
+Run [`setup-refactor-issues`](./setup-refactor-issues.md) once first: it writes the project's checks from its rules, and makes the labels. Without it, this skill stops and asks for it. You also need `gh`.

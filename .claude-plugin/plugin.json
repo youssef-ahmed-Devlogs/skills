@@ -17,6 +17,7 @@
   "skills": [
     "./skills/engineering/delegating-to-cli",
     "./skills/engineering/refactor-issues",
+    "./skills/engineering/setup-refactor-issues",
     "./skills/productivity/add-rule-or-skill",
     "./skills/productivity/explain-skill"
   ]

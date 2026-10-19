@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
-# The project's searches for old code that breaks its rules. The refactor-issues skill runs this file.
+# The project's searches for old code that breaks its rules. /refactor-issues runs this file;
+# /setup-refactor-issues writes it.
 # Run from the project root. It prints one line per file and check that hits:
 # <path> <TAB> <check> <TAB> <rule file> <TAB> <hits>
 # A hit is a candidate, not a proven break: the skill reads the file to confirm it.
@@ -24,22 +25,19 @@ not_skipped() {
 }
 
 # check <name> <rule file> <pattern> <glob> <multiline:0|1> <folders...>
-# Finds a pattern inside files. Another script may define check first, such as the scan.sh
-# of laravel-refactor-issues: then its own is used, and SKIP does not apply to it.
-if ! declare -F check >/dev/null; then
-    check() {
-        local name=$1 rule=$2 pattern=$3 glob=$4 multiline=$5
-        shift 5
-        local dirs=()
-        for dir in "$@"; do [ -e "$dir" ] && dirs+=("$dir"); done
-        [ ${#dirs[@]} -eq 0 ] && return
-        local flags=-rcHP
-        [ "$multiline" = 1 ] && flags=-rcHPz
-        grep $flags --include="$glob" -e "$pattern" "${dirs[@]}" 2>/dev/null \
-            | awk -F: -v n="$name" -v r="$rule" '$NF > 0 { path = $0; sub(/:[0-9]+$/, "", path); print path "\t" n "\t" r "\t" $NF }' \
-            | not_skipped
-    }
-fi
+# Finds a pattern inside files. A stack's checks file sourced below uses this same function.
+check() {
+    local name=$1 rule=$2 pattern=$3 glob=$4 multiline=$5
+    shift 5
+    local dirs=()
+    for dir in "$@"; do [ -e "$dir" ] && dirs+=("$dir"); done
+    [ ${#dirs[@]} -eq 0 ] && return
+    local flags=-rcHP
+    [ "$multiline" = 1 ] && flags=-rcHPz
+    grep $flags --include="$glob" -e "$pattern" "${dirs[@]}" 2>/dev/null \
+        | awk -F: -v n="$name" -v r="$rule" '$NF > 0 { path = $0; sub(/:[0-9]+$/, "", path); print path "\t" n "\t" r "\t" $NF }' \
+        | not_skipped
+}
 
 # check_path <name> <rule file> <path pattern> <folders...>
 # Finds files by their path, for a rule about a file's name or folder. The pattern is a
@@ -54,6 +52,9 @@ check_path() {
     find "${dirs[@]}" -type f 2>/dev/null | sed 's#^\./##' | grep -P -e "$pattern" | not_skipped \
         | awk -v n="$name" -v r="$rule" '{ print $0 "\t" n "\t" r "\t1" }'
 }
+
+# The ready checks of a stack's rules, one line each, such as:
+# source docs/agents/laravel-checks.sh
 
 # One check per rule a search can find. The second field names the rule's file. For example:
 # check console-log code.md 'console\.log\(' '*.ts' 0 src
