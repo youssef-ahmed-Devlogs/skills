@@ -14,7 +14,7 @@ A hit is only a candidate. Step 6 reads the file and confirms it against the con
 
 These conventions need reading, so step 6 checks them in every file of the batch:
 
-- `controllers.md`: a controller with methods beyond the seven resource ones; logic, files or mail in a controller; a Service not taken in the constructor.
+- `controllers.md`: an action method without its `#[Authorize]` attribute; a controller with methods beyond the seven resource ones; logic, files or mail in a controller; a Service not taken in the constructor.
 - `policies.md`: a model with no Policy; a Policy that names a role.
 - `livewire.md`: a Livewire action that writes without `$this->authorize()`; an id the browser must not change, without `#[Locked]`; fields and rules outside a Form Object; a query the view reads outside a `#[Computed]` method.
 - `services.md`: a CRUD Service whose method names are not `list`, `create`, `update`, `delete`; a write to several tables outside `DB::transaction()`; a refusal returned as `true` or `false` instead of thrown; a mail or notification sent by the Service instead of an event.
