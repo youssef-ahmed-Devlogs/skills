@@ -9,6 +9,9 @@
 set -u
 shopt -s nullglob
 
+# Text checks read letters with \p{L}, which only work in a UTF-8 locale.
+export LC_ALL=C.UTF-8
+
 # Folders no check looks in, such as code that a tool writes. Each is a path from the project root.
 # Fill it here, such as SKIP=(src/generated).
 SKIP=()
@@ -53,8 +56,8 @@ check_path() {
         | awk -v n="$name" -v r="$rule" '{ print $0 "\t" n "\t" r "\t1" }'
 }
 
-# The ready checks of a stack's rules, one line each, such as:
-# source docs/agents/laravel-checks.sh
+# The ready checks of a stack's rules, one line each. The pipe keeps the SKIP folders out of them too:
+# source docs/agents/laravel-checks.sh | not_skipped
 
 # One check per rule a search can find. The second field names the rule's file. For example:
 # check console-log code.md 'console\.log\(' '*.ts' 0 src

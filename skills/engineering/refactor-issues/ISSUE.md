@@ -6,10 +6,11 @@ Both kinds follow the project's issue shape. When the project has issue template
 
 - Labels: `refactor`, its review flag and `ready-for-agent`.
 - Title: ``Refactor: `<path>` follows the conventions``. The path in backticks is how later runs find the issue.
-- `## Why` starts with "`<path>` was written before the conventions. It breaks <n> of them.", then one line per break: the line number, what the code does, what the rule asks, and the file the rule is in. This list may pass 5 lines: it names every break.
+- `## Why` starts with "`<path>` was written before the conventions. It breaks <n> of them.", where <n> counts the breaks this issue fixes, then one line per break: the line number, what the code does, what the rule asks, and the file the rule is in. This list may pass 5 lines: it names every break.
 - `## Decisions` starts with "Only the code changes. What users get stays the same.", then one line per break on how the output stays the same, such as "The JSON keeps its shape and its key names."
 - `## What to do`: the steps in order. The first is always the tests: those that check the part that will change, or a new one that does and passes on the old code before any change. A test that only runs the code, and does not check that part, is not enough. The test checks what the code gives out, such as its result or what it writes, never how it works inside: so it passes on the old code and on the new. The last runs them again, with no change to them. A data change follows the project's rules for it.
 - `## Done when` always holds "The old tests pass with no change to them."
+- `## Out of scope` names each break of the file that went to a `review-critical` issue, with that issue's number.
 - The last line is `Found by /refactor-issues.`, or `Follows #<number>.` when an earlier refactor issue exists for this file.
 
 ## A `review-critical` issue

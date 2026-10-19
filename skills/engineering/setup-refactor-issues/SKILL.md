@@ -18,7 +18,7 @@ Run it once per project. Run it again when the rules change: it adds the checks 
 
 - Ask the user **one question per message**, with your recommended answer and why. Find what you can yourself, and only ask to confirm it.
 - Never replace or delete a line of the user's without asking.
-- Work on a new branch, named as the project's rules say, never on the main branch.
+- Work on a new branch, named as the project's rules say, never on the main branch. Make it from the branch that has the project's rules: the main branch, or the branch of a setup that is not merged yet, such as the one `/setup-laravel-rules` made.
 
 ## 1. Find the rules
 
@@ -43,16 +43,16 @@ The rules these files check need no check of yours. Never edit them: their repos
 
 When `docs/agents/refactor-checks.sh` is missing, copy [refactor-checks.template.sh](refactor-checks.template.sh) of this skill's folder there. Then fill it in:
 
-1. **The ready checks.** Under the line `# The ready checks of a stack's rules`, add one `source` line for each file of step 2, such as `source docs/agents/laravel-checks.sh`.
+1. **The ready checks.** Under the line `# The ready checks of a stack's rules`, add one line for each file of step 2, such as `source docs/agents/laravel-checks.sh | not_skipped`. The pipe keeps the folders of `SKIP` out of them too.
 2. **The folders to skip.** Put in `SKIP`, at the top, the folders no check should look in, such as code that a tool writes.
-3. **The project's own checks.** Add one line for each rule of step 1 that a search can find and no ready check covers, as the template's examples show: `check` for a pattern inside files, and `check_path` for a rule about a file's name or folder. The second field names the rule's file, such as `project/roles.md`.
+3. **The project's own checks.** Add one line for each rule of step 1 that a search can find and no ready check covers. A folder of the project's own code that the ready checks do not search gets lines for their rules too, such as JS kept in `public/assets` when they search `resources/js` only. Write the lines as the template's examples show: `check` for a pattern inside files, and `check_path` for a rule about a file's name or folder. The second field names the rule's file, such as `project/roles.md`.
 4. **Try it.** Run `bash docs/agents/refactor-checks.sh` from the project root, and show the user how many files each check finds. A check that finds every file, or none where you know of one, is wrong: fix it.
 
 When the file exists, bring it up to date: add a check for each rule that has none, a `source` line for each new ready file, and ask before you remove the check of a rule that is gone.
 
 ## 4. Write the reading list
 
-In `docs/agents/refactor-checks.md`, write one line for each rule of step 1 that only reading can see, and that no ready list covers: the rule's file, what breaks it, and where to look. For example: `` `project/roles.md`: a role checked by its name, in `app/Http` ``.
+In `docs/agents/refactor-checks.md`, write one line for each rule of step 1 that only reading can see, and that no ready list covers: the rule's file, what breaks it, and where to look. Name each rule's file by its path under `.claude/rules`, such as `project/roles.md`, and say so at the top of the list. For example: `` `project/roles.md`: a role checked by its name, in `app/Http` ``.
 
 At its top, add one line for each ready list of step 2: `` Also read `docs/agents/laravel-checks.md`: the checks of the Laravel rules. ``
 
@@ -70,7 +70,7 @@ gh label create ready-for-agent --description "Clear enough for an agent to do" 
 gh label create ready-for-human --description "A person must decide or do it" --color c5def5
 ```
 
-When the project has no GitHub remote, skip this step and say so.
+When the project has no GitHub remote, skip this step, and tell the user that `/refactor-issues` opens GitHub issues, so it needs one.
 
 ## 6. Finish
 

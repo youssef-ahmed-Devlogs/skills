@@ -6,7 +6,7 @@ disable-model-invocation: true
 
 # Refactor issues
 
-Each run opens the next **batch** of GitHub issues, at most 10 open at once, that bring old code in line with the rules of the project it runs in. One issue covers one file and all its breaks of those rules. The batch always comes from the safest **stage** that still has work, and inside it the simplest files go first.
+Each run opens the next **batch** of GitHub issues, at most 10 open at once, that bring old code in line with the rules of the project it runs in. One issue covers one file and all its breaks of those rules. When two files must change together, such as a view and the script it calls, one issue covers both: it is named after the main file and names the other. The batch always comes from the safest **stage** that still has work, and inside it the simplest files go first.
 
 It works from the files that `/setup-refactor-issues` writes in the project: run that skill once first.
 
@@ -26,7 +26,7 @@ Only when no such way exists, after real search, does that break leave the file'
 
 ## 1. Check the setup
 
-The project needs `docs/agents/refactor-checks.sh`, and the label `refactor` in its repository:
+This skill opens GitHub issues: when the project has no GitHub remote, stop and say so. The project also needs `docs/agents/refactor-checks.sh`, and the label `refactor` in its repository:
 
 ```bash
 test -f docs/agents/refactor-checks.sh && gh label list --search refactor --json name --jq '.[].name'
@@ -92,7 +92,7 @@ Give each candidate the review flag its change would need. When the project has 
 
 - `review-required`: the file touches sign-in, codes, tokens, roles, permissions, or who owns a record; the change needs a migration or a data change; it moves the logic of a main feature, such as checkout or sign-in, or changes how a public API answers; or no test covers logic that will change. Logic of a main feature, such as money or sign-in, stays at this level even when it only moves.
 - `review-suggested`: the change touches what people see, such as a page, a text or a JSON answer; or it only moves or renames code that no test covers, and the logic stays exactly as it is.
-- `review-optional`: the change touches nothing people see, and a test runs the code that changes. The test does not need to check the changed line yet: the issue's first step adds that check (see ISSUE.md).
+- `review-optional`: the change touches nothing people see, and a test runs the code that changes, such as a feature test that sends a request through it. The test does not need to check the changed line yet: the issue's first step adds that check (see ISSUE.md).
 
 The level follows the change, not the file: a log line in the core of the app is still a small change.
 
@@ -114,7 +114,7 @@ For each break, write how the output stays the same, as the section above asks.
 
 ## 8. Open the issues
 
-One issue per file, in the shape of [ISSUE.md](ISSUE.md), with the labels `refactor`, its review flag and `ready-for-agent`. Write it as the project's rules for issues say.
+Open each `review-critical` issue below first, so the refactor issue of its file can name it. Then one issue per file, in the shape of [ISSUE.md](ISSUE.md), with the labels `refactor`, its review flag and `ready-for-agent`. Write it as the project's rules for issues say.
 
 A break that cannot keep the output the same gets its own issue, as the `review-critical` part of ISSUE.md says, with the labels `refactor`, `review-critical` and `ready-for-human`. It says what users would see change, what was tried, and the choices for the owner. It is not part of the batch count.
 
