@@ -63,7 +63,7 @@ Read `CLAUDE.md` or `AGENTS.md`, every file in `.claude/rules` (and any `.claude
 
 Read the code first: the files, the line numbers, and the claims you are about to make. Verify each claim; don't copy it from an old report.
 
-Then open an issue. When the repo has an issue shape, such as `.claude/rules/process/issues.md`, publish in two parts: the body in that format, short, for the owner to read, with `Full details are in the first comment.` as its last line; and the full issue in the structure below as the first comment, posted right after, with nothing cut, for the worker. With no format, the body holds this structure:
+Then open an issue. When the repo has an issue shape, such as `.claude/rules/workflow/issues.md`, publish in two parts: the body in that format, short, for the owner to read, with `Full details are in the first comment.` as its last line; and the full issue in the structure below as the first comment, posted right after, with nothing cut, for the worker. With no format, the body holds this structure:
 
 ```markdown
 ## Problem

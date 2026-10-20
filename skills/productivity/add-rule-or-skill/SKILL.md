@@ -64,6 +64,6 @@ Write it where it was agreed, in very simple English:
 - **A skill**: follow `writing-for-agents`. In a skills repository, add it with its row in that repository's README, and name the skills it calls in its "Before you start" part.
 - **A rule for a stack**: a file in `rules/<stack>` with `paths`, and its check in that stack's ready checks, such as `docs/agents/laravel-checks.sh`.
 - **A line for every session**: the project's `CLAUDE.md` or `AGENTS.md`, or the user's shared rules that every project gets. Keep it short; move details to a file it points at.
-- **A decision that matters**: an ADR, as `.claude/rules/process/decisions.md` says.
+- **A decision that matters**: an ADR, as `.claude/rules/workflow/decisions.md` says.
 
 Open a pull request for it. Done when its link is given to the user.
