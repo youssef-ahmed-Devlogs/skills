@@ -26,10 +26,10 @@ Only when no such way exists, after real search, does that break leave the file'
 
 ## 1. Check the setup
 
-This skill opens GitHub issues: when the project has no GitHub remote, stop and say so. The project also needs `docs/agents/refactor-checks.sh`, and the label `refactor` in its repository:
+This skill opens GitHub issues: when the project has no GitHub remote, stop and say so. The project also needs `docs/agents/scripts/refactor-checks.sh`, and the label `refactor` in its repository:
 
 ```bash
-test -f docs/agents/refactor-checks.sh && gh label list --search refactor --json name --jq '.[].name'
+test -f docs/agents/scripts/refactor-checks.sh && gh label list --search refactor --json name --jq '.[].name'
 ```
 
 When either is missing, stop. Tell the user the project is not set up for this skill yet, and to run `/setup-refactor-issues` first: it writes the project's checks from its rules and makes the labels. When that skill is not installed, give the command:
@@ -67,7 +67,7 @@ Write down the scope first:
 
 Then find the files that may break a rule, with the fastest tools first:
 
-1. **The project's checks.** Run them from the project root: `bash docs/agents/refactor-checks.sh`. It runs the ready checks of a stack's rules too, such as `laravel-checks.sh`. Each line it prints is `<path> <TAB> <check> <TAB> <rule file> <TAB> <hits>`.
+1. **The project's checks.** Run them from the project root: `bash docs/agents/scripts/refactor-checks.sh`. It runs the ready checks of a stack's rules too, such as `laravel-checks.sh`. Each line it prints is `<path> <TAB> <check> <TAB> <rule file> <TAB> <hits>`.
 2. **Its linters.** Run the linters and static checks the project already has, and keep the hits that match a rule of step 2. When one cannot run, such as when its packages are not installed, say so in the report and rely on the searches.
 3. **Your own searches.** For each rule a search can check that the checks file does not cover yet, such as a banned function, a folder or a name, write a search. Note the rule file each one serves:
 
@@ -120,4 +120,4 @@ A break that cannot keep the output the same gets its own issue, as the `review-
 
 ## 9. Report
 
-Tell the user, in a few lines: the issues opened with their links, the stage, and how many candidates are left in it. When a search you wrote in step 4 would help every later run, offer to add it to `docs/agents/refactor-checks.sh` as a `check` line, or to run `/setup-refactor-issues` again.
+Tell the user, in a few lines: the issues opened with their links, the stage, and how many candidates are left in it. When a search you wrote in step 4 would help every later run, offer to add it to `docs/agents/scripts/refactor-checks.sh` as a `check` line, or to run `/setup-refactor-issues` again.

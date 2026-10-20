@@ -53,7 +53,7 @@ Base it on today's research, not on memory. Start with one of these, in one line
 - **It clashes with something**: name both, and the choice to make.
 - **It is new**: say what kind it should be, where it goes, and why, with the source.
 
-Then say where it lives: **a shared repository** when every project, or every project of a stack, needs it; **this project** when only it does; **the user's own setup** when it is a personal preference for every project, not a rule for the team. A mechanical rule that can be checked gets a check too: a test, a hook, CI, or a search for the refactor skills: in `docs/agents/refactor-checks.sh`, or in the ready checks of a stack's rules, such as `docs/agents/laravel-checks.sh` of `laravel-rules`.
+Then say where it lives: **a shared repository** when every project, or every project of a stack, needs it; **this project** when only it does; **the user's own setup** when it is a personal preference for every project, not a rule for the team. A mechanical rule that can be checked gets a check too: a test, a hook, CI, or a search for the refactor skills: in `docs/agents/scripts/refactor-checks.sh`, or in the ready checks of a stack's rules, such as `docs/agents/scripts/laravel-checks.sh` of `laravel-rules`.
 
 End with the links you read today. Discuss one question per reply, each with your recommended answer and why. Done when the user agrees on the kind and the place, or decides to drop it.
 
@@ -62,7 +62,7 @@ End with the links you read today. Discuss one question per reply, each with you
 Write it where it was agreed, in very simple English:
 
 - **A skill**: follow `writing-for-agents`. In a skills repository, add it with its row in that repository's README, and name the skills it calls in its "Before you start" part.
-- **A rule for a stack**: a file in `rules/<stack>` with `paths`, and its check in that stack's ready checks, such as `docs/agents/laravel-checks.sh`.
+- **A rule for a stack**: a file in `rules/<stack>` with `paths`, and its check in that stack's ready checks, such as `docs/agents/scripts/laravel-checks.sh`.
 - **A line for every session**: the project's `CLAUDE.md` or `AGENTS.md`, or the user's shared rules that every project gets. Keep it short; move details to a file it points at.
 - **A decision that matters**: an ADR, as `.claude/rules/workflow/decisions.md` says.
 
