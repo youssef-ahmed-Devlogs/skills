@@ -1,6 +1,6 @@
 {
   "name": "youssef-ahmed-skills",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Youssef Ahmed's agent skills: hand fixes to CLI workers, refactor old code safely, and place new rules and skills well.",
   "author": {
     "name": "Youssef Ahmed",
@@ -16,6 +16,7 @@
   ],
   "skills": [
     "./skills/engineering/delegating-to-cli",
+    "./skills/engineering/implement-refactor-issues",
     "./skills/engineering/refactor-issues",
     "./skills/engineering/setup-refactor-issues",
     "./skills/productivity/add-rule-or-skill",
