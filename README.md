@@ -44,6 +44,7 @@ codex plugin add youssef-ahmed-skills@youssef-ahmed
 ## Engineering
 
 - **[delegating-to-cli](./skills/engineering/delegating-to-cli/SKILL.md)**: Work through a list of fixes by handing each one to its own Claude Code CLI session in a terminal tab. You write the issue, answer the worker, review its diff, merge and clean up.
+- **[implement-refactor-issues](./skills/engineering/implement-refactor-issues/SKILL.md)**: Do the open refactor issues that `refactor-issues` opened, one batch in one pull request, with what users get kept the same. Works in any project and any language.
 - **[refactor-issues](./skills/engineering/refactor-issues/SKILL.md)**: Open the next batch of refactor issues that bring old code in line with the project's own code rules, safest first. Works in any project and any language.
 - **[setup-refactor-issues](./skills/engineering/setup-refactor-issues/SKILL.md)**: Prepare a project for `refactor-issues`: write its checks file and reading list from its own code rules, wire in the ready checks of a stack's rules, and make the labels. Works in any project and any language.
 
@@ -54,7 +55,7 @@ codex plugin add youssef-ahmed-skills@youssef-ahmed
 
 ## Laravel
 
-The Laravel rules, their ready checks, and `setup-laravel-rules`, which puts them in a project, are in [youssef-ahmed-Devlogs/laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules). Then `setup-refactor-issues` and `refactor-issues` work with them.
+The Laravel rules, their ready checks, and `setup-laravel-rules`, which puts them in a project, are in [youssef-ahmed-Devlogs/laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules). Then `setup-refactor-issues`, `refactor-issues` and `implement-refactor-issues` work with them.
 
 Every skill is user-invoked: it starts only when you type its name, such as `/refactor-issues`. Each one has a page in [`docs`](./docs) that says when to use it.
 

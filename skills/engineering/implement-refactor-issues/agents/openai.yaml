@@ -1,0 +1,5 @@
+interface:
+  display_name: "Implement Refactor Issues"
+  short_description: "Do the open refactor batch in one pull request"
+policy:
+  allow_implicit_invocation: false

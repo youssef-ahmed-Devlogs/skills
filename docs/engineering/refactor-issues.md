@@ -13,6 +13,7 @@ Type `/refactor-issues` when old code breaks rules you wrote later, and you want
 | A project with written code rules, in any language | `refactor-issues` |
 | A Laravel project | The rules and their ready checks from [laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules), then `setup-refactor-issues` and this skill |
 | A project with no written rules | Write the rules first: this skill stops without them |
+| The batch is open, and you want it done | [`implement-refactor-issues`](./implement-refactor-issues.md) does it in one pull request |
 
 ## Prerequisites
 

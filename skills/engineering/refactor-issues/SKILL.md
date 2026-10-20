@@ -120,4 +120,4 @@ A break that cannot keep the output the same gets its own issue, as the `review-
 
 ## 9. Report
 
-Tell the user, in a few lines: the issues opened with their links, the stage, and how many candidates are left in it. When a search you wrote in step 4 would help every later run, offer to add it to `docs/agents/scripts/refactor-checks.sh` as a `check` line, or to run `/setup-refactor-issues` again.
+Tell the user, in a few lines: the issues opened with their links, the stage, and how many candidates are left in it. The next step is `/implement-refactor-issues`, which does the batch in one pull request. When a search you wrote in step 4 would help every later run, offer to add it to `docs/agents/scripts/refactor-checks.sh` as a `check` line, or to run `/setup-refactor-issues` again.
