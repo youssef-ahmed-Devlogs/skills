@@ -57,7 +57,7 @@ check_path() {
 }
 
 # The ready checks of a stack's rules, one line each. The pipe keeps the SKIP folders out of them too:
-# source docs/agents/laravel-checks.sh | not_skipped
+# source docs/agents/scripts/laravel-checks.sh | not_skipped
 
 # One check per rule a search can find. The second field names the rule's file. For example:
 # check console-log code.md 'console\.log\(' '*.ts' 0 src

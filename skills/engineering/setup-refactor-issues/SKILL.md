@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 `/refactor-issues` finds old code that breaks the project's written rules, and opens issues to fix it. It needs three things in the project, and this skill makes them:
 
-- `docs/agents/refactor-checks.sh`: one search for each rule a search can find;
+- `docs/agents/scripts/refactor-checks.sh`: one search for each rule a search can find;
 - `docs/agents/refactor-checks.md`: one line for each rule that only reading can see;
 - the labels its issues use.
 
@@ -35,18 +35,20 @@ When the project has no such rules, stop, and tell the user to write them first.
 
 ## 2. Find the ready checks
 
-Some rules come with ready checks from their own repository, such as `docs/agents/laravel-checks.sh` and `docs/agents/laravel-checks.md`, which `/setup-laravel-rules` copies. List every `docs/agents/*-checks.sh` other than `refactor-checks.sh`, and its `.md` beside it.
+Some rules come with ready checks from their own repository, such as `docs/agents/scripts/laravel-checks.sh` and `docs/agents/laravel-checks.md`, which `/setup-laravel-rules` copies. List every `docs/agents/scripts/*-checks.sh` other than `refactor-checks.sh`, and its `.md` beside it.
 
 The rules these files check need no check of yours. Never edit them: their repository replaces them on each update. A rule of the project that they do not cover, such as one in `.claude/rules/project`, gets its check in the project's own files below.
 
 ## 3. Write the checks file
 
-When `docs/agents/refactor-checks.sh` is missing, copy [refactor-checks.template.sh](refactor-checks.template.sh) of this skill's folder there. Then fill it in:
+When `docs/agents/scripts/refactor-checks.sh` is missing, copy [refactor-checks.template.sh](refactor-checks.template.sh) of this skill's folder there. Then fill it in:
 
-1. **The ready checks.** Under the line `# The ready checks of a stack's rules`, add one line for each file of step 2, such as `source docs/agents/laravel-checks.sh | not_skipped`. The pipe keeps the folders of `SKIP` out of them too.
+1. **The ready checks.** Under the line `# The ready checks of a stack's rules`, add one line for each file of step 2, such as `source docs/agents/scripts/laravel-checks.sh | not_skipped`. The pipe keeps the folders of `SKIP` out of them too.
 2. **The folders to skip.** Put in `SKIP`, at the top, the folders no check should look in, such as code that a tool writes.
 3. **The project's own checks.** Add one line for each rule of step 1 that a search can find and no ready check covers. A folder of the project's own code that the ready checks do not search gets lines for their rules too, such as JS kept in `public/assets` when they search `resources/js` only. Write the lines as the template's examples show: `check` for a pattern inside files, and `check_path` for a rule about a file's name or folder. The second field names the rule's file, such as `project/roles.md`.
-4. **Try it.** Run `bash docs/agents/refactor-checks.sh` from the project root, and show the user how many files each check finds. A check that finds every file, or none where you know of one, is wrong: fix it.
+4. **Try it.** Run `bash docs/agents/scripts/refactor-checks.sh` from the project root, and show the user how many files each check finds. A check that finds every file, or none where you know of one, is wrong: fix it.
+
+When the project has it at its older path, `docs/agents/refactor-checks.sh`, move it to `docs/agents/scripts` with `git mv`, and fix each `source` line in it to the new paths of the ready checks.
 
 When the file exists, bring it up to date: add a check for each rule that has none, a `source` line for each new ready file, and ask before you remove the check of a rule that is gone.
 

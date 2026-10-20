@@ -1,6 +1,6 @@
 ## What it does
 
-`setup-refactor-issues` prepares a project for [`refactor-issues`](./refactor-issues.md). It reads the project's own code rules, and writes two files: `docs/agents/refactor-checks.sh`, with one search for each rule a search can find, and `docs/agents/refactor-checks.md`, with one line for each rule only reading can see. When a stack's rules came with ready checks, such as `docs/agents/laravel-checks.sh` from [laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules), it wires them in instead of writing them again. It also makes the labels the issues use.
+`setup-refactor-issues` prepares a project for [`refactor-issues`](./refactor-issues.md). It reads the project's own code rules, and writes two files: `docs/agents/scripts/refactor-checks.sh`, with one search for each rule a search can find, and `docs/agents/refactor-checks.md`, with one line for each rule only reading can see. When a stack's rules came with ready checks, such as `docs/agents/scripts/laravel-checks.sh` from [laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules), it wires them in instead of writing them again. It also makes the labels the issues use.
 
 ## When to reach for it
 
