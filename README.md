@@ -52,6 +52,7 @@ codex plugin add youssef-ahmed-skills@youssef-ahmed
 
 - **[add-rule-or-skill](./skills/productivity/add-rule-or-skill/SKILL.md)**: Talk through something new you want an agent to know or do, such as a rule, a skill or a check. It finds out whether it exists, and what it should be and where it goes, from today's official docs.
 - **[explain-skill](./skills/productivity/explain-skill/SKILL.md)**: Explain one skill in simple words, with a real example: what it does, when to use it, and what you get.
+- **[tutor-me](./skills/productivity/tutor-me/SKILL.md)**: Learn a topic over many sessions. It builds each lesson from trusted sources, then teaches it in the chat one part at a time, and moves on only when you show you understood.
 
 ## Laravel
 
