@@ -5,7 +5,7 @@ This repository holds Youssef Ahmed's agent skills. People install them with `np
 Skills are in bucket folders under `skills/`:
 
 - `engineering/`: daily code work.
-- `productivity/`: work around the code, such as rules, skills and the agent itself.
+- `productivity/`: work that is not code, such as rules, skills, the agent itself, and learning a topic.
 
 Every skill is in five places. When you add, rename or remove one, change all five in the same pull request:
 

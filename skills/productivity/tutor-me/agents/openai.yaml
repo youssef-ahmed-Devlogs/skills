@@ -1,0 +1,5 @@
+interface:
+  display_name: "Tutor me"
+  short_description: "Learn a topic in the chat, one part at a time"
+policy:
+  allow_implicit_invocation: false
