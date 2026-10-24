@@ -1,21 +1,94 @@
+# study-with-me
+
+The agent follows you through a course, a book or a path you study on your own, like a teacher sitting beside you. The course teaches. The agent knows where you are, reads the code you write beside it, checks that each step stuck, and fills every gap, so you never need another course to finish this one.
+
+**Start it:** `/study-with-me <course>`, in an empty folder outside your practice project. It starts only when you type it.
+
 ## What it does
 
-`study-with-me` follows you through a course, a book or a path you study on your own, like a teacher sitting beside you. The course teaches, and the agent knows where you are, reads the code you write beside it, and checks that each step stuck.
+1. **Setup, once:** it finds the course's table of contents and the versions it uses, asks your goal, where your practice project is, and which step you reached.
+2. **After each step:** you say in a line or two what the step covered. It reads the code you wrote for it, runs it when it can, and asks one or two questions on the main point.
+3. **It judges the course:** when a step differs from the official way, it says what kind of choice it is, with a source and a version.
+4. **It fills gaps:** when you miss something the course takes for granted, it teaches just that, then sends you back to the same step.
+5. **At the end:** you fix the wrong and old steps in your project yourself, and it checks each fix.
 
-When you finish a step, you tell it what the step covered in a line or two. It asks one or two questions on the main point, one per message, and answers each reply the same way: "right, because …" for a right one, the missing piece for a half one, the right answer and why for a wrong one, and the explanation first for "I don't know". Each chapter ends with a bigger check, and each session starts with a short recall of older steps.
+Its five words for a choice of the course:
 
-It fills every gap the course leaves, so you never need another course to finish it. A small gap is explained in the chat. A big one, such as SQL in a web course, gets only the pieces the course needs now, taught in small parts and saved for you to read again.
+- **Official:** what the official docs say, for your version.
+- **Community advice:** not in the docs, but what most people who do this for real advise.
+- **Sound preference:** one of several right ways. Keep it if you like.
+- **Wrong preference:** against the docs or the community, with a real cost, such as a security hole.
+- **Old:** right when the course was made, changed by a newer version.
 
-It also tells you what kind of choice each step makes: official, community advice, a sound preference, a wrong preference, or old. Each call comes with its source and version. You keep following the course, and the wrong and old steps are kept in a list. When the course ends, you fix them in your project yourself, and it checks each fix. A real danger, such as a security hole, or a step that stops you from going on, such as a server that no longer starts on your version, is fixed at once.
+## When to use it
 
-When you start, it compares your goal with the course. When the goal needs a topic the course never teaches, it says so at once, and asks whether to shrink the goal or add a course of your choice. You can start in the middle of a course, and skip the checks of a step when you are in a hurry: the main points come back later in short recalls.
+| Your situation | Use |
+| --- | --- |
+| You follow a video course, a book or a path, maybe with a project beside it | `study-with-me` |
+| You have no course, and want the agent to build the lessons | [`tutor-me`](./tutor-me.md) |
+| You want to plan what to learn, not learn it yet | [`interview-me`](./interview-me.md) |
 
-## When to reach for it
+## Example
 
-Make an empty folder for the course or the path, outside your practice project, open your agent there, and type `/study-with-me <course>`, such as `/study-with-me the Docker course on YouTube`. Run it again in the same folder each time you study: it goes on where you stopped.
+You study a Node and Express course from 2021, and you build its project on today's Express 5:
 
-Use `tutor-me` instead when you have no course, and want the agent to build the lessons itself.
+```text
+You:    /study-with-me the Node.js and Express course of freeCodeCamp. I build its project
+        in ~/code/node-practice. I want to build a full REST API with a database.
 
-## Prerequisites
+Agent:  I found the course: 2021, 8 hours, on Express 4.17. Its table of contents ends at
+        Express Router. It has no database at all.
+        Shall we shrink the goal to what the course covers, or add a second course of your
+        choice for the database?
+```
 
-None.
+Later, it reads your project and finds a step that no longer works on your version:
+
+```text
+Agent:  🏷️ Old: line 59 of app.js is `app.all('*', ...)`, as in the course. On Express 5 the
+        server crashes at start: "Missing parameter name at index 1: *". I ran it to check.
+        Express 5 needs a named wildcard: `app.all('/{*splat}', ...)`. Source: the Express 5
+        migration guide.
+        This stops you from going on, so it is fixed now. Do you change it, or shall I?
+```
+
+When you finish a step, it checks it:
+
+```text
+You:    Done with 2.27, the POST form. The form sends its data, and we read it from req.body.
+
+Agent:  Right, because the form sends `name=sara` as text, and the parser turns it into the
+        object `{ name: 'sara' }` in `req.body`.
+        A question: the input becomes `name="username"`. What does /login answer for sara?
+```
+
+When you miss the same base idea twice, such as what an object key is, it says the gap is bigger than this step, teaches only what the step needs in two or three small parts, saves it in `gaps/js-objects.md`, and brings you back to the same question.
+
+## More use cases
+
+- **A book, chapter by chapter:** it checks each chapter, and its exercises when you share them.
+- **A path of several courses:** they go in one map, in your order. A single course is a path of one.
+- **Starting in the middle:** the steps before your start are marked "before we started", and three short questions find what you know.
+- **No project at all:** a course of design, writing or anything else works too. It checks what you understood, not code.
+- **In a hurry:** skip the checks of a step. Its main point comes back later, in the recall at the start of a session, and the chapter check covers it too.
+
+## What you get
+
+All in the folder you ran it in:
+
+- `PATH.md`: your goal, the courses, where you are, and your project's folder.
+- `courses/`: one file per course, with its table of contents and what you showed at each step.
+- `FIX-LATER.md`: the wrong and old steps, each with its source, to fix at the end.
+- `gaps/`: what it taught to fill a big gap, for you to read again.
+- `KNOWN.md` and `TERMS.md`: what you showed you know, and the words of the topic.
+
+It never writes in your project, unless you say yes to one change.
+
+## What it needs
+
+Nothing. For the code part, a git repository for your practice project, so it can see what changed since the last session.
+
+## Tips
+
+- Commit after each step. The commits tell it what you wrote, and where you are.
+- When a video is hard, paste its transcript or the part you did not get. It cannot watch videos.

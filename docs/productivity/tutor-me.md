@@ -1,15 +1,84 @@
+# tutor-me
+
+The agent teaches you a topic over many sessions, in the chat. It builds each lesson from trusted sources, then teaches it one part at a time, and moves on only when you show you understood.
+
+**Start it:** `/tutor-me <topic>`, in an empty folder for that topic. It starts only when you type it.
+
 ## What it does
 
-`tutor-me` teaches you a topic over many sessions, in the chat. It asks what you want to do with the topic, and what you know already. Then it builds a small lesson from trusted sources, as a Markdown file for itself, and teaches it to you one part at a time. Each part starts by asking whether you know it already, and ends with questions that make you recall or use the idea, one per message. It moves on only after you answer them right. A final check joins the parts, and each new session starts with a short recall of older lessons.
+1. It asks what you want to do with the topic, and three short questions that show what you know already.
+2. It builds a small lesson from official docs and known experts, as a file for itself. You never need to read it.
+3. It teaches the lesson in the chat, one part at a time. Each part starts by asking whether you know it already.
+4. It asks questions that make you recall or use the idea, one per message, and moves on after two right answers in a row.
+5. A final check mixes the parts. The next session starts with a short recall of older lessons.
 
-Every answer gets a reply. A right one gets "right, because …" in two or three lines. A half one gets which piece is missing or wrong, and the right answer for it. A wrong one gets the right answer and why, with no hints, then "what did you understand?". "I don't know" gets the explanation first.
+Every answer gets a reply:
 
-It keeps everything in the folder you run it in: your goal, the sources, the lessons, what you know, the terms, and short sheets you can read later.
+- **Right:** "Right, because …", in two or three lines.
+- **Half right:** which piece is right, which is missing or wrong, and the right answer for it.
+- **Wrong:** the right answer and why, with no hints, then "what did you understand?".
+- **"I don't know":** the explanation first, then a question.
 
-## When to reach for it
+## When to use it
 
-Make an empty folder for the topic, open your agent there, and type `/tutor-me <topic>`, such as `/tutor-me Docker`. Run it again in the same folder for the next session: it goes on where you stopped.
+| Your situation | Use |
+| --- | --- |
+| You want to learn a topic, and have no course | `tutor-me` |
+| You already follow a course, a book or a path | [`study-with-me`](./study-with-me.md) |
+| You only need one quick answer | Ask directly |
 
-## Prerequisites
+## Example
 
-None.
+```text
+You:    /tutor-me Docker
+
+Agent:  What do you want to be able to do with Docker?
+
+You:    Run my Node app and its database on any machine with one command.
+
+Agent:  Good. Three short questions to see where you start. First one:
+        what is the difference between an image and a container, in your words?
+
+You:    I don't know.
+```
+
+It writes your goal and what you showed, builds the first lesson, "Run one container", and starts:
+
+```text
+Agent:  Lesson 1: Run one container. After it, you can start a ready image and reach it
+        from your browser.
+
+        Before I explain: what do you think `docker run -p 8080:80 nginx` does?
+
+You:    It downloads nginx and runs it on port 8080.
+
+Agent:  Half right. It does download nginx and run it, if it is not there yet. The missing
+        piece: nginx listens on port 80 inside the container, and `-p 8080:80` connects
+        your port 8080 to it. Without `-p`, your browser cannot reach it at all.
+```
+
+Run `/tutor-me` again in the same folder the next day. It starts with two recall questions, then goes on where you stopped.
+
+## More use cases
+
+- **A language for a new job:** "/tutor-me TypeScript", with a goal such as "read and fix the code of my team".
+- **A topic that is not code:** personal finance, a language you speak, the rules of a sport.
+- **A topic you knew once:** the first questions find what is still there, and the lessons skip it.
+- **A practical skill:** a part can end with a small task to do outside the chat, such as running a command, and the check asks what happened.
+
+## What you get
+
+All in the folder you ran it in:
+
+- `GOAL.md`, `SOURCES.md`, and `lessons/` with one file per lesson.
+- `KNOWN.md`, what you showed you know, and `TERMS.md`, the words of the topic.
+- `sheets/`: short sheets you can read later, such as commands or steps.
+
+## What it needs
+
+Nothing.
+
+## Tips
+
+- One folder per topic. A second topic gets its own folder.
+- Answer in your own words. A right answer just after an explanation shows the idea is fresh, not that it will last: the recalls of later sessions show that.
