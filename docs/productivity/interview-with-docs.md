@@ -10,9 +10,10 @@ The same interview as [`interview-me`](./interview-me.md), inside a project, wit
 2. It runs the interview of `interview-me`: one question per message, with its own guess, until it knows what you want.
 3. When you use a word in another sense than the glossary's, or a word that could mean two things, it asks which one you mean.
 4. It tests each line between two things with a made-up case right on it, and checks what you say against the code.
-5. When a word is settled, it writes it in the glossary at once, and tells you in one line.
-6. When a decision is hard to undo, would surprise a later reader, and came from a real choice, it offers an ADR, and writes it on your yes.
-7. The summary at the end lists every word and every ADR it wrote.
+5. When one decision opens a way around another, it asks you at once whether to close it or accept it.
+6. When a word is settled, it writes it in the glossary at once, and tells you in one line.
+7. When a decision is hard to undo, would surprise a later reader, and came from a real choice, it offers an ADR, and writes it on your yes.
+8. The summary at the end lists every word and every ADR it wrote.
 
 ## When to use it
 
@@ -69,7 +70,7 @@ Is this right, or what should change?
 - **The code says otherwise:** you say an order can be split, and the code never splits one. It shows you both, and asks which is right before it writes anything.
 - **A project with no docs yet:** the first settled word makes `GLOSSARY.md`, and the first ADR makes `docs/adr`.
 - **A project with its own rules for ADRs:** when its rules say when an ADR is due, or to write it without asking, it follows them.
-- **Changing an old decision:** it writes a new ADR, and marks the old one as replaced by it. It never rewrites the old one.
+- **Changing an old decision:** it writes a new ADR, and marks the old one as replaced by it, or partly replaced when only a part changed. It never rewrites the old one.
 
 ## What you get
 

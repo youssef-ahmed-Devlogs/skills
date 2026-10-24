@@ -48,13 +48,19 @@ When a word could mean two things, such as "account" for both the customer and t
 
 When the answers draw a line between two things, test the line with a made-up case right on it: "A customer cancels one item of three. Is the order cancelled?". A case shows where a word is still unclear faster than a definition does.
 
+Test the end of each new thing too: what is left after its last step, and what state it is in. "The customer removes the last item. Is the order still open, with nothing in it, or cancelled?"
+
+### A way around a decision
+
+When a decision opens a way around another one, ask about it at once, as a question of its own: close it, or accept it. "Removing every item one by one gives store credit, but you said a cancelled order goes back to the card. Is that fine?". Never leave it only as a note in the summary.
+
 ### What the files say
 
 When the user says how something works today, check the code or the files. When the two disagree, say both: "The code cancels the whole order, but you said one item can be cancelled. Which is right?". Never ask what you can read.
 
 ## 3. Write the glossary as you go
 
-When a word is settled, write it in the glossary at once, in that same message. Do not keep a list for the end. Say in one line what you wrote, so the user can correct it: "Added to `GLOSSARY.md`: **Booking**: a seat held for a customer, paid or not."
+When a word is settled, write it in the glossary at once, in that same message. Do not keep a list for the end. Say in one line what you wrote, so the user can correct it: "Added to `GLOSSARY.md`: **Booking**: a seat held for a customer, paid or not." The other words you or the user used for the same thing go under _Avoid_.
 
 Use [GLOSSARY-FORMAT.md](./GLOSSARY-FORMAT.md), unless the project's glossary has a shape of its own.
 
@@ -72,7 +78,12 @@ When one is missing, write no ADR: an obvious choice, or one easy to undo, only 
 
 Offer it in one line, at the moment the decision is made, and write it on a yes. When the project's rules say to write ADRs without asking, write it and say so in one line. Use [ADR-FORMAT.md](./ADR-FORMAT.md), or the project's own format.
 
-A decision that changes an older ADR gets a new ADR, and the older one is marked as replaced by it. Never rewrite an ADR that was there before this interview.
+A decision that changes an older ADR gets a new ADR. Mark the older one by how much changed:
+
+- **All of it:** `Status: Replaced by 0004.`
+- **Only a part:** `Status: Partly replaced by 0004.` The new ADR says which part changed, and which part still holds.
+
+Never rewrite an ADR that was there before this interview, apart from that status line.
 
 ## 5. The summary
 

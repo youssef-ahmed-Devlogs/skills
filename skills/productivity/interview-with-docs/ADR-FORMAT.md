@@ -12,7 +12,7 @@ That is often enough. Add a part only when it helps a later reader:
 
 - **Options turned down:** when someone would suggest them again.
 - **What follows:** when the decision forces something that is not obvious.
-- **Status:** such as `Replaced by 0007`, when a later decision changes this one.
+- **Status:** such as `Replaced by 0007` when a later decision changes all of this one, or `Partly replaced by 0007` when it changes only a part.
 
 ## What deserves one
 
