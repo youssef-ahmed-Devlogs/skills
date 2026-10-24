@@ -47,7 +47,7 @@ Agent:  I searched AGENTS.md, .claude/rules, your skills and ~/.claude. CLAUDE.m
 
 - **A rule of code:** "controllers stay thin". It may find the rule exists, and offer a check too, such as a test or a search, so old code that breaks it is found.
 - **A personal habit:** "answer me in Arabic". That goes to your own setup, not to the team's project.
-- **A new skill:** a procedure you repeat, such as preparing a release. It writes the skill in your skills repository, with its line in the README.
+- **A new skill:** a procedure you repeat, such as preparing a release. It writes the skill in your skills repository, in every place that repository's `AGENTS.md` lists, docs page included.
 - **A clash:** your idea fights an existing rule. It names both, and asks which one wins.
 
 ## What you get
