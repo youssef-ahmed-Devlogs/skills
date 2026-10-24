@@ -12,8 +12,10 @@ Every skill is in five places. When you add, rename or remove one, change all fi
 1. Its folder, `skills/<bucket>/<name>/`, with a `SKILL.md` whose `name` equals the folder name.
 2. Its `agents/openai.yaml`, for Codex.
 3. Its line in the bucket's `README.md`, with the name linked to its `SKILL.md`.
-4. Its line in the top `README.md`, with the name linked to its `SKILL.md`.
+4. Its row in the top `README.md`, and in the table of `docs/README.md`, with the name linked to its docs page.
 5. Its entry in the `skills` list of `.claude-plugin/plugin.json`, and its docs page, `docs/<bucket>/<name>.md`.
+
+Every docs page has the same shape, so a reader finds the same parts in each: a `#` title and one or two sentences, a **Start it** line, then `## What it does`, `## When to use it` with a table of situations, `## Example` with a real chat from start to end, `## More use cases`, `## What you get`, `## What it needs`, and `## Tips` when there are any. An example names no real private project: use a shop app, a team newsletter or a public course.
 
 Every skill here is user-invoked, apart from `interview-me`, which other skills run: `disable-model-invocation: true` in its `SKILL.md`, and `policy.allow_implicit_invocation: false` in its `agents/openai.yaml`. A model-invoked skill drops both, and its bucket `README.md` lists it under "Model-invoked".
 

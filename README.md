@@ -1,66 +1,50 @@
 # Skills
 
-My agent skills, for the work I do every day: handing fixes to CLI workers, refactoring old code without changing what users get, and placing new rules and skills where they belong.
+Agent skills for Claude Code, Codex, GitHub Copilot and other agents: think a plan through before the work starts, learn a topic or follow a course with a teacher beside you, clean up old code safely, hand fixes to CLI workers, and keep your agents' rules in the right place.
 
 They are small and easy to change. Take the ones you need, and make them your own.
 
-They work beside [Matt Pocock's skills](https://github.com/mattpocock/skills). Some of mine call his, such as `implement` and `tdd`. When one is missing, the skill stops and gives you the command that installs it.
+**New here?** Read [the guide](./docs/README.md): which skill fits which job, and how they work together. Each skill has its own page with a full example.
 
-## Installation
+## The skills
 
-Pick one way per agent. Installing both gives you every skill twice.
+### Thinking and learning
 
-<details>
-<summary><strong>Any agent</strong> (skills.sh, you update by hand)</summary>
+| Skill | Use it to |
+| --- | --- |
+| [interview-me](./docs/productivity/interview-me.md) | Say what you really want, one question at a time, before anything is built |
+| [tutor-me](./docs/productivity/tutor-me.md) | Learn a topic from zero, with lessons the agent builds and teaches in the chat |
+| [study-with-me](./docs/productivity/study-with-me.md) | Follow a course, a book or a path, with a teacher who checks each step |
+
+### Your agents
+
+| Skill | Use it to |
+| --- | --- |
+| [add-rule-or-skill](./docs/productivity/add-rule-or-skill.md) | Add a rule, a skill or a check for your agents, in the right place |
+| [explain-skill](./docs/productivity/explain-skill.md) | Understand any skill in simple words, with an example |
+
+### Code
+
+| Skill | Use it to |
+| --- | --- |
+| [delegating-to-cli](./docs/engineering/delegating-to-cli.md) | Hand a list of fixes to CLI workers, one tab each, and review each one |
+| [setup-refactor-issues](./docs/engineering/setup-refactor-issues.md) | Prepare a project to clean up its old code, once |
+| [refactor-issues](./docs/engineering/refactor-issues.md) | Open issues for old code that breaks your rules, safest first |
+| [implement-refactor-issues](./docs/engineering/implement-refactor-issues.md) | Do those issues in one pull request, with what users get kept the same |
+
+## Install
 
 ```bash
 npx skills add youssef-ahmed-Devlogs/skills
 ```
 
-It asks which skills you want, for which agent, and where: in the current project, or in your home folder for every project. Update later with `npx skills update`.
+It asks which skills you want, and for which agents. Plugins for Claude Code and Codex, one skill at a time, and updates: [Installing](./docs/install.md).
 
-</details>
-
-<details>
-<summary><strong>Claude Code</strong> (plugin)</summary>
-
-```bash
-claude plugin marketplace add youssef-ahmed-Devlogs/skills
-claude plugin install youssef-ahmed-skills@youssef-ahmed
-```
-
-</details>
-
-<details>
-<summary><strong>Codex</strong> (plugin)</summary>
-
-```bash
-codex plugin marketplace add youssef-ahmed-Devlogs/skills
-codex plugin add youssef-ahmed-skills@youssef-ahmed
-```
-
-</details>
-
-## Engineering
-
-- **[delegating-to-cli](./skills/engineering/delegating-to-cli/SKILL.md)**: Work through a list of fixes by handing each one to its own Claude Code CLI session in a terminal tab. You write the issue, answer the worker, review its diff, merge and clean up.
-- **[implement-refactor-issues](./skills/engineering/implement-refactor-issues/SKILL.md)**: Do the open refactor issues that `refactor-issues` opened, one batch in one pull request, with what users get kept the same. Works in any project and any language.
-- **[refactor-issues](./skills/engineering/refactor-issues/SKILL.md)**: Open the next batch of refactor issues that bring old code in line with the project's own code rules, safest first. Works in any project and any language.
-- **[setup-refactor-issues](./skills/engineering/setup-refactor-issues/SKILL.md)**: Prepare a project for `refactor-issues`: write its checks file and reading list from its own code rules, wire in the ready checks of a stack's rules, and make the labels. Works in any project and any language.
-
-## Productivity
-
-- **[add-rule-or-skill](./skills/productivity/add-rule-or-skill/SKILL.md)**: Talk through something new you want an agent to know or do, such as a rule, a skill or a check. It finds out whether it exists, and what it should be and where it goes, from today's official docs.
-- **[explain-skill](./skills/productivity/explain-skill/SKILL.md)**: Explain one skill in simple words, with a real example: what it does, when to use it, and what you get.
-- **[interview-me](./skills/productivity/interview-me/SKILL.md)**: Think a plan, a decision or an idea through, one question per message, until the agent knows what you really want. It says it all back and starts nothing before your clear yes. Works for any subject. In a project it asks in the project's words, and offers to record each decision that needs an ADR.
-- **[study-with-me](./skills/productivity/study-with-me/SKILL.md)**: Follow a course, a book or a path you study on your own, with a teacher beside you. It knows where you are and reads your practice code, checks each step you finish, fills every gap so you never need another course, and tells the course's habits apart from the official way.
-- **[tutor-me](./skills/productivity/tutor-me/SKILL.md)**: Learn a topic over many sessions. It builds each lesson from trusted sources, then teaches it in the chat one part at a time, and moves on only when you show you understood.
+Some skills call skills of [Matt Pocock](https://github.com/mattpocock/skills), such as `tdd`. When one is missing, the skill stops and gives you the command that installs it.
 
 ## Laravel
 
-The Laravel rules, their ready checks, and `setup-laravel-rules`, which puts them in a project, are in [youssef-ahmed-Devlogs/laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules). Then `setup-refactor-issues`, `refactor-issues` and `implement-refactor-issues` work with them.
-
-Every skill starts only when you type its name, such as `/refactor-issues`, apart from `interview-me`, which the agent and other skills can also run. Each one has a page in [`docs`](./docs) that says when to use it.
+The Laravel rules, their ready checks, and `setup-laravel-rules`, which puts them in a project, are in [youssef-ahmed-Devlogs/laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules). Then the three refactor skills work with them.
 
 ## License
 
