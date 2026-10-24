@@ -93,6 +93,8 @@ The order of the path is the base: it builds a true picture of the project. But 
 4. **Teach the area they need** as its full lesson, and mark it done in the path when it passes. Its place in the path stays the same.
 5. **Come back** to the saved place, and clear it in `PROJECT.md`.
 
+When the user has little time, such as a call in a few minutes, and a full lesson will not fit, ask how long they have. When it is too short, give the short version first: what the area does for the people who use it, and its main risks, in a few lines with their files, and point to `MAP.md`. Then keep the full lesson for later, in the `Paused` line, and keep the saved place as it is. The short version is not a passed lesson: never mark the area done for it.
+
 Never teach an area in depth on top of pieces the user does not have: they would remember it without understanding it.
 
 ## An idea from outside the project
