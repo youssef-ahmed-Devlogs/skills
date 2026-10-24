@@ -44,7 +44,7 @@ The code is the source. The project's docs, its commit messages and its pull req
 2. When there is no `PROJECT.md` yet, set it up, as "The first session" says.
 3. When `PROJECT.md` was there before this session, catch up, as "The catch-up" says.
 4. When an earlier part is done, warm up from memory: one question on the last lesson, and one on the point recalled longest ago, each in its own message. Answer each reply as "Answering the user" says, and write the result in `KNOWN.md`. A lesson whose code changed comes first.
-5. Go on with the path: the open gap when `PROJECT.md` has a pause, then the first part of the lesson in progress that is not done, or the next lesson.
+5. Go on with the path: what `PROJECT.md` paused for, when it has a pause, then the first part of the lesson in progress that is not done, or the next lesson.
 6. When a lesson is done, add what the user showed to `KNOWN.md`, update `MAP.md`, and mark the lesson done. Then ask whether to start the next one now.
 
 ## The first session
@@ -64,7 +64,7 @@ Ask one question per message.
 6. Write the newest commit of the main branch in `PROJECT.md`, so the next catch-up starts from it.
 7. Tell the user the path in a few lines, then build the first lesson.
 
-The path is fixed: you add a lesson when a new area appears, at its place, but you never reorder it to follow the day's work. A lesson the user needs today goes through "When the user needs it today".
+The path is fixed: you add a lesson when a new area appears, at its place, but you never reorder it to follow the day's work. An area the user needs today goes through "When the user needs it today".
 
 ## The catch-up
 
@@ -85,13 +85,15 @@ When nothing changed the picture, say so in one line and go on.
 
 ## When the user needs it today
 
-The user may need a part the path has not reached, such as a feature they will discuss with a client today, or code they will change.
+The order of the path is the base: it builds a true picture of the project. But the user may say, at the start or in the middle of a session, that they need an area today, such as a module they will discuss with a client or code they will change. Then jump to it, and keep the path as it is.
 
-1. Find the older pieces it rests on, from the code: the parts it calls, the data it reads, the words it uses.
-2. Teach only those pieces first, with a check on each, from the lessons they belong to. Mark them in those lessons, so they are never taught again.
-3. Then teach the part they need.
+1. **Save your place.** Write in `PROJECT.md` where you stopped: the lesson, the part and the question.
+2. **Find what it rests on,** from the code: the areas it calls, the data it reads, the words it uses. Keep only what the user needs to understand this area today.
+3. **Give those pieces quickly.** A few lines each, from both sides, with one check each. They are not their full lessons: log them in their lessons as given early, so those lessons start with a recall of them and still teach the rest.
+4. **Teach the area they need** as its full lesson, and mark it done in the path when it passes. Its place in the path stays the same.
+5. **Come back** to the saved place, and clear it in `PROJECT.md`.
 
-Never teach a new part in depth on top of pieces the user does not have: they would remember it without understanding it.
+Never teach an area in depth on top of pieces the user does not have: they would remember it without understanding it.
 
 ## An idea from outside the project
 
