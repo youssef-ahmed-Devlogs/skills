@@ -25,7 +25,7 @@ Make each file only when it is first needed. [WORKSPACE-FORMAT.md](./WORKSPACE-F
 - `lessons/01-<name>.md`: one lesson per area of the project, with its parts, its checks, the code it covers and how far the user got. Its shape is in [LESSON-FORMAT.md](./LESSON-FORMAT.md).
 - `CHANGES.md`: each change you read, in one or two plain lines, with its lesson and whether it was explained.
 - `MAP.md`: a short map of the project for the user to read, such as before a meeting.
-- `gaps/<name>.md`: a general idea you taught to fill a gap, such as object-oriented code, for the user to read again later.
+- `gaps/<name>.md`: an idea from outside the project you taught to fill a gap, such as caching or a package, for the user to read again later.
 - `KNOWN.md`: what the user knew before, what they have shown since, and the wrong ideas they dropped.
 - `NOTES.md`: how the user likes to be taught, questions to come back to, and your working notes.
 
@@ -90,9 +90,9 @@ The user may need a part the path has not reached, such as a feature they will d
 
 Never teach a new part in depth on top of pieces the user does not have: they would remember it without understanding it.
 
-## A gap in the basics
+## An idea from outside the project
 
-A part may rest on a general idea the user does not have, one that is not about this project, such as object-oriented code, a queue or a database index. Most days the user has no time to learn it, so never stop for it on your own.
+A part may rest on an idea the user does not have, one that is not about this project alone: a way of writing code, such as object-oriented code; a way of building, such as caching or queues; or a tool or package the project uses, such as Redis. It can be basic or advanced. Most days the user has no time to learn it, so never stop for it on your own.
 
 - **See the gap.** The user says they do not know the idea, or misses the same base idea twice.
 - **Offer it in one line,** as the only question of that message: pause here, learn the idea first, then come back. Or the user asks for it themselves.

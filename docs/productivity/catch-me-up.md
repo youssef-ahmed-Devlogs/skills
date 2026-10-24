@@ -12,7 +12,7 @@ The agent teaches you a code project you did not write, or no longer know, in th
 4. It asks questions that make you recall or use what you learned, one per message, such as what to tell a client, or where a change belongs.
 5. Each next session starts with a short catch-up on the new commits. A change in a lesson you learned is explained, and its checks are updated. A change in a lesson you have not reached gets one or two plain lines, and waits for its lesson.
 6. When you need a part today that the path has not reached, it teaches the older pieces it rests on first, then that part.
-7. When a part rests on a general idea you do not have, such as object-oriented code, it offers in one line to pause and learn it first. On a yes, it saves where you stopped, teaches the idea, then brings you back. On a no, it explains only what the part needs, and keeps the idea for later.
+7. When a part rests on an idea from outside the project that you do not have, such as object-oriented code, caching, queues, Redis or a package, it offers in one line to pause and learn it first. On a yes, it saves where you stopped, teaches the idea, then brings you back. On a no, it explains only what the part needs, and keeps the idea for later.
 
 Every answer gets a reply: "Right, because …", which piece is right and which is missing, or the right answer and why, with no hints, then "what did you understand?".
 
@@ -69,7 +69,7 @@ Agent:  Since yesterday: 14 commits, 3 changes worth knowing, 9 small fixes drop
 - **A new job:** your first weeks on a big project, with a map of it you can read before each meeting.
 - **A project you built long ago:** the first questions find what you still know, and the lessons skip it.
 - **A feature you discuss today:** it teaches the older parts the feature rests on, then the feature, and counts them in your path.
-- **A day with time to dig:** you reach code built on a pattern you never learned, say yes to the pause, learn the pattern, and go back to the same question.
+- **A day with time to dig:** you reach code built on something you never learned, such as a cache or a queue, say yes to the pause, learn it, and go back to the same question.
 - **A busy project:** at most three changes are explained in depth per session, and the rest wait, so the path still moves.
 
 ## What you get
@@ -80,7 +80,7 @@ All in `~/.catch-me-up/<project>/`, never inside the project:
 - `PROJECT.md`, the path and where you are, and `lessons/` with one file per lesson.
 - `CHANGES.md`: each change since you started, in one or two plain lines.
 - `KNOWN.md`: what you showed you know, and what changed under it.
-- `gaps/`: the general ideas you paused to learn, to read again later.
+- `gaps/`: the ideas you paused to learn, to read again later.
 
 The project itself is only read: no files, no commits, no branch changes.
 

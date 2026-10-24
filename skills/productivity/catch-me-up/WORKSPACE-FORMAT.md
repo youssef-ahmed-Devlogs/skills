@@ -96,7 +96,7 @@ Read at commit {short hash}, {date}.
 ## `gaps/<name>.md`
 
 ```md
-# {Idea, such as object-oriented code}
+# {Idea, such as caching or Redis}
 
 Needed by: lesson {n}, part {n}. Taught: {date}.
 
