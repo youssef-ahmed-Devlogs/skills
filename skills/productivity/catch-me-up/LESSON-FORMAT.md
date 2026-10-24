@@ -74,5 +74,5 @@ Status: not started
 - Every point in the code names its file. A point with no file behind it stays out.
 - Each answer lists its key points before you teach. Missing one of them makes a half answer.
 - A change in this lesson's code updates its points and answers at once, and its log says what changed. Never keep an answer the code no longer backs.
-- When a piece is taught early, for a part the user needed today, mark its part `done` and log why, so it is never taught again.
+- When a piece is given early, for an area the user needed today, log it as given early, with what was said. When the lesson's turn comes, its part starts with a recall of that piece, then teaches the rest of the part.
 - Log each check asked, and its result, under `## Log`, so no session asks it again.

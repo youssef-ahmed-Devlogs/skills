@@ -21,10 +21,10 @@ Needs: {What the user needs from the project, in one or two sentences, such as "
 
 Now: lesson {n}, part {n}.
 
-Paused: lesson {n}, part {n}, at {the question or point}, to learn {idea}. File: gaps/{name}.md
+Paused: lesson {n}, part {n}, at {the question or point}, to {learn the idea {idea}, file gaps/{name}.md | learn lesson {n}, needed today | finish lesson {n}, given in short}.
 ```
 
-- Write the `Paused` line only while a gap is open, and remove it when you come back to the part.
+- Write the `Paused` line only while a gap or an area needed today is open, and remove it when you come back to the part.
 
 - The path goes from the top down: what the project does, its big parts, then one lesson per area, the ones users touch most first.
 - Add a lesson when a new area appears, at its place. Never reorder the path to follow the day's work.
