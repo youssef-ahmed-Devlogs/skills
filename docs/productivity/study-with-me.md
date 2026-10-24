@@ -4,6 +4,24 @@ The agent follows you through a course, a book or a path you study on your own, 
 
 **Start it:** `/study-with-me <course>`, in an empty folder outside your practice project. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill study-with-me
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** Nothing. For the code part, a git repository for your practice project, so it can see what changed since the last session.
+
+**Where to run it:** A new, empty folder for the course, outside your practice project. Make it yourself, such as `learn/laravel-course` in your home folder, and open your agent in it. The skill does not make the folder. Run inside your practice project, it asks for a folder outside it first, since its notes would end up in your commits. It asks for your practice project's folder in the first session.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/study-with-me Laravel from scratch`. In Codex, type `$study-with-me Laravel from scratch`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. Its files are plain Markdown, so you can start with one agent and go on with another.
+
 ## What it does
 
 1. **Setup, once:** it finds the course's table of contents and the versions it uses, asks your goal, where your practice project is, and which step you reached.
@@ -84,9 +102,6 @@ All in the folder you ran it in:
 
 It never writes in your project, unless you say yes to one change.
 
-## What it needs
-
-Nothing. For the code part, a git repository for your practice project, so it can see what changed since the last session.
 
 ## Tips
 

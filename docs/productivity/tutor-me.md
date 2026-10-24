@@ -4,6 +4,24 @@ The agent teaches you a topic over many sessions, in the chat. It builds each le
 
 **Start it:** `/tutor-me <topic>`, in an empty folder for that topic. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill tutor-me
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** Nothing.
+
+**Where to run it:** A new, empty folder for the topic, outside any project. Make it yourself, such as `learn/docker` in your home folder, and open your agent in it. The skill does not make the folder: it writes its files in the folder you run it in. Come back to the same folder for every session of that topic.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/tutor-me Docker`. In Codex, type `$tutor-me Docker`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. Its files are plain Markdown, so you can start with one agent and go on with another.
+
 ## What it does
 
 1. It asks what you want to do with the topic, and three short questions that show what you know already.
@@ -74,9 +92,6 @@ All in the folder you ran it in:
 - `KNOWN.md`, what you showed you know, and `TERMS.md`, the words of the topic.
 - `sheets/`: short sheets you can read later, such as commands or steps.
 
-## What it needs
-
-Nothing.
 
 ## Tips
 

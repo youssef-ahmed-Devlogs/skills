@@ -41,7 +41,7 @@ Tell the user the issues of the batch, with their titles, before you change any 
 
 ## 3. Read before you change
 
-- The project's rules: `CLAUDE.md`, `AGENTS.md`, `.claude/rules` and the docs they name. Its rules for branches, commits, tests and pull requests hold for this work.
+- The project's rules: `AGENTS.md`, `CLAUDE.md`, `.claude/rules`, `.github/copilot-instructions.md`, `.github/instructions` and the docs they name. Its rules for branches, commits, tests and pull requests hold for this work.
 - Each issue in full, with its comments: `gh issue view <number> --comments`. Read the issues it names too, such as a `review-critical` one.
 - Each file of the batch and its tests.
 

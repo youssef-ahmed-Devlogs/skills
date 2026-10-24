@@ -4,6 +4,24 @@ Prepares a project for [`refactor-issues`](./refactor-issues.md). It turns the p
 
 **Start it:** `/setup-refactor-issues`, in the project. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill setup-refactor-issues
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** Written code rules in the project, and `gh` with a GitHub remote for the labels.
+
+**Where to run it:** Inside the project's folder, once per project. Make no folder: it writes its two files in `docs/agents`.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/setup-refactor-issues`. In Codex, type `$setup-refactor-issues`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. It reads the rules of every agent, such as `AGENTS.md`, `.claude/rules` or `.github/instructions`, and writes plain files any agent reads.
+
 ## What it does
 
 1. It reads every place that says how code must be written: `CLAUDE.md`, `AGENTS.md`, `.claude/rules`, `CONTRIBUTING.md` and the linters' config.
@@ -55,7 +73,3 @@ Agent:  Written: docs/agents/scripts/refactor-checks.sh (2 checks) and
 ## What you get
 
 Two files in the project, the labels on GitHub, and a pull request.
-
-## What it needs
-
-Written code rules in the project, and `gh` with a GitHub remote for the labels.

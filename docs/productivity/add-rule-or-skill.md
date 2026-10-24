@@ -4,6 +4,24 @@ You have an idea for your agents, such as "always do X" or "a command that does 
 
 **Start it:** `/add-rule-or-skill <your idea>`. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill add-rule-or-skill
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** Matt Pocock's [`writing-for-agents`](https://github.com/mattpocock/skills), which it follows when it writes a skill or a rule. When it is missing, the skill stops and gives you the command that installs it.
+
+**Where to run it:** Inside the project the idea is for. For a personal habit or a shared rule, any folder works: it asks where it should live. Make no folder.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/add-rule-or-skill run the formatter before every commit`. In Codex, type `$add-rule-or-skill run the formatter before every commit`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. It puts each rule where every agent the project uses reads it, such as `AGENTS.md`, so the project can go on with another agent.
+
 ## What it does
 
 1. It says your idea back in one or two sentences, and asks one question when the answer changes the place, such as "every time, or only for some files?".
@@ -53,7 +71,3 @@ Agent:  I searched AGENTS.md, .claude/rules, your skills and ~/.claude. CLAUDE.m
 ## What you get
 
 A verdict with links to what it read, and, once you agree, the file in the right place with a pull request.
-
-## What it needs
-
-Matt Pocock's [`writing-for-agents`](https://github.com/mattpocock/skills), which it follows when it writes a skill or a rule. When it is missing, the skill stops and gives you the command that installs it.

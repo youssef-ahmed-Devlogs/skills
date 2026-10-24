@@ -4,6 +4,24 @@ The agent teaches you a code project you did not write, or no longer know, in th
 
 **Start it:** `/catch-me-up <what you need from the project>`, inside the project's folder. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill catch-me-up
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** Git, in the project's folder. Without it, it can teach, but not catch up.
+
+**Where to run it:** Inside the project's folder, in any session. Make no folder: the skill makes its own, `.catch-me-up/<project>` in your home folder, and never writes in the project. Run it from the same project folder each time, so it finds its notes.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/catch-me-up I need to answer the client's questions`. In Codex, type `$catch-me-up I need to answer the client's questions`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. Its notes are plain Markdown outside the project, so you can go on with another agent.
+
 ## What it does
 
 1. It asks what you need from the project, such as steering the agents that write its code or answering a client, and three short questions that show what you know.
@@ -84,9 +102,6 @@ All in `~/.catch-me-up/<project>/`, never inside the project:
 
 The project itself is only read: no files, no commits, no branch changes.
 
-## What it needs
-
-Git, in the project's folder. Without it, it can teach, but not catch up.
 
 ## Tips
 

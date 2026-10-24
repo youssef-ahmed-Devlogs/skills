@@ -4,6 +4,24 @@ The agent asks you about a plan, a decision or an idea, one question at a time, 
 
 **Start it:** `/interview-me <subject>`. The agent, or another skill, can also start it by itself when a request is not clear yet.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** Nothing. It needs you in the chat to answer: in a scheduled run with nobody there, it stops and says what is unclear.
+
+**Where to run it:** Any session, in any folder. Make no folder: it writes nothing unless you agree, such as saving the summary at the end. Inside a project, it reads its glossary, decisions and rules first.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/interview-me a budget for my family`. In Codex, type `$interview-me a budget for my family`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. The agent, or another skill, can also start it by itself when a request is not clear yet.
+
 ## What it does
 
 1. It says in one line what it understands so far, and how sure it is, from 0 to 100%.
@@ -74,9 +92,6 @@ Is this right, or what should change?
 
 A short summary you can correct line by line, and a list of next steps, such as saving it to a file or turning it into a spec. It writes no file unless you agree.
 
-## What it needs
-
-Nothing. It needs you in the chat to answer: in a scheduled run with nobody there, it stops and says what is unclear.
 
 ## Tips
 

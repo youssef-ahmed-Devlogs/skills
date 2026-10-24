@@ -29,7 +29,7 @@ Some skills work alone. Others are steps of one job:
 
 ## How a skill starts
 
-Most skills start only when you type their name, such as `/tutor-me Docker`. They never start by surprise.
+Most skills start only when you type their name, such as `/tutor-me Docker` in Claude Code or GitHub Copilot, or `$tutor-me Docker` in Codex. Each skill's page says where to run it, and whether to make a folder for it first. They never start by surprise.
 
 `interview-me` is the one exception: you can type it, but the agent, or another skill, can also start it when a request is not clear yet.
 

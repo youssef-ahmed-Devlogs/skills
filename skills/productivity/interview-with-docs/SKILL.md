@@ -27,7 +27,7 @@ Before the first question, find:
 
 - **The glossary:** `GLOSSARY.md`, or a map of several, such as `CONTEXT-MAP.md` or `GLOSSARY-MAP.md`, with a glossary for each part. With several, find which part the subject belongs to. Ask only when you cannot tell.
 - **The decision records:** `docs/adr`, or the place the project's rules name.
-- **The rules for agents:** `AGENTS.md`, `CLAUDE.md` or `.claude/rules`. When they say how or when to write a glossary or an ADR, follow them over this skill.
+- **The rules for agents:** `AGENTS.md`, `CLAUDE.md`, `.claude/rules`, `.github/copilot-instructions.md` or `.github/instructions`. When they say how or when to write a glossary or an ADR, follow them over this skill.
 - **The code or the files the subject touches,** so you can check what the user says against them.
 
 A file or a folder that does not exist yet is made only when you have the first thing to write in it.

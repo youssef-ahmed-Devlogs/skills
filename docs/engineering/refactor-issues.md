@@ -4,6 +4,24 @@ Opens GitHub issues that bring old code in line with the rules your project alre
 
 **Start it:** `/refactor-issues`, in the project. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill refactor-issues
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** [`setup-refactor-issues`](./setup-refactor-issues.md) run once, `gh`, and a GitHub remote.
+
+**Where to run it:** Inside the project's folder. Make no folder: the issues go to GitHub.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/refactor-issues`. In Codex, type `$refactor-issues`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills.
+
 ## What it does
 
 1. It checks the project is set up by [`setup-refactor-issues`](./setup-refactor-issues.md). Without it, it stops.
@@ -59,7 +77,3 @@ Each issue says why the file breaks the rule, what to do, and how the output sta
 ## What you get
 
 Up to 10 issues labelled `refactor`, a review flag and `ready-for-agent`, plus a `review-critical` question for each break that would change what users get.
-
-## What it needs
-
-[`setup-refactor-issues`](./setup-refactor-issues.md) run once, `gh`, and a GitHub remote.

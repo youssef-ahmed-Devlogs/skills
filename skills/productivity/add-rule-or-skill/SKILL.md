@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Before you start
 
-This skill needs these skills: `writing-for-agents`. Check that each one is installed: a folder of that name in `.agents/skills`, `.claude/skills` or `~/.claude/skills`. When one is missing, stop before anything else. Tell the user which one is missing and what this skill needs it for, and give the command that installs it:
+This skill needs these skills: `writing-for-agents`. Check that each one is installed: a folder of that name in the project's `.agents/skills`, `.claude/skills` or `.github/skills`, or in `~/.agents/skills`, `~/.claude/skills`, `~/.codex/skills` or `~/.copilot/skills`. When one is missing, stop before anything else. Tell the user which one is missing and what this skill needs it for, and give the command that installs it:
 
 ```bash
 npx skills add mattpocock/skills --skill writing-for-agents
@@ -26,9 +26,9 @@ Restate it in one or two sentences: the behaviour they want, when it should happ
 
 Search before you suggest anything new. Read each place below that exists, and note every part that already covers the idea, even in other words:
 
-- **This project**: `AGENTS.md` and `CLAUDE.md` at every level, `.claude/rules`, `docs/agents`, `.github` templates and workflows, tests such as `arch()` tests, and git hooks.
-- **Its skills**: `.claude/skills`, and the "Before you start" parts.
-- **The user's own setup**: `~/.claude/CLAUDE.md`, `~/.claude/rules`, `~/.claude/skills`, `~/.claude/output-styles`, and the memory files.
+- **This project**: `AGENTS.md` and `CLAUDE.md` at every level, `.claude`, `.codex`, `.github/copilot-instructions.md`, `.github/instructions`, `.github/agents`, `.github/hooks`, `docs/agents`, `.github` templates and workflows, tests such as `arch()` tests, and git hooks. Note which agents the project uses: [PLACES.md](PLACES.md) says how to tell.
+- **Its skills**: `.agents/skills`, `.claude/skills` and `.github/skills`, and their "Before you start" parts.
+- **The user's own setup**: `~/.claude` (its `CLAUDE.md`, rules, skills and output styles), `~/.codex` (its `AGENTS.md` and config), `~/.copilot`, `~/.agents/skills`, and the memory files.
 - **The user's shared repositories**: the repositories of skills or rules the user installs into every project, such as their own skills repository. Ask for them when you do not know them.
 
 Done when every place was searched for the idea's key words and their synonyms.
@@ -53,7 +53,7 @@ Base it on today's research, not on memory. Start with one of these, in one line
 - **It clashes with something**: name both, and the choice to make.
 - **It is new**: say what kind it should be, where it goes, and why, with the source.
 
-Then say where it lives: **a shared repository** when every project, or every project of a stack, needs it; **this project** when only it does; **the user's own setup** when it is a personal preference for every project, not a rule for the team. A mechanical rule that can be checked gets a check too: a test, a hook, CI, or a search for the refactor skills: in `docs/agents/scripts/refactor-checks.sh`, or in the ready checks of a stack's rules, such as `docs/agents/scripts/laravel-checks.sh` of `laravel-rules`.
+Then say where it lives, in a place that every agent the project uses reads, as [PLACES.md](PLACES.md) says, so the project can go on with another agent: **a shared repository** when every project, or every project of a stack, needs it; **this project** when only it does; **the user's own setup** when it is a personal preference for every project, not a rule for the team. A mechanical rule that can be checked gets a check too: a test, a hook, CI, or a search for the refactor skills: in `docs/agents/scripts/refactor-checks.sh`, or in the ready checks of a stack's rules, such as `docs/agents/scripts/laravel-checks.sh` of `laravel-rules`.
 
 End with the links you read today. Discuss one question per reply, each with your recommended answer and why. Done when the user agrees on the kind and the place, or decides to drop it.
 
@@ -61,9 +61,10 @@ End with the links you read today. Discuss one question per reply, each with you
 
 Write it where it was agreed, in very simple English:
 
-- **A skill**: follow `writing-for-agents`. In a skills repository, add it in every place that repository's `AGENTS.md` or `CLAUDE.md` lists, such as its README rows and its docs page, in the shape it gives. Name the skills it calls in its "Before you start" part.
+- **A skill**: follow `writing-for-agents`. Write it so it works with every agent: no tool, command or file that only one agent has, unless the skill says what to do without it. In a skills repository, add it in every place that repository's `AGENTS.md` or `CLAUDE.md` lists, such as its README rows and its docs page, in the shape it gives. Name the skills it calls in its "Before you start" part.
 - **A rule for a stack**: a file in `rules/<stack>` with `paths`, and its check in that stack's ready checks, such as `docs/agents/scripts/laravel-checks.sh`.
-- **A line for every session**: the project's `CLAUDE.md` or `AGENTS.md`, or the user's shared rules that every project gets. Keep it short; move details to a file it points at.
-- **A decision that matters**: an ADR, as `.claude/rules/workflow/decisions.md` says.
+- **A line for every session**: the project's `AGENTS.md`, or the user's shared rules that every project gets. When the project has a `CLAUDE.md`, it imports `AGENTS.md` with `@AGENTS.md`. Keep it short; move details to a file it points at.
+- **A kind only some agents have**, such as a rule for some files or an agent hook: make it for each agent the project uses, and name it in one line of `AGENTS.md`, as [PLACES.md](PLACES.md) says.
+- **A decision that matters**: an ADR, as the project's rules on decisions say, such as a `decisions.md`.
 
 Open a pull request for it. Done when its link is given to the user.

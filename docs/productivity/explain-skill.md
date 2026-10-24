@@ -4,6 +4,24 @@ You see a skill and do not know what it does. This skill reads it in full and ex
 
 **Start it:** `/explain-skill <name>`. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill explain-skill
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** Nothing.
+
+**Where to run it:** Any session, in any folder. Make no folder: it only reads and explains.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/explain-skill tutor-me`. In Codex, type `$explain-skill tutor-me`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills.
+
 ## What it does
 
 1. It finds the skill: in your project, in your home folder, then in this repository and in [Matt Pocock's skills](https://github.com/mattpocock/skills).
@@ -54,7 +72,3 @@ Agent:  What it is: it opens GitHub issues for old code that breaks your project
 ## What you get
 
 An answer in the chat, under 40 lines. It writes no file.
-
-## What it needs
-
-Nothing.
