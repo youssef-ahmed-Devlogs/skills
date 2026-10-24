@@ -1,7 +1,6 @@
 ---
 name: interview-me
-description: Interview the user, one question per message, until you know what they really want from a plan, a decision or an idea, before anything is built or written. Works for any subject, not only code.
-disable-model-invocation: true
+description: Interview the user, one question per message, until you know what they really want from a plan, a decision or an idea, before anything is built or written. Works for any subject, code included. Use when the user asks to be interviewed or to think something through with you, or when another skill needs to interview the user before it acts.
 argument-hint: "What should we think through?"
 ---
 
@@ -9,9 +8,19 @@ argument-hint: "What should we think through?"
 
 The user has a plan, a decision or an idea, and wants you to understand it the way they do before you act on it. What people ask for is often not what they need: someone asks for "an app" when a shared sheet would do. Find the gap now, while it costs nothing. Ask one question at a time until you could answer for them, then say it all back and wait for a clear yes.
 
-The subject can be anything: a feature, a trip, a business choice, a piece of writing, what to do next. Write no files unless the user asks.
+The subject can be anything: a feature, a trip, a business choice, a piece of writing, what to do next. Write no files unless the user agrees, such as an ADR in a project (see "In a project").
+
+Another skill may run this one to settle what to build before it acts. Then run the whole interview with the user here, and hand back only after their clear yes.
 
 This needs the user in the chat. When nobody can answer, such as in a scheduled run, stop and say what is unclear instead of guessing.
+
+## In a project
+
+When you run inside a project that has its own docs, they come into the interview at three points.
+
+- **Before the first question,** read what the project says about its words and its past decisions: its glossary (such as `GLOSSARY.md`, or the files `CONTEXT-MAP.md` lists), its decision records (such as `docs/adr`), and its rules for agents (such as `AGENTS.md`, `CLAUDE.md` or `.claude/rules`). Ask your questions in the project's words. When the user uses a word the glossary says to avoid, say which word the project uses.
+- **When a question is already decided** in a decision record, do not ask it. Say which record decided it, and ask only whether they want to change that decision.
+- **When a decision is made** that the project's rules say needs a decision record, or a new word appears that its glossary lacks, say so at that moment, in one line, and ask whether to write it. Write nothing without a yes. On a yes, write it at once in the project's own format and place, as its rules say. A project with no such rules gets a short record: a title, then a few sentences on the context, the decision and why.
 
 ## 1. Say what you understand now
 
@@ -65,7 +74,7 @@ What you want:
 - Done when: {one line, something anyone could check}
 - Limits: {time, money, tools, people}
 - Not doing: {what is left out on purpose}
-- Decided: {each choice made in the interview, one line each}
+- Decided: {each choice made in the interview, one line each, with its decision record when one was written}
 - Still open: {what only the user can decide and has not yet, if anything}
 
 Is this right, or what should change?

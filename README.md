@@ -52,14 +52,14 @@ codex plugin add youssef-ahmed-skills@youssef-ahmed
 
 - **[add-rule-or-skill](./skills/productivity/add-rule-or-skill/SKILL.md)**: Talk through something new you want an agent to know or do, such as a rule, a skill or a check. It finds out whether it exists, and what it should be and where it goes, from today's official docs.
 - **[explain-skill](./skills/productivity/explain-skill/SKILL.md)**: Explain one skill in simple words, with a real example: what it does, when to use it, and what you get.
-- **[interview-me](./skills/productivity/interview-me/SKILL.md)**: Think a plan, a decision or an idea through, one question per message, until the agent knows what you really want. It says it all back and starts nothing before your clear yes. Works for any subject, not only code.
+- **[interview-me](./skills/productivity/interview-me/SKILL.md)**: Think a plan, a decision or an idea through, one question per message, until the agent knows what you really want. It says it all back and starts nothing before your clear yes. Works for any subject. In a project it asks in the project's words, and offers to record each decision that needs an ADR.
 - **[tutor-me](./skills/productivity/tutor-me/SKILL.md)**: Learn a topic over many sessions. It builds each lesson from trusted sources, then teaches it in the chat one part at a time, and moves on only when you show you understood.
 
 ## Laravel
 
 The Laravel rules, their ready checks, and `setup-laravel-rules`, which puts them in a project, are in [youssef-ahmed-Devlogs/laravel-rules](https://github.com/youssef-ahmed-Devlogs/laravel-rules). Then `setup-refactor-issues`, `refactor-issues` and `implement-refactor-issues` work with them.
 
-Every skill is user-invoked: it starts only when you type its name, such as `/refactor-issues`. Each one has a page in [`docs`](./docs) that says when to use it.
+Every skill starts only when you type its name, such as `/refactor-issues`, apart from `interview-me`, which the agent and other skills can also run. Each one has a page in [`docs`](./docs) that says when to use it.
 
 ## License
 
