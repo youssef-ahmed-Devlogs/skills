@@ -76,7 +76,7 @@ Offer an ADR only when all three hold:
 
 When one is missing, write no ADR: an obvious choice, or one easy to undo, only adds noise. When the project's rules say when an ADR is due, they decide instead.
 
-Offer it in one line, at the moment the decision is made, and write it on a yes. When the project's rules say to write ADRs without asking, write it and say so in one line. Use [ADR-FORMAT.md](./ADR-FORMAT.md), or the project's own format.
+Offer it in one line, at the moment the decision is made, and write it on a yes. The offer is the one question of that message: any other question waits for the next one. When the project's rules say to write ADRs without asking, write it and say so in one line. Use [ADR-FORMAT.md](./ADR-FORMAT.md), or the project's own format.
 
 A decision that changes an older ADR gets a new ADR. Mark the older one by how much changed:
 
@@ -86,6 +86,8 @@ A decision that changes an older ADR gets a new ADR. Mark the older one by how m
 Never rewrite an ADR that was there before this interview, apart from that status line.
 
 ## 5. The summary
+
+Before the summary, check that you asked the end of each new thing, as "A case at the edge" says: what is left after its last step, and what state it is in, such as a gift card with nothing left on it. When one is missing, ask it first, even when the user says that is all, and say it is the last question.
 
 In the summary of `interview-me`, the "Decided" line names the ADR of each decision that has one. Add one line before the question:
 

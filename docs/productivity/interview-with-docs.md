@@ -9,7 +9,7 @@ The same interview as [`interview-me`](./interview-me.md), inside a project, wit
 1. It reads the project's glossary, its ADRs, its rules for agents, and the code or files the subject touches.
 2. It runs the interview of `interview-me`: one question per message, with its own guess, until it knows what you want.
 3. When you use a word in another sense than the glossary's, or a word that could mean two things, it asks which one you mean.
-4. It tests each line between two things with a made-up case right on it, and checks what you say against the code.
+4. It tests each line between two things with a made-up case right on it, asks what is left after the last step of each new thing, and checks what you say against the code.
 5. When one decision opens a way around another, it asks you at once whether to close it or accept it.
 6. When a word is settled, it writes it in the glossary at once, and tells you in one line.
 7. When a decision is hard to undo, would surprise a later reader, and came from a real choice, it offers an ADR, and writes it on your yes.
