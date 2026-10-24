@@ -6,6 +6,16 @@ They are small and easy to change. Take the ones you need, and make them your ow
 
 **New here?** Read [the guide](./docs/README.md): which skill fits which job, and how they work together. Each skill has its own page with a full example.
 
+## Install
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills
+```
+
+It asks which skills you want, and for which agents. Plugins for Claude Code and Codex, one skill at a time, and updates: [Installing](./docs/install.md).
+
+Some skills call skills of [Matt Pocock](https://github.com/mattpocock/skills), such as `tdd`. When one is missing, the skill stops and gives you the command that installs it.
+
 ## The skills
 
 ### Thinking and learning
@@ -31,16 +41,6 @@ They are small and easy to change. Take the ones you need, and make them your ow
 | [setup-refactor-issues](./docs/engineering/setup-refactor-issues.md) | Prepare a project to clean up its old code, once |
 | [refactor-issues](./docs/engineering/refactor-issues.md) | Open issues for old code that breaks your rules, safest first |
 | [implement-refactor-issues](./docs/engineering/implement-refactor-issues.md) | Do those issues in one pull request, with what users get kept the same |
-
-## Install
-
-```bash
-npx skills add youssef-ahmed-Devlogs/skills
-```
-
-It asks which skills you want, and for which agents. Plugins for Claude Code and Codex, one skill at a time, and updates: [Installing](./docs/install.md).
-
-Some skills call skills of [Matt Pocock](https://github.com/mattpocock/skills), such as `tdd`. When one is missing, the skill stops and gives you the command that installs it.
 
 ## Laravel
 
