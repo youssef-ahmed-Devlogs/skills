@@ -24,7 +24,8 @@ Make each file only when it is first needed. [WORKSPACE-FORMAT.md](./WORKSPACE-F
 - `PROJECT.md`: what the user needs from the project, the path of lessons in order, where the user is, and the last commit read.
 - `lessons/01-<name>.md`: one lesson per area of the project, with its parts, its checks, the code it covers and how far the user got. Its shape is in [LESSON-FORMAT.md](./LESSON-FORMAT.md).
 - `CHANGES.md`: each change you read, in one or two plain lines, with its lesson and whether it was explained.
-- `MAP.md`: a short map of the project for the user to read, such as before a meeting. It is the only file the user reads.
+- `MAP.md`: a short map of the project for the user to read, such as before a meeting.
+- `gaps/<name>.md`: a general idea you taught to fill a gap, such as object-oriented code, for the user to read again later.
 - `KNOWN.md`: what the user knew before, what they have shown since, and the wrong ideas they dropped.
 - `NOTES.md`: how the user likes to be taught, questions to come back to, and your working notes.
 
@@ -43,7 +44,7 @@ The code is the source. The project's docs, its commit messages and its pull req
 2. When there is no `PROJECT.md` yet, set it up, as "The first session" says.
 3. When `PROJECT.md` was there before this session, catch up, as "The catch-up" says.
 4. When an earlier part is done, warm up from memory: one question on the last lesson, and one on the point recalled longest ago, each in its own message. Answer each reply as "Answering the user" says, and write the result in `KNOWN.md`. A lesson whose code changed comes first.
-5. Go on with the path: the first part of the lesson in progress that is not done, or the next lesson.
+5. Go on with the path: the open gap when `PROJECT.md` has a pause, then the first part of the lesson in progress that is not done, or the next lesson.
 6. When a lesson is done, add what the user showed to `KNOWN.md`, update `MAP.md`, and mark the lesson done. Then ask whether to start the next one now.
 
 ## The first session
@@ -88,6 +89,18 @@ The user may need a part the path has not reached, such as a feature they will d
 3. Then teach the part they need.
 
 Never teach a new part in depth on top of pieces the user does not have: they would remember it without understanding it.
+
+## A gap in the basics
+
+A part may rest on a general idea the user does not have, one that is not about this project, such as object-oriented code, a queue or a database index. Most days the user has no time to learn it, so never stop for it on your own.
+
+- **See the gap.** The user says they do not know the idea, or misses the same base idea twice.
+- **Offer it in one line,** as the only question of that message: pause here, learn the idea first, then come back. Or the user asks for it themselves.
+- **On a no,** explain only what this part needs of the idea, in one or two lines, and go on. Write the idea in `NOTES.md`, under ideas to learn later, with the part that needed it.
+- **On a yes,** write in `PROJECT.md` where you paused: the lesson, the part and the question. Then teach the idea from trusted sources, such as its official docs, in two or three small parts with a check each, answered in the four ways. Use the project's code as the example when it fits. Write what you taught in `gaps/<name>.md`.
+- **Come back.** Go back to the paused part, and start with a question on the point that stopped the user. Clear the pause in `PROJECT.md`.
+
+When a later part needs more of the same idea, teach that piece then, and add it to the same file. A gap left open when a session ends starts the next session, after the catch-up.
 
 ## Build a lesson
 

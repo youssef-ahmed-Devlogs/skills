@@ -20,7 +20,11 @@ Needs: {What the user needs from the project, in one or two sentences, such as "
 3. {Area}. Status: not started. File: lessons/03-{name}.md
 
 Now: lesson {n}, part {n}.
+
+Paused: lesson {n}, part {n}, at {the question or point}, to learn {idea}. File: gaps/{name}.md
 ```
+
+- Write the `Paused` line only while a gap is open, and remove it when you come back to the part.
 
 - The path goes from the top down: what the project does, its big parts, then one lesson per area, the ones users touch most first.
 - Add a lesson when a new area appears, at its place. Never reorder the path to follow the day's work.
@@ -89,6 +93,26 @@ Read at commit {short hash}, {date}.
 - When the code behind a point changes, add `Changed`. The point is not known again until a warm-up recalls the new version.
 - When a recall fails, write `Missed: {date}`, and bring it back in the next warm-up.
 
+## `gaps/<name>.md`
+
+```md
+# {Idea, such as object-oriented code}
+
+Needed by: lesson {n}, part {n}. Taught: {date}.
+
+## {Piece}
+
+- {A point, short.} [{source}]({link})
+
+Example: {One example, from the project's code when it fits.} `{file}`
+
+Checks:
+- Q: {question}. Answer: right | half | wrong | don't know.
+```
+
+- One file per idea. A later piece of the same idea goes in the same file.
+- A source link for each point. The user reads this file again later.
+
 ## `NOTES.md`
 
-A plain list: how the user likes to be taught, questions to come back to, docs that disagree with the code, and anything the next session should know.
+A plain list: how the user likes to be taught, questions to come back to, docs that disagree with the code, ideas to learn later with the part that needed each, and anything the next session should know.
