@@ -1,0 +1,5 @@
+interface:
+  display_name: "Interview me, with docs"
+  short_description: "Think a plan through and write its glossary and ADRs"
+policy:
+  allow_implicit_invocation: false

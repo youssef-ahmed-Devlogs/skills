@@ -7,6 +7,7 @@ Every skill here has its own page, with a real example and the cases it fits. St
 | You want to | Use | Page |
 | --- | --- | --- |
 | Say what you really want, before the agent builds or writes anything | `interview-me` | [interview-me](./productivity/interview-me.md) |
+| Do the same in a project, and write its glossary and ADRs as you go | `interview-me-docs` | [interview-me-docs](./productivity/interview-me-docs.md) |
 | Learn a topic from zero, with lessons the agent builds | `tutor-me` | [tutor-me](./productivity/tutor-me.md) |
 | Follow a course, a book or a path, with a teacher beside you | `study-with-me` | [study-with-me](./productivity/study-with-me.md) |
 | Add a rule, a skill or a check for your agents, in the right place | `add-rule-or-skill` | [add-rule-or-skill](./productivity/add-rule-or-skill.md) |
@@ -22,7 +23,7 @@ Some skills work alone. Others are steps of one job:
 
 - **Clean up old code:** `setup-refactor-issues` once, then `refactor-issues` and `implement-refactor-issues` in turns, one batch at a time, until no file breaks a rule.
 - **Learn:** `tutor-me` when you have no course and want the agent to teach you. `study-with-me` when you already follow a course or a book.
-- **Think first:** `interview-me` before any work that is not clear yet. Other skills can run it too, to ask you before they act.
+- **Think first:** `interview-me` before any work that is not clear yet. Other skills can run it too, to ask you before they act. `interview-me-docs` when the plan is inside a project, and its words and decisions should be written down.
 - **Look after your agents:** `explain-skill` to learn what a skill does, and `add-rule-or-skill` to add something new where it belongs.
 
 ## How a skill starts
