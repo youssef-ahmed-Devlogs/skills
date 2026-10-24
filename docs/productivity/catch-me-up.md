@@ -7,10 +7,10 @@ The agent teaches you a code project you did not write, or no longer know, in th
 ## What it does
 
 1. It asks what you need from the project, such as steering the agents that write its code or answering a client, and three short questions that show what you know.
-2. It reads the project itself, and builds a path from the top down: what the project does, its big parts, then one lesson per area.
+2. It reads the project itself, and builds a path from the top down: what the project does, its big parts, then one lesson per area. It also writes a short map you can read from the first day.
 3. It teaches each lesson in the chat, one part at a time, from two sides: what it does for the people who use the project, and how the code does it, with the files.
 4. It asks questions that make you recall or use what you learned, one per message, such as what to tell a client, or where a change belongs.
-5. Each next session starts with a short catch-up on the new commits. A change in a lesson you learned is explained, and its checks are updated. A change in a lesson you have not reached gets one or two plain lines, and waits for its lesson.
+5. Each next session starts with a short catch-up on the new commits. A change in a part you learned is explained, and its checks are updated. A change in a part you have not reached gets one or two plain lines, and waits for that part.
 6. When you need a part today that the path has not reached, it teaches the older pieces it rests on first, then that part.
 7. When a part rests on an idea from outside the project that you do not have, such as object-oriented code, caching, queues, Redis or a package, it offers in one line to pause and learn it first. On a yes, it saves where you stopped, teaches the idea, then brings you back. On a no, it explains only what the part needs, and keeps the idea for later.
 

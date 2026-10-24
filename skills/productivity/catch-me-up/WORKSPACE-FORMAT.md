@@ -43,7 +43,7 @@ Dropped: {how many small fixes, style changes, package updates and test changes,
 ```
 
 - Newest first.
-- `waiting` is a change in a lesson not reached yet: its lesson teaches it. `next session` is a change in a finished lesson that did not fit this session's three.
+- `waiting` is a change in a part not reached yet: its part teaches it. `next session` is a change in a part the user finished or started that did not fit this session's three.
 - The "For users" line is what the user can tell a client, with no code.
 
 ## `MAP.md`
@@ -65,7 +65,7 @@ Read at commit {short hash}, {date}.
 ```
 
 - The only file the user reads, such as before a meeting. Write it in words a client would understand, with code paths only after them.
-- Update it when a lesson is done, and after each catch-up.
+- Write it in the first session, with one line for each area. Update it when a lesson is done, and after each catch-up.
 - A part not learned yet still gets its one line, so the map has no holes.
 - Keep it short enough to read in two minutes.
 

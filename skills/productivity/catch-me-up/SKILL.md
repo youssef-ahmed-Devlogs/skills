@@ -58,8 +58,11 @@ Ask one question per message.
    - What the project does, and for whom.
    - Its big parts, and how they connect.
    - One lesson per area, the ones users touch most first.
-5. Write the newest commit of the main branch in `PROJECT.md`, so the next catch-up starts from it.
-6. Tell the user the path in a few lines, then build the first lesson.
+
+   The first two lessons stay at the top: each area gets one or two lines there, and its details wait for its own lesson. A detail taught twice must be kept true in two lessons.
+5. Write `MAP.md`, with one line for each area, so the user has a map to read from the first day.
+6. Write the newest commit of the main branch in `PROJECT.md`, so the next catch-up starts from it.
+7. Tell the user the path in a few lines, then build the first lesson.
 
 The path is fixed: you add a lesson when a new area appears, at its place, but you never reorder it to follow the day's work. A lesson the user needs today goes through "When the user needs it today".
 
@@ -69,11 +72,11 @@ The path is the base, and the catch-up is a short part of each session, so the p
 
 1. Run `git fetch`, then read the commits of the main branch since the last commit in `PROJECT.md`.
 2. Group them into changes, such as one pull request or one feature each.
-3. Drop the changes that do not change the picture: small fixes, style, package updates, tests only.
+3. Drop the changes that do not change the picture: small fixes, style, package updates, and tests that check what their names say. A test that promises more than it checks is worth one line: people and agents will trust it.
 4. Find each change's lesson by the files it touches, against the `code` list of each lesson.
 5. For each change that is left:
-   - **In a lesson the user finished or started:** explain it in the chat from both sides, what it does for the people who use the project and how the code does it, then ask one check on it. Update the lesson's points and the answers of its checks to the new code. Mark the points in `KNOWN.md` as changed: they come back in the warm-ups.
-   - **In a lesson not reached yet:** say in one or two lines what it does for the people who use the project, with no code. Keep it under `Waiting changes` in its lesson, so the lesson teaches it when the user gets there.
+   - **In a part the user finished or started:** explain it in the chat from both sides, what it does for the people who use the project and how the code does it, then ask one check on it. Update the part's points and the answers of its checks to the new code. Mark the points in `KNOWN.md` as changed: they come back in the warm-ups.
+   - **In a part not reached yet,** even in a lesson in progress: say in one or two lines what it does for the people who use the project, with no code. When the lesson is already written, update the part to the new code, and keep the change under `Waiting changes`, so the part teaches it when the user gets there.
    - **In an area no lesson covers:** add a lesson to the path, at its place, and say it in one or two lines as above.
 6. Explain at most three changes in depth per session. Name the rest in one line each, and keep them for the next sessions.
 7. Write each change in `CHANGES.md`, and the newest commit read in `PROJECT.md`.

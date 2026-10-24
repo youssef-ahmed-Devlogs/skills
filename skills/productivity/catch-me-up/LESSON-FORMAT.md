@@ -68,7 +68,7 @@ Status: not started
 
 - `status` at the top is `not started`, `in progress` or `done`. A part's `Status` is `not started`, `in progress` or `done`. Change them the moment they change: they are how the next session knows where to start.
 - Fill `finished` when the final check passes.
-- `code` lists the folders and files this lesson covers. The catch-up uses it to find the lesson of each change. Add a path when the area grows.
+- `code` lists the folders and files this lesson covers, and every file its points name. The catch-up uses it to find the lesson of each change, so a file a point names but `code` misses lets a change slip by. Add a path when the area grows.
 - `checked at` is the commit the points and answers were checked against. Change it when a change updates them.
 - One idea per part. When a part needs more than about five points, split it.
 - Every point in the code names its file. A point with no file behind it stays out.
