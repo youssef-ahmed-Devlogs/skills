@@ -92,7 +92,7 @@ Never teach a new part in depth on top of pieces the user does not have: they wo
 
 ## An idea from outside the project
 
-A part may rest on an idea the user does not have, one that is not about this project alone: a way of writing code, such as object-oriented code; a way of building, such as caching or queues; or a tool or package the project uses, such as Redis. It can be basic or advanced. Most days the user has no time to learn it, so never stop for it on your own.
+A part may rest on an idea the user does not have, one that is not about this project alone: a way of writing code, such as object-oriented code; a way of building, such as caching or queues; or a tool or package the project uses, such as Redis. It can be basic or advanced. What counts is only this: knowing it would make the part you are on clearer. Most days the user has no time to learn it, so never stop for it on your own.
 
 - **See the gap.** The user says they do not know the idea, or misses the same base idea twice.
 - **Offer it in one line,** as the only question of that message: pause here, learn the idea first, then come back. Or the user asks for it themselves.
