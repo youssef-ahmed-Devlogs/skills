@@ -25,7 +25,7 @@ Write every file in the folder the user ran this skill in. The files hold where 
 
 1. Read `GOAL.md`, `NOTES.md`, `KNOWN.md`, and the lesson in progress: the newest lesson that is not done.
 2. When there is no goal yet, ask the user what they want to do with the topic, one question per message, and write `GOAL.md` before the first lesson. Then ask three short questions that show what they know already, and write what they show in `KNOWN.md`.
-3. When an earlier lesson is done, warm up first, from memory: one question on the last lesson, and one on the lesson recalled longest ago. A miss gets a new explanation and a new question. Write the result in `KNOWN.md`. A lesson leaves the warm-ups once three later sessions have recalled it.
+3. When an earlier lesson is done, warm up first, from memory: one question on the last lesson, and one on the lesson recalled longest ago, each in its own message. Answer each reply as "Answering the user" says, and after a miss ask a new question on the same point. Write the result in `KNOWN.md`. A lesson leaves the warm-ups once three later sessions have recalled it.
 4. When a lesson is in progress, go on from its first part that is not done. Otherwise build the next lesson.
 5. Teach the lesson in the chat.
 6. When the lesson is done, add what the user showed to `KNOWN.md`, `TERMS.md` and `sheets/`, and mark the lesson done. Give the user the link of its best source. Then ask whether to start the next lesson now.
@@ -43,18 +43,33 @@ Write every file in the folder the user ran this skill in. The files hold where 
 
 Teach the parts in their order, and judge each answer against the answer in the file, not against what feels right. An AI tutor helps most when it follows written answers step by step ([Kestin and others, 2025](https://doi.org/10.1038/s41598-025-97652-6)).
 
-- Before you explain a part, ask one question for the user to try. A right answer with its reason skips straight to a check on a new case. A wrong guess is fine: trying first helps the explanation stick ([Richland, Kornell and Kao, 2009](https://learninglab.uchicago.edu/Pre-Testing_files/RichlandKornellKao.pdf)).
-- Explain the part briefly, in the user's language, with its example, and end with its source link. Then ask one check question and wait for the answer.
-- A check question makes the user recall or use the idea: say it in their own words, predict what happens, apply it to a new case, or find the mistake in an example. Never ask "Is that clear?": a yes proves nothing ([Rosenshine, 2012](https://www.aft.org/sites/default/files/periodicals/Rosenshine.pdf)).
-- Ask one question per message. With choices, also ask why, and place the right one by a random number from a command, such as `shuf -i 1-4 -n 1`, so its place gives nothing away.
-- A right answer: say in a line why it is right, then ask the next check of the part.
-- A half answer misses one of the key points in the file. Treat it as wrong.
-- A wrong answer: say what is wrong, explain the point again in a different way, such as a new example or a smaller step, and ask a new question on it. Never move on while a point is wrong ([Guskey, 2010](https://www.ascd.org/el/articles/lessons-of-mastery-learning)).
-- After two wrong rounds on one point, ask about the idea under it. When that idea is missing, teach it first as a new part.
-- "I don't know": give a hint first. If it is still not there, give the answer, then ask a new question on it later in the lesson.
-- A part is done after two right answers in a row with no hint, one of them on a new case. A hint or a half answer starts the count again. Write it in the lesson file at once, with each check asked and its result, so a new session starts at the next part and never repeats a check.
-- When the user asks something, answer it, then go back to the part. A question outside the lesson goes into `NOTES.md` for a later lesson.
-- After the last part, run the final check. A miss sends you back to its part for a short explanation and a new question. The lesson is done only when the final check passes.
+### Asking
+
+- Ask one question per message, with one thing to answer. Never put a list of numbered questions in one message: judge one answer at a time.
+- A question makes the user recall or use the idea: say it in their own words, predict what happens, apply it to a new case, or find the mistake in an example. Never ask "Is that clear?": a yes proves nothing ([Rosenshine, 2012](https://www.aft.org/sites/default/files/periodicals/Rosenshine.pdf)).
+- With choices, also ask why, and place the right one by a random number from a command, such as `shuf -i 1-4 -n 1`, so its place gives nothing away.
+
+### Answering the user
+
+Answer every reply in one of these four ways: the "Try first" question, the checks, the warm-ups and the final check alike. The key points in the file decide which one it is.
+
+- **Right.** Say it is right, then explain it briefly anyway, in two or three lines: "Right, because …". Never stop at "right": the short explanation fixes the idea and fills what the answer left out.
+- **Half right.** Say which piece is right, and which piece is missing or wrong. Then give the right answer for that piece, and why.
+- **Wrong.** Do not give hints or lead the user around to the answer. Say at once what the right answer is, and why theirs is wrong. Then ask them what they understood, in their own words. When that is right, answer it as a right answer above. When it is still wrong, explain it again in a different way, such as a new example or a smaller step ([Guskey, 2010](https://www.ascd.org/el/articles/lessons-of-mastery-learning)).
+- **"I don't know".** The idea is new to the user, so there is nothing to recall yet. Explain it first, then ask them what they understood, as after a wrong answer.
+
+Never move on while a point is wrong. After two wrong rounds on one point, ask about the idea under it. When that idea is missing, teach it first as a new part.
+
+### Each part
+
+1. **Try first.** Ask the part's "Try first" question: does the user know this already? Answer the reply in one of the four ways. A wrong guess is fine: trying first helps the explanation stick ([Richland, Kornell and Kao, 2009](https://learninglab.uchicago.edu/Pre-Testing_files/RichlandKornellKao.pdf)).
+2. **Explain.** Explain the points of the part the reply did not already cover, in the user's language, with its example, and end with its source link. A right "Try first" skips only the points it showed, never the whole part: a point the user has not seen or shown is never asked about.
+3. **Check.** Ask the checks, one per message, and answer each reply in one of the four ways. A part is done after two right answers in a row, one of them on a new case. A half or wrong answer starts the count again, and the answer to "what did you understand" does not count: ask a new check after it.
+4. **Log.** Write each question asked and its result in the lesson file at once, so a new session starts where this one stopped and never repeats a question.
+
+When the user asks something, answer it, then go back to the part. A question outside the lesson goes into `NOTES.md` for a later lesson.
+
+After the last part, run the final check, one question per message, answered in the same four ways. A miss sends you back to its part, then to a new question on it. The lesson is done only when the final check passes.
 
 ## A right answer now is not learning yet
 
