@@ -1,0 +1,5 @@
+interface:
+  display_name: "Catch me up"
+  short_description: "Learn a code project and keep up as it changes"
+policy:
+  allow_implicit_invocation: false
