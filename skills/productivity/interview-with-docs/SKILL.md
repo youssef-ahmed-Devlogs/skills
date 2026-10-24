@@ -1,11 +1,11 @@
 ---
-name: interview-me-docs
+name: interview-with-docs
 description: Interview the user about a plan or a design inside a project, one question per message, and keep the project's glossary and decision records up to date as the answers come. Settles each word with them, tests it with cases at the edge, checks what they say against the code, and offers an ADR for each decision worth one.
 disable-model-invocation: true
 argument-hint: "What should we think through?"
 ---
 
-# Interview me, with docs
+# Interview with docs
 
 Run the interview of `interview-me` with the user, and build the project's docs while it runs. Each word you settle goes into its glossary at once. Each decision worth keeping gets a decision record, an ADR. At the end, the project knows what the user meant, not only this chat.
 

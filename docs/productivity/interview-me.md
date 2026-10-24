@@ -20,7 +20,7 @@ The agent asks you about a plan, a decision or an idea, one question at a time, 
 | You know roughly what you want, but have not said it all | `interview-me` |
 | You want the agent to understand you before it writes a spec or code | `interview-me` |
 | You already know exactly what to build, step by step | Ask for it directly |
-| You plan inside a project, and want its glossary and ADRs written as you go | [`interview-me-docs`](./interview-me-docs.md) |
+| You plan inside a project, and want its glossary and ADRs written as you go | [`interview-with-docs`](./interview-with-docs.md) |
 | You want to learn a topic, not plan something | [`tutor-me`](./tutor-me.md) |
 
 ## Example
@@ -67,7 +67,7 @@ Is this right, or what should change?
 - **Before a feature:** "/interview-me a search page for the shop". The summary becomes the input of a spec or a plan.
 - **A choice of your own:** which laptop to buy, whether to take a job offer, how to plan a trip.
 - **A piece of writing:** a talk, a blog post or a CV, so the agent knows the reader and the point before it drafts.
-- **Inside a project with docs:** it reads the glossary, the ADRs and the rules for agents first. It asks in the project's words, and skips what an ADR already decided. It writes nothing in them: for that, use [`interview-me-docs`](./interview-me-docs.md).
+- **Inside a project with docs:** it reads the glossary, the ADRs and the rules for agents first. It asks in the project's words, and skips what an ADR already decided. It writes nothing in them: for that, use [`interview-with-docs`](./interview-with-docs.md).
 - **From another skill:** a skill that writes specs can run it first, so the spec rests on your answers.
 
 ## What you get

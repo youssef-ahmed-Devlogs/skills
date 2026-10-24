@@ -1,8 +1,8 @@
-# interview-me-docs
+# interview-with-docs
 
 The same interview as [`interview-me`](./interview-me.md), inside a project, with the project's docs written while you talk. Each word you settle goes into the glossary at once, and each big decision can become an ADR, so the next person, or the next agent, knows what you meant.
 
-**Start it:** `/interview-me-docs <subject>`, in the project's folder. It starts only when you type it.
+**Start it:** `/interview-with-docs <subject>`, in the project's folder. It starts only when you type it.
 
 ## What it does
 
@@ -18,7 +18,7 @@ The same interview as [`interview-me`](./interview-me.md), inside a project, wit
 
 | Your situation | Use |
 | --- | --- |
-| You plan a change inside a project, and want its words and decisions written down | `interview-me-docs` |
+| You plan a change inside a project, and want its words and decisions written down | `interview-with-docs` |
 | You want to think a plan through, and need no docs from it | [`interview-me`](./interview-me.md) |
 | The plan is not about a project, such as a trip or a job offer | [`interview-me`](./interview-me.md) |
 
@@ -27,7 +27,7 @@ The same interview as [`interview-me`](./interview-me.md), inside a project, wit
 A shop app has a `GLOSSARY.md`, six ADRs, and an order page where customers cancel a whole order:
 
 ```text
-You:    /interview-me-docs let customers cancel part of an order
+You:    /interview-with-docs let customers cancel part of an order
 
 Agent:  I read GLOSSARY.md, the 6 ADRs in docs/adr, and the order code.
 

@@ -23,7 +23,7 @@ Some skills call skills of [Matt Pocock](https://github.com/mattpocock/skills), 
 | Skill | Use it to |
 | --- | --- |
 | [interview-me](./docs/productivity/interview-me.md) | Say what you really want, one question at a time, before anything is built |
-| [interview-me-docs](./docs/productivity/interview-me-docs.md) | The same interview in a project, with its glossary and ADRs written as you go |
+| [interview-with-docs](./docs/productivity/interview-with-docs.md) | The same interview in a project, with its glossary and ADRs written as you go |
 | [tutor-me](./docs/productivity/tutor-me.md) | Learn a topic from zero, with lessons the agent builds and teaches in the chat |
 | [study-with-me](./docs/productivity/study-with-me.md) | Follow a course, a book or a path, with a teacher who checks each step |
 
