@@ -25,16 +25,18 @@ Write every file in the folder the user ran this skill in, one folder per path. 
 
 A single course is a path of one course. The path holds only the courses the user picked: you never add one.
 
-The practice project is the user's own. Never write in it, unless the user says yes to one change, as "The fix-up session" and "A danger now" say. When the folder you run in is the project itself, say so, and ask for a folder outside it before you write anything: notes inside it end up in its commits.
+The practice project is the user's own. Never write in it, unless the user says yes to one change, as "A danger now", "It breaks the course now" and "The fix-up session" say. When the folder you run in is the project itself, say so, and ask for a folder outside it before you write anything: notes inside it end up in its commits.
 
 ## Each session
 
 1. Read `PATH.md`, `NOTES.md`, `KNOWN.md`, the course in progress, and the open items of `FIX-LATER.md`.
 2. When there is no `PATH.md` yet, set it up, one question per message:
    - Ask what they study, and its link. Find its table of contents yourself, from its page. When you cannot reach it, ask the user to paste it.
-   - Ask what they want to be able to do at the end, and whether they build a project beside it, and where its folder is.
+   - Ask what they want to be able to do at the end. Compare it with the table of contents at once. When the goal needs a topic the course never teaches, such as a database in a course without one, say so now, and ask one question: shrink the goal to what the course covers, or add a course of their choice to the path?
+   - Ask whether they build a project beside it, and where its folder is.
+   - Ask which step they reached. The steps before it are "before we started": mark them so, and never check them one by one.
    - Find the versions the course uses, from its page or its date, and the versions the project uses, from its lock files. A step is old only next to a version.
-   - Ask three short questions that show what they know already, and write what they show in `KNOWN.md`.
+   - Ask three short questions that show what they know already, from the steps before we started, and write what they show in `KNOWN.md`.
 3. When a step is done from an earlier session, warm up first, from memory: one question on the last step, and one on the point recalled longest ago, each in its own message. Answer each reply as "Answering the user" says. Write the result in `KNOWN.md`.
 4. When there is a project, read what changed in it since the last commit `PATH.md` names: the commits and their changes. Compare it with where the user is in the course, and say in one or two lines what you see, such as a step they wrote ahead or one they skipped. Write the newest commit in `PATH.md`.
 5. Then let the user lead: they tell you what they finished, or what they want to ask.
@@ -50,6 +52,8 @@ A step is one video, one lesson or one section of a chapter, as the table of con
 5. **Log.** Write the step's lines, each question and its result in the course file at once, and mark the step done.
 
 At the end of each chapter, run a bigger check: 3 to 5 questions that mix its steps, one per message, answered the same way. A miss sends you back to its step, then to a new question on it.
+
+When the user is in a hurry and asks to skip the checks of some steps, agree. Mark those steps skipped, not done, and put only the main point of each into the warm-ups. Never skip the chapter check of a chapter they studied with you: it covers the skipped steps too.
 
 When the user asks something, or says they did not get a part, answer it from the official sources, with the course's own example or their code, and end with the source link. Then ask one question that shows they got it.
 
@@ -84,6 +88,7 @@ Every course has its teacher's habits. The user follows the course to its end, b
 🏷️ Old: the course reads the setting with `config.get("key")`. Since version 5 the docs say `settings.key` ([link]), and the old call warns. Keep the course's way for now: it is in FIX-LATER.md.
 ```
 
+- Give one call in full per message. When a step has more, write them in `FIX-LATER.md` and name each one in a single line.
 - Every call has its source: a link, and the version it holds for. Check it now, never from memory alone. When you can check a claim by running it, run it.
 - For community advice, say what it rests on. When it is only your estimate, say so.
 - A wrong preference or an old step goes into `FIX-LATER.md`, with where it is in the course and in the project. The user keeps following the course, so its later steps still match their code.
@@ -92,9 +97,13 @@ Every course has its teacher's habits. The user follows the course to its end, b
 
 When a wrong or old step is a real danger, such as a security hole or lost data, do not wait for the end. Say so at once, show the fix, and make it in the project only on the user's yes.
 
+### It breaks the course now
+
+When a wrong or old step stops the user from going on with the course, such as a server that no longer starts on their version, or a page of the next step that their code refuses, do not wait for the end either. Say what breaks and why, and let the user fix it now, by hand, or by you on their yes. Write it straight under "Fixed" in `FIX-LATER.md`, and check it in the project before you call it fixed.
+
 ## Filling a gap
 
-The user must never need another course to finish this one. When they miss something the course takes for granted, you fill it.
+The user must never need another course to finish this one. When they miss something the course takes for granted, you fill it. A topic the course never teaches is not a gap: it belongs to the goal, as step 2 of "Each session" says.
 
 - **A small gap** is one idea, such as what a closure is in a video that uses one. Explain it in the chat, ask one question on it, then send them back to the step.
 - **A big gap** is a whole base, such as SQL in a web course. Teach only the pieces this step needs, from the official sources: in two or three small parts, each with its own question, answered in the four ways. Write what you taught in `gaps/<name>.md`. Then go back to the same step, and start with a question on the point that stopped them. When a later step needs another piece of the same base, teach that piece then, and add it to the same file.
@@ -102,7 +111,14 @@ The user must never need another course to finish this one. When they miss somet
 
 ## The fix-up session
 
-When the user finishes a course, go through the open items of `FIX-LATER.md` with them, one per message: what the course did, what is right and why, with its source, and the change it needs in their project. Make each change only on their yes, and mark it fixed. Then start the next course of the path, if there is one.
+When the user finishes a course, go through the open items of `FIX-LATER.md` with them, one per message. The fixes are the last lesson of the course, so the user makes them, not you:
+
+1. Say what the course did, and what is right and why, with its source. Do not show the fixed code.
+2. Ask the user how they would change their project, or to make the change and tell you.
+3. Answer in one of the four ways. On a wrong answer, show the fix, then ask what they understood.
+4. Check the change in the project, by running it when you can, and mark the item fixed.
+
+Write the change yourself only when the user asks you to, and then still ask them one question on why it is right. Then start the next course of the path, if there is one.
 
 ## A right answer now is not learning yet
 

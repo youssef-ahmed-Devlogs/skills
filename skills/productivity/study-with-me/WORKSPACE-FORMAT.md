@@ -27,8 +27,10 @@ Project: {absolute path of the practice project, or "none"}. Versions: {tool} {v
 
 ## Contents
 
-- [x] 1.1 {Step title}
-- [ ] 1.2 {Step title}
+- [~] 1.1 {Step title} (before we started)
+- [x] 1.2 {Step title}
+- [-] 1.3 {Step title} (skipped)
+- [ ] 1.4 {Step title}
 
 ## Log
 
@@ -44,7 +46,7 @@ Code: {files or commits of the project for this step, or "none"}.
 ```
 
 - The contents follow the course's own split and numbers.
-- A step is ticked only after its checks pass.
+- `[x]` is done: ticked only after its checks pass. `[~]` was studied before the first session, and `[-]` was skipped on the user's ask: neither is checked one by one. Their main points live in the warm-ups and the chapter check.
 
 ## `FIX-LATER.md`
 
@@ -57,10 +59,11 @@ Code: {files or commits of the project for this step, or "none"}.
 
 ## Fixed
 
-- **{Short title}**. Fixed {date}, in commit {hash} or "by the user".
+- **{Short title}**. Fixed {date}, by the user | by the agent, on the user's ask. Commit {hash}, or "not committed yet".
 ```
 
-- A danger now is fixed at once, and goes straight under "Fixed".
+- A danger now, and a step that breaks the course now, are fixed at once, and go straight under "Fixed".
+- "Fixed by the user" is the normal case. Write "by the agent, on the user's ask" when you wrote it.
 
 ## `KNOWN.md`
 
