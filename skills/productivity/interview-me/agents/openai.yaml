@@ -1,0 +1,5 @@
+interface:
+  display_name: "Interview me"
+  short_description: "Think a plan through, one question at a time"
+policy:
+  allow_implicit_invocation: false

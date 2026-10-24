@@ -1,7 +1,7 @@
 {
   "name": "youssef-ahmed-skills",
-  "version": "0.5.1",
-  "description": "Youssef Ahmed's agent skills: hand fixes to CLI workers, refactor old code safely, place new rules and skills well, and learn a topic in the chat.",
+  "version": "0.6.0",
+  "description": "Youssef Ahmed's agent skills: hand fixes to CLI workers, refactor old code safely, place new rules and skills well, think a plan through, and learn a topic in the chat.",
   "author": {
     "name": "Youssef Ahmed",
     "url": "https://github.com/youssef-ahmed-Devlogs"
@@ -22,6 +22,7 @@
     "./skills/engineering/setup-refactor-issues",
     "./skills/productivity/add-rule-or-skill",
     "./skills/productivity/explain-skill",
+    "./skills/productivity/interview-me",
     "./skills/productivity/tutor-me"
   ]
 }
