@@ -29,7 +29,7 @@ When an answer changes your read, write the new one the same way, in two lines. 
 - **One question per message, always.** Never two, and never a numbered list, even when several questions are ready. Keep the others for later messages.
 - **Give your guess with it, and why.** Word the question so that "yes" takes your guess. Reacting to a guess is faster than answering from nothing, and it shows your own assumptions.
 - **Ask first what other questions hang on.** A question whose answer depends on one still open waits until that one is answered.
-- **Find facts yourself.** When a question needs a fact you can look up, in the files, the docs or the web, look it up, or send a sub-agent, and do not ask. Ask the user only what they must decide, or what only they know.
+- **Find facts yourself, during the interview.** When a question needs a fact you can look up, in the files, the docs or the web, look it up now, or send a sub-agent, and do not ask. Bring back the few real options it found, and ask the user to pick one. Ask the user only what they must decide, or what only they know.
 - **Guess wrong on purpose now and then,** in a direction you expect them to push back on. A user who agrees with every guess may only be polite.
 
 ```
@@ -40,7 +40,7 @@ When an answer changes your read, write the new one the same way, in two lines. 
 
 ## 3. Listen to the answer
 
-- **What they want, or what sounds right.** Answers like "scalable", "clean", "the way most apps do it" or "I should probably" are what a good answer sounds like, not what the user wants. Ask: "If you did not have to convince anyone, what would you pick?"
+- **What they want, or what sounds right.** Answers like "scalable", "professional", "the way most apps do it" or "I should probably" are what a good answer sounds like, not what the user wants. Your very next question is about that word, before any other: "If you did not have to convince anyone, what would you pick?", with your guess of what it means to them. Never build later questions on a word you have not pinned down.
 - **"Whatever you think" is not an answer.** The user has not decided. Give two concrete options and ask which one.
 - **"I don't know" is a real answer.** Offer two concrete options, or keep it as an open point for the summary.
 - **Some questions cannot be settled by talking,** such as how a page should look or how a text should sound. Offer a quick rough draft for the user to react to, then come back to the question.
@@ -66,12 +66,14 @@ What you want:
 - Limits: {time, money, tools, people}
 - Not doing: {what is left out on purpose}
 - Decided: {each choice made in the interview, one line each}
-- Still open: {what the user did not know yet, if anything}
+- Still open: {what only the user can decide and has not yet, if anything}
 
 Is this right, or what should change?
 ```
 
 Never leave out "Not doing": half of all misunderstandings are about what is not part of the work.
+
+"Still open" holds only what the user must decide and has not, such as a price. A fact you could look up never goes there: look it up before you write the summary, and turn it into a question with its options.
 
 ## 6. Wait for a clear yes
 
