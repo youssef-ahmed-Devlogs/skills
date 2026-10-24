@@ -1,0 +1,5 @@
+interface:
+  display_name: "Study with me"
+  short_description: "Follow a course or a book with a teacher beside you"
+policy:
+  allow_implicit_invocation: false
