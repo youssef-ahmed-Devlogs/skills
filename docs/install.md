@@ -26,6 +26,20 @@ Update later with:
 npx skills update
 ```
 
+## Call a skill
+
+| Agent | Type | Example |
+| --- | --- | --- |
+| Claude Code | `/` and the skill's name | `/tutor-me Docker` |
+| Codex | `$` and the skill's name, or `/skills` to pick one | `$tutor-me Docker` |
+| GitHub Copilot | `/` and the skill's name | `/tutor-me Docker` |
+
+Each skill's page says where to run it: in any session, inside your project, or in a new folder you make for it.
+
+## Change agents
+
+The skills' files are plain Markdown, and their rules go where every agent reads them, such as `AGENTS.md`. So a project or a course you started with one agent goes on with another: install the same skills for the new agent, open it in the same folder, and call the skill again.
+
 ## Claude Code, as a plugin
 
 ```bash

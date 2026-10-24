@@ -17,7 +17,7 @@ Every skill is in five places. When you add, rename or remove one, change all fi
 
 ## Docs
 
-Every skill's docs page is a copy of [`docs/TEMPLATE.md`](./docs/TEMPLATE.md), filled in, with the same parts in the same order: a title and one or two sentences, a **Start it** line, `What it does`, `When to use it` with a table of situations, `Example` with a real chat from start to end, `More use cases`, `What you get`, `What it needs`, and `Tips` when there are any.
+Every skill's docs page is a copy of [`docs/TEMPLATE.md`](./docs/TEMPLATE.md), filled in, with the same parts in the same order: a title and one or two sentences, a **Start it** line, `Before you start` (how to install it, what it needs, where to run it and whether to make a folder for it, how to call it in each agent, and which agents it works with), `What it does`, `When to use it` with a table of situations, `Example` with a real chat from start to end, `More use cases`, `What you get`, and `Tips` when there are any.
 
 - Write the example from the skill's own text, so it shows what the skill really does. An example names no private project: use a shop app, a team newsletter or a public course.
 - A change to a skill's behaviour changes its docs page in the same pull request.
@@ -26,6 +26,15 @@ Every skill's docs page is a copy of [`docs/TEMPLATE.md`](./docs/TEMPLATE.md), f
 Every skill here is user-invoked, apart from `interview-me`, which other skills run: `disable-model-invocation: true` in its `SKILL.md`, and `policy.allow_implicit_invocation: false` in its `agents/openai.yaml`. A model-invoked skill drops both, and its bucket `README.md` lists it under "Model-invoked".
 
 A skill that needs a skill of another author, such as Matt Pocock's `tdd`, says so in a "Before you start" part, with the command that installs it from that author's repository. Never copy another author's skill here.
+
+## Any agent
+
+Every skill works with any agent that reads skills, such as Claude Code, Codex and GitHub Copilot, and a project started with one agent can go on with another:
+
+- A skill names no tool, command or file that only one agent has, unless it says what to do without it.
+- It writes only files that every agent reads: plain Markdown, `AGENTS.md`, and the project's own docs. A file only one agent reads, such as `.claude/rules`, comes with the same rule in a place the others read, as `add-rule-or-skill` and its `PLACES.md` say.
+- It looks for skills and rules in the folders of every agent: `.agents/skills`, `.claude/skills` and `.github/skills`, and `AGENTS.md`, `CLAUDE.md`, `.claude/rules`, `.github/copilot-instructions.md` and `.github/instructions`.
+- A skill that works only with some agents says so in its docs page, under "Agents".
 
 Raise the `version` in `.claude-plugin/plugin.json` when a change should reach plugin users: plugins update only when it changes.
 

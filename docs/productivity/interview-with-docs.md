@@ -4,6 +4,28 @@ The same interview as [`interview-me`](./interview-me.md), inside a project, wit
 
 **Start it:** `/interview-with-docs <subject>`, in the project's folder. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-with-docs --skill interview-me
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** [`interview-me`](./interview-me.md) from this repository, which it runs. When it is missing, the skill stops and gives you the command:
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
+```
+
+**Where to run it:** Inside the project's folder. Make no folder: it writes the glossary and the ADRs where the project keeps them, or makes `GLOSSARY.md` and `docs/adr` the first time it has something to write.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/interview-with-docs item cancellation`. In Codex, type `$interview-with-docs item cancellation`.
+
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. It writes plain Markdown files that any agent reads.
+
 ## What it does
 
 1. It reads the project's glossary, its ADRs, its rules for agents, and the code or files the subject touches.
@@ -80,13 +102,6 @@ Is this right, or what should change?
 
 It commits nothing: the files wait in the folder for you, or for the next step.
 
-## What it needs
-
-[`interview-me`](./interview-me.md) from this repository, which it runs. When it is missing, the skill stops and gives you the command:
-
-```bash
-npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
-```
 
 ## Tips
 

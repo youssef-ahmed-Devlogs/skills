@@ -25,7 +25,7 @@ Run it once per project. Run it again when the rules change: it adds the checks 
 Find every place the project says how code must be written, and read it all:
 
 - `CLAUDE.md` and `AGENTS.md`, at the root and in every folder;
-- `.claude/rules`, and any other rules folder of an agent;
+- `.claude/rules`, `.github/copilot-instructions.md`, `.github/instructions`, and any other rules folder of an agent;
 - `CONTRIBUTING.md`, a coding standards file, and the docs these files point to;
 - the config of its linters and formatters, for the rules they hold.
 
@@ -54,7 +54,7 @@ When the file exists, bring it up to date: add a check for each rule that has no
 
 ## 4. Write the reading list
 
-In `docs/agents/refactor-checks.md`, write one line for each rule of step 1 that only reading can see, and that no ready list covers: the rule's file, what breaks it, and where to look. Name each rule's file by its path under `.claude/rules`, such as `project/roles.md`, and say so at the top of the list. For example: `` `project/roles.md`: a role checked by its name, in `app/Http` ``.
+In `docs/agents/refactor-checks.md`, write one line for each rule of step 1 that only reading can see, and that no ready list covers: the rule's file, what breaks it, and where to look. Name each rule's file by its path under its rules folder, such as `project/roles.md` under `.claude/rules`, and name that folder at the top of the list. For example: `` `project/roles.md`: a role checked by its name, in `app/Http` ``.
 
 At its top, add one line for each ready list of step 2: `` Also read `docs/agents/laravel-checks.md`: the checks of the Laravel rules. ``
 

@@ -35,8 +35,8 @@ The code is the source. The project's docs, its commit messages and its pull req
 
 - Back every point with a file path, and a line when it helps. Never teach the project from memory or from a guess about how such projects usually work.
 - Use the project's own words, from its glossary when it has one, such as `GLOSSARY.md` or the files `CONTEXT-MAP.md` lists.
-- Read its decision records, such as `docs/adr`, and its rules for agents, such as `AGENTS.md` or `CLAUDE.md`. They say why the code is the way it is.
-- For a big project, send sub-agents to read the code and bring back what you need.
+- Read its decision records, such as `docs/adr`, and its rules for agents, such as `AGENTS.md`, `CLAUDE.md`, `.claude/rules` or `.github/instructions`. They say why the code is the way it is.
+- For a big project, send sub-agents to read the code and bring back what you need, when your agent can run them. Otherwise read it one area at a time.
 
 ## Each session
 

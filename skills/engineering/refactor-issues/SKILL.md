@@ -43,7 +43,7 @@ npx skills add youssef-ahmed-Devlogs/skills --skill setup-refactor-issues
 Find every place the project says how code must be written, and read it all:
 
 - `CLAUDE.md` and `AGENTS.md`, at the root and in every folder;
-- `.claude/rules`, and any other rules folder of an agent;
+- `.claude/rules`, `.github/copilot-instructions.md`, `.github/instructions`, and any other rules folder of an agent;
 - `CONTRIBUTING.md`, a coding standards file, and the docs these files point to;
 - the config of its linters and formatters, for the rules they hold;
 - `docs/agents/refactor-checks.md`, the project's list of what only reading can see, and every list it names, such as `docs/agents/laravel-checks.md`. A list says in which folder its rule files are.

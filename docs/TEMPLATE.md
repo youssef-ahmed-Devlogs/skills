@@ -4,6 +4,24 @@
 
 **Start it:** `/{skill-name} {what to type after it}`. {It starts only when you type it. | The agent, or another skill, can also start it.}
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill {skill-name}
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** {The skills it calls, with the command that installs them, and the tools such as `git` or `gh`. Or "Nothing."}
+
+**Where to run it:** {Any session in any folder, inside the project's folder, or a new folder. For a new folder: say that the reader makes it, a name such as `learn/docker`, and that they open the agent in it. Say what the skill writes and where.}
+
+**Call it:** in Claude Code or GitHub Copilot, type `/{skill-name} {...}`. In Codex, type `${skill-name} {...}`.
+
+**Agents:** {Claude Code, Codex and GitHub Copilot, or any agent that reads skills. Or the agents it is limited to, and why.}
+
 ## What it does
 
 1. {Its steps, one short line each, in the skill's own order.}
@@ -33,9 +51,6 @@ Agent:  {...}
 
 {The files, issues, pull requests or answers at the end, and where they go.}
 
-## What it needs
-
-{The skills it calls, with the command that installs them, and the tools such as `gh`. Or "Nothing."}
 
 ## Tips
 

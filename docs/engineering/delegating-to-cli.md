@@ -4,6 +4,24 @@ You have a list of fixes. The agent becomes the coordinator: for each fix it wri
 
 **Start it:** `/delegating-to-cli`, with your list. It starts only when you type it.
 
+## Before you start
+
+**Install it:**
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill delegating-to-cli
+```
+
+It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
+
+**It needs:** Matt Pocock's `implement`, `tdd`, `code-review` and `codebase-design`, which the workers use. When one is missing, the skill stops and gives you the command that installs it. Then the `claude` CLI, `gh`, and a terminal tool that opens visible tabs, such as the terminal of the Claude desktop app.
+
+**Where to run it:** Inside the project's folder, a git repository with a GitHub remote. Make no folder: it makes one git worktree per fix, beside the project's folder, and removes it after the merge.
+
+**Call it:** in Claude Code or GitHub Copilot, type `/delegating-to-cli`. In Codex, type `$delegating-to-cli`.
+
+**Agents:** Claude Code only, for now. The worker is the `claude` CLI, and the coordinator talks to it with tools of the Claude desktop app. It does not work with Codex or GitHub Copilot yet.
+
 ## What it does
 
 1. It asks once what it cannot find itself: who merges, the fallback model if a worker stops, and whether to delete branches after merge. The rest, such as the test command and the issue format, it reads from the repository.
@@ -66,10 +84,6 @@ Agent:  Worker sent DONE 41. I ran the full suite: 212 passed. One problem in re
 
 For each fix: an issue, a reviewed pull request, merged or handed to you, and the worktree and branch cleaned up. At the end, a short report with any deploy step.
 
-## What it needs
-
-- Matt Pocock's `implement`, `tdd`, `code-review` and `codebase-design`, which the workers use. When one is missing, the skill stops and gives you the command that installs it.
-- The `claude` CLI, `gh`, and a terminal tool that opens visible tabs, such as the terminal of the Claude desktop app.
 
 ## Tips
 

@@ -10,7 +10,7 @@ The user names a skill, such as `/explain-skill to-spec`. Explain it so a beginn
 
 ## 1. Find it and read it all
 
-Look for the skill's folder in `.agents/skills/<name>`, `.claude/skills/<name>`, `~/.claude/skills/<name>`, then in [youssef-ahmed-Devlogs/skills](https://github.com/youssef-ahmed-Devlogs/skills) at `skills/<kind>/<name>`, then in [Matt Pocock's skills](https://github.com/mattpocock/skills). Read its `SKILL.md` and every file it points to: the explanation comes from what the skill says, never from its name alone.
+Look for the skill's folder in the project's `.agents/skills/<name>`, `.claude/skills/<name>` or `.github/skills/<name>`, then in `~/.agents/skills/<name>`, `~/.claude/skills/<name>`, `~/.codex/skills/<name>` or `~/.copilot/skills/<name>`, then in [youssef-ahmed-Devlogs/skills](https://github.com/youssef-ahmed-Devlogs/skills) at `skills/<kind>/<name>`, then in [Matt Pocock's skills](https://github.com/mattpocock/skills). Read its `SKILL.md` and every file it points to: the explanation comes from what the skill says, never from its name alone.
 
 No name given: ask for one. No skill of that name: name the closest ones, and stop.
 

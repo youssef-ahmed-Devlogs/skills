@@ -8,7 +8,7 @@ disable-model-invocation: true
 
 ## Before you start
 
-This skill needs these skills: `code-review`, `codebase-design`, `implement`, `tdd`. Check that each one is installed: a folder of that name in `.agents/skills`, `.claude/skills` or `~/.claude/skills`. When one is missing, stop before anything else. Tell the user which one is missing and what this skill needs it for, and give the command that installs it:
+This skill needs these skills: `code-review`, `codebase-design`, `implement`, `tdd`. Check that each one is installed: a folder of that name in the project's `.agents/skills`, `.claude/skills` or `.github/skills`, or in `~/.agents/skills`, `~/.claude/skills`, `~/.codex/skills` or `~/.copilot/skills`. When one is missing, stop before anything else. Tell the user which one is missing and what this skill needs it for, and give the command that installs it:
 
 ```bash
 npx skills add mattpocock/skills --skill code-review --skill codebase-design --skill implement --skill tdd
@@ -45,7 +45,7 @@ Find these yourself; don't ask:
 - the formatter or linter command,
 - the repo's own rules: how it names branches, writes issues and pull requests, labels them, lists deploy steps, and keeps its docs current.
 
-Read `CLAUDE.md` or `AGENTS.md`, every file in `.claude/rules` (and any `.claude/rules` inside subfolders), every file in `docs/agents`, the docs they point to, `package.json` or `composer.json`, and the CI config.
+Read `AGENTS.md` and `CLAUDE.md` at every level, every file in `.claude/rules` (and any `.claude/rules` inside subfolders), `.github/copilot-instructions.md`, `.github/instructions`, every file in `docs/agents`, the docs they point to, `package.json` or `composer.json`, and the CI config.
 
 **The repo's rules beat this skill.** Where the repo says how to do a step (a branch name, an issue or PR format, labels, review flags, deploy commands), do it the repo's way. The formats below are the defaults for a repo that says nothing.
 
@@ -197,7 +197,7 @@ The worker already ran its own review. Yours is independent, and it is the only 
     - **Behaviour changes** that users or reports will notice.
     - **Migrations.** Can `down()` run? Are indexes kept that foreign keys depend on?
     - **Docs and rules.** Did the change update every doc, rule and comment that names the code it changed, as the repo's rules ask?
-    - **The repo's own rules.** Does the diff break any rule in `.claude/rules`, `docs/agents`, `AGENTS.md` or `CLAUDE.md`?
+    - **The repo's own rules.** Does the diff break any rule in `AGENTS.md`, `CLAUDE.md`, `.claude/rules`, `.github/instructions` or `docs/agents`?
 
 **If you find a real problem, don't merge and don't go back to the user.** Send the worker a numbered list: the problem, a concrete failing scenario, the fix you expect, and the regression test you expect. Re-arm the monitor. Re-review when DONE arrives again.
 

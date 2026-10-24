@@ -18,7 +18,7 @@ This needs the user in the chat. When nobody can answer, such as in a scheduled 
 
 When you run inside a project that has its own docs, you read them, and write nothing in them.
 
-- **Before the first question,** read what the project says about its words and its past decisions: its glossary (such as `GLOSSARY.md`, or the files `CONTEXT-MAP.md` lists), its decision records (such as `docs/adr`), and its rules for agents (such as `AGENTS.md`, `CLAUDE.md` or `.claude/rules`). Ask your questions in the project's words. When the user uses a word the glossary says to avoid, say which word the project uses.
+- **Before the first question,** read what the project says about its words and its past decisions: its glossary (such as `GLOSSARY.md`, or the files `CONTEXT-MAP.md` lists), its decision records (such as `docs/adr`), and its rules for agents (such as `AGENTS.md`, `CLAUDE.md`, `.claude/rules`, `.github/copilot-instructions.md` or `.github/instructions`). Ask your questions in the project's words. When the user uses a word the glossary says to avoid, say which word the project uses.
 - **When a question is already decided** in a decision record, do not ask it. Say which record decided it, and ask only whether they want to change that decision.
 - **When a decision is made** that the project's rules say needs a decision record, or a new word appears that its glossary lacks, keep it for the summary, under "Decided". Writing the glossary and the decision records as the interview goes is the job of `interview-with-docs`, which runs this interview and adds them.
 
