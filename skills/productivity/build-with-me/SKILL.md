@@ -38,12 +38,17 @@ Read the project only: its files, `git log`, `git show` and `git diff`, and comm
 
 Make each file only when it is first needed. [WORKSPACE-FORMAT.md](./WORKSPACE-FORMAT.md) gives the shape of each.
 
-- `PROJECT.md`: what the project is, from the interview, its stack and versions, how the user wants to work, where they are, and the last commit reviewed.
+- `PROJECT.md`: what the project is, from the interview, its stack and versions, how the user wants to work, where they are now, and the last commit reviewed.
 - `SOURCES.md`: the trusted sources for the domain, each tool and each topic of the project, each with the version it holds for, and the user's own sources.
 - `REVIEWS.md`: each review, its points, and whether each wrong or old point is fixed.
 - `NOTES.md`: how the user likes to be helped, questions to come back to, and your working notes.
 
-Write each review point and each fix in the workspace at once. When a chat grows long, the user can start a new one with this skill, and it goes on from the same place.
+Some agents ask before they write outside the folder they started in, such as Codex in its default mode. Before the first write, say that the agent may ask, so the user can approve it, or add the workspace to the agent's writable folders, such as `sandbox_workspace_write.writable_roots` in Codex's `config.toml`.
+
+The workspace is the only memory between chats. The user may start a new chat when one grows long, or go on in another agent, such as Codex after Claude Code, and the next agent knows only what the files say. So never keep anything only in the chat:
+
+- Write each review point and each fix in `REVIEWS.md` at once.
+- Keep the "Now" line of `PROJECT.md` true after each message: the review in progress, the point being talked about, and the points still waiting. Clear it when nothing is in progress.
 
 ## Each session
 
@@ -51,7 +56,7 @@ Write each review point and each fix in the workspace at once. When a chat grows
 2. Read `PROJECT.md`, `SOURCES.md`, `NOTES.md`, and the open points of `REVIEWS.md`.
 3. Read the versions in the project's dependency and lock files. When one changed since `PROJECT.md`, write the new one, and get the docs of that version for `SOURCES.md`.
 4. When points of earlier reviews are still open, say how many in one line, with their titles.
-5. Go on as `PROJECT.md` says under "How we work", from where the user is. Then let the user lead: they ask for a review, a plan, a question, or help when they are stuck.
+5. When the "Now" line of `PROJECT.md` names a review in progress, say in one line where it stopped, and go on from the point it names. Otherwise, go on as `PROJECT.md` says under "How we work", from where the user is. Then let the user lead: they ask for a review, a plan, a question, or help when they are stuck.
 
 ## The first session
 

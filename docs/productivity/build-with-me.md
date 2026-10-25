@@ -16,11 +16,11 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 
 **It needs:** The [`interview-me`](./interview-me.md) skill, installed by the command above. Git in the project helps: without it, you say which files to review each time.
 
-**Where to run it:** Inside the project's folder. For a project you have not started, the folder it will live in, even when it is empty. Make no folder for the skill: it makes its own, `.build-with-me/<project>` in your home folder, and never writes in the project. Run it from the same project folder each time, so it finds its notes.
+**Where to run it:** Inside the project's folder. For a project you have not started, the folder it will live in, even when it is empty. Make no folder for the skill: it makes its own, `.build-with-me/<project>` in your home folder, and never writes in the project. Run it from the same project folder each time, so it finds its notes. Codex, in its default mode, asks before it writes outside the project's folder: approve it, or add the full path of `~/.build-with-me` to `sandbox_workspace_write.writable_roots` in its `config.toml`.
 
 **Call it:** in Claude Code or GitHub Copilot, type `/build-with-me a small online shop`. In Codex, type `$build-with-me a small online shop`. Type it once at the start of each new chat: it finds its notes and goes on from where you stopped. A chat without it is a normal chat, where the agent can write code.
 
-**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. Its notes are plain Markdown outside the project, so you can go on with another agent.
+**Agents:** Claude Code, Codex and GitHub Copilot, or any agent that reads skills. Its notes are plain Markdown outside the project, and they say where you stopped, even in the middle of a review. So you can start with Claude Code and go on with Codex, or the other way, and it goes on as if it were the same agent. Install it for both.
 
 ## What it does
 
@@ -94,7 +94,7 @@ You change the hash by hand, and say it is done. It reads the change, runs the t
 
 All in `~/.build-with-me/<project>/`, never inside the project:
 
-- `PROJECT.md`: what you build, its stack and versions, and how you work together.
+- `PROJECT.md`: what you build, its stack and versions, how you work together, and where you stopped.
 - `SOURCES.md`: the sources for the domain and each topic, with their versions, yours marked.
 - `REVIEWS.md`: every review, the points still open, the ones you fixed, and the ones you kept.
 
@@ -104,4 +104,4 @@ The project itself is only read: no files, no commits, no branch changes, unless
 ## Tips
 
 - Say what to review, such as a folder or a commit. "Review my work" reviews what changed since the last review.
-- Type `/build-with-me` again in a new chat when one grows long: it goes on from its notes.
+- Type `/build-with-me` again in a new chat when one grows long, or `$build-with-me` in Codex: it goes on from its notes.

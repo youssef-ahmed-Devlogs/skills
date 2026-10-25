@@ -25,12 +25,15 @@ Parts:
 
 Last commit reviewed: {short hash}, {date}, or "none".
 
+Now: {The review in progress, such as `src/auth` on {date}. Talking about: {point title}. Waiting: {point titles}.} Or "nothing in progress".
+
 ## Changes
 
 - {date}: {what changed in the way of working, or the project, and why}.
 ```
 
 - Leave out "Parts" when the user works without them.
+- Keep "Now" true after each message: another chat, or another agent, goes on from it with nothing else.
 - Change what the project is, or how you work, only after the user agrees, and write why under "Changes".
 
 ## `SOURCES.md`
