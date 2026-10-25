@@ -12,6 +12,8 @@ Goal: {What the user wants to do with the topic, in one or two sentences.}
 Done when the user can:
 - {A task anyone could watch them do.}
 
+Version: {tool} {version}, from {lock file | the user}. Or "none" when the topic has no versions.
+
 Time and limits: {How much time they have, what they know now, how they like to learn.}
 
 Not for now: {Close topics they do not want yet.}
@@ -26,7 +28,7 @@ Not for now: {Close topics they do not want yet.}
 ```md
 # Sources
 
-- [{Title}]({link}), {author}. {What it covers, and which lessons used it.}
+- [{Title}]({link}), {author}. Version: {version, or "any"}. {What it covers, and which lessons used it.}
 
 ## Places to ask people
 
@@ -39,7 +41,8 @@ Not for now: {Close topics they do not want yet.}
 
 - Official docs and primary sources come first, then known experts. No sales pages.
 - Each line says what the source is good for.
-- Remove a source that turned out wrong.
+- A docs source says its version, the one in `GOAL.md`: the docs of another version can say something else. When the user moves to a new version, replace those sources.
+- Remove a source that turned out wrong, and fix every lesson point and sheet line that cited it.
 - When the user does not want places to ask people, say so here.
 
 ## `KNOWN.md`
@@ -79,6 +82,7 @@ Not for now: {Close topics they do not want yet.}
 
 - Add a word only once the user uses it right.
 - One name per idea, the same in every lesson.
+- When a later lesson shows a definition is wrong or too narrow, fix it in place.
 
 ## `sheets/<name>.md`
 

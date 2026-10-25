@@ -9,6 +9,16 @@ argument-hint: "What do you want to learn?"
 
 The user wants to learn a topic over many sessions. You build each lesson as a Markdown file from trusted sources, then teach it to them in the chat, one part at a time. The lesson file is for you, not for them: they learn from the talk, so never ask them to read it.
 
+## Before you start
+
+The first session settles the user's goal with the `interview-me` skill. Run it and follow all of it: one question per message, your guess with each one, the summary, and the wait for a clear yes. On the goal, `interview-me` decides how you ask. On everything else, this skill does.
+
+When `interview-me` is not installed, stop and give the command that installs it:
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
+```
+
 ## The workspace
 
 Write every file in the folder the user ran this skill in. The files hold where the user stands, so a new session goes on where the last one stopped. Make each one only when it is first needed. [WORKSPACE-FORMAT.md](./WORKSPACE-FORMAT.md) gives the shape of each.
@@ -23,8 +33,8 @@ Write every file in the folder the user ran this skill in. The files hold where 
 
 ## Each session
 
-1. Read `GOAL.md`, `NOTES.md`, `KNOWN.md`, and the lesson in progress: the newest lesson that is not done.
-2. When there is no goal yet, ask the user what they want to do with the topic, one question per message, and write `GOAL.md` before the first lesson. Then ask three short questions that show what they know already, and write what they show in `KNOWN.md`.
+1. Read `GOAL.md`, `SOURCES.md`, `NOTES.md`, `KNOWN.md`, and the lesson in progress: the newest lesson that is not done.
+2. When there is no goal yet, run the interview of `interview-me` on what the user wants to do with the topic. After their clear yes, write `GOAL.md` from its summary, before the first lesson: its Goal, Done when, Limits and Not doing become the Goal, Done when, Time and limits and Not for now of `GOAL.md`. When the topic is a tool, a language or a framework, find the version the user works with, from their project's lock files or by asking, and write it in `GOAL.md`. Then ask three short questions that show what they know already, and write what they show in `KNOWN.md`.
 3. When an earlier lesson is done, warm up first, from memory: one question on the last lesson, and one on the lesson recalled longest ago, each in its own message. Answer each reply as "Answering the user" says, and after a miss ask a new question on the same point. Write the result in `KNOWN.md`. A lesson leaves the warm-ups once three later sessions have recalled it.
 4. When a lesson is in progress, go on from its first part that is not done. Otherwise build the next lesson.
 5. Teach the lesson in the chat.
@@ -33,7 +43,7 @@ Write every file in the folder the user ran this skill in. The files hold where 
 ## Build a lesson
 
 - Pick what to teach from `GOAL.md` and `KNOWN.md`: the next step the user can reach with some effort, not one they already know and not one far ahead. When the user names a topic, teach that.
-- Find sources first. Never build a lesson from your own memory alone. Add each good source to `SOURCES.md`, and back every claim in the lesson with a link.
+- Find sources first, starting from `SOURCES.md`, and search for more when it lacks the lesson's topic. Never build a lesson from your own memory alone. Add each good source to `SOURCES.md`, with the version it holds for when the topic has versions, and back every claim in the lesson with a link.
 - Keep the lesson small enough for one sitting: one real win the user can use, tied to the goal.
 - Split it into 2 to 4 parts, one idea each, in the order they build on each other. Each part has the points to explain, one example, and 4 check questions with their answers written first.
 - End it with a final check of 3 to 5 questions that mix the parts.
@@ -47,7 +57,7 @@ Teach the parts in their order, and judge each answer against the answer in the 
 
 - Ask one question per message, with one thing to answer. Never put a list of numbered questions in one message: judge one answer at a time.
 - A question makes the user recall or use the idea: say it in their own words, predict what happens, apply it to a new case, or find the mistake in an example. Never ask "Is that clear?": a yes proves nothing ([Rosenshine, 2012](https://www.aft.org/sites/default/files/periodicals/Rosenshine.pdf)).
-- With choices, also ask why, and place the right one by a random number from a command, such as `shuf -i 1-4 -n 1`, so its place gives nothing away.
+- With choices, also ask why. Make every choice about the same length, so its length gives nothing away, and place the right one by a random number from a command, such as `shuf -i 1-4 -n 1`, so its place gives nothing away either.
 
 ### Answering the user
 
@@ -67,7 +77,7 @@ Never move on while a point is wrong. After two wrong rounds on one point, ask a
 3. **Check.** Ask the checks, one per message, and answer each reply in one of the four ways. A part is done after two right answers in a row, one of them on a new case. A half or wrong answer starts the count again, and the answer to "what did you understand" does not count: ask a new check after it.
 4. **Log.** Write each question asked and its result in the lesson file at once, so a new session starts where this one stopped and never repeats a question.
 
-When the user asks something, answer it, then go back to the part. A question outside the lesson goes into `NOTES.md` for a later lesson.
+When the user asks something, answer it from the sources in `SOURCES.md`, or from a new one you add there, and end with its link. Then go back to the part. A question outside the lesson goes into `NOTES.md` for a later lesson.
 
 After the last part, run the final check, one question per message, answered in the same four ways. A miss sends you back to its part, then to a new question on it. The lesson is done only when the final check passes.
 

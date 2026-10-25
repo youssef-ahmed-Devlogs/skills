@@ -9,12 +9,16 @@ The agent follows you through a course, a book or a path you study on your own, 
 **Install it:**
 
 ```bash
-npx skills add youssef-ahmed-Devlogs/skills --skill study-with-me
+npx skills add youssef-ahmed-Devlogs/skills --skill study-with-me --skill interview-me
 ```
 
 It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
 
-**It needs:** Nothing. For the code part, a git repository for your practice project, so it can see what changed since the last session.
+**It needs:** [`interview-me`](./interview-me.md) from this repository, which it runs to settle your goal in the first session, and, for the code part, a git repository for your practice project, so it can see what changed since the last session. When `interview-me` is missing, the skill stops and gives you the command:
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
+```
 
 **Where to run it:** A new, empty folder for the course, outside your practice project. Make it yourself, such as `learn/laravel-course` in your home folder, and open your agent in it. The skill does not make the folder. Run inside your practice project, it asks for a folder outside it first, since its notes would end up in your commits. It asks for your practice project's folder in the first session.
 
@@ -24,9 +28,9 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 
 ## What it does
 
-1. **Setup, once:** it finds the course's table of contents and the versions it uses, asks your goal, where your practice project is, and which step you reached.
+1. **Setup, once:** it finds the course's table of contents, then interviews you on your goal: one question at a time, with its guess each time, until you say yes to its summary. It checks the goal against the table of contents inside the interview. Then it asks where your practice project is and which step you reached, finds the versions, and gathers its sources for each topic of the course: the official docs of each tool for those versions, and the main security and community references, such as OWASP for auth.
 2. **After each step:** you say in a line or two what the step covered. It reads the code you wrote for it, runs it when it can, and asks one or two questions on the main point.
-3. **It judges the course:** when a step differs from the official way, it says what kind of choice it is, with a source and a version.
+3. **It judges the course:** it checks every step against those sources, not only the ones that look odd, since a step that looks normal can still be wrong. When a step differs, it says what kind of choice it is, with a source and a version. A new topic, such as file uploads or payments, gets its sources first.
 4. **It fills gaps:** when you miss something the course takes for granted, it teaches just that, then sends you back to the same step.
 5. **At the end:** you fix the wrong and old steps in your project yourself, and it checks each fix.
 
@@ -56,8 +60,13 @@ You:    /study-with-me the Node.js and Express course of freeCodeCamp. I build i
 
 Agent:  I found the course: 2021, 8 hours, on Express 4.17. Its table of contents ends at
         Express Router. It has no database at all.
-        Shall we shrink the goal to what the course covers, or add a second course of your
-        choice for the database?
+
+        What I understand: you want a REST API with a database, and this course gives only
+        the API part. How sure: 60%. Missing: whether the database must come now.
+
+        ❓ Shall we shrink the goal to the API this course covers, and keep the database for a
+        second course of your choice?
+        ➡️ My guess: yes, since the course has no database part to follow.
 ```
 
 Later, it reads your project and finds a step that no longer works on your version:
@@ -95,6 +104,7 @@ When you miss the same base idea twice, such as what an object key is, it says t
 All in the folder you ran it in:
 
 - `PATH.md`: your goal, the courses, where you are, and your project's folder.
+- `SOURCES.md`: the sources it checks each step against, by topic, each with its version.
 - `courses/`: one file per course, with its table of contents and what you showed at each step.
 - `FIX-LATER.md`: the wrong and old steps, each with its source, to fix at the end.
 - `gaps/`: what it taught to fill a big gap, for you to read again.

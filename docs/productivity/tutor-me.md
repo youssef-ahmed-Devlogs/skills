@@ -9,12 +9,16 @@ The agent teaches you a topic over many sessions, in the chat. It builds each le
 **Install it:**
 
 ```bash
-npx skills add youssef-ahmed-Devlogs/skills --skill tutor-me
+npx skills add youssef-ahmed-Devlogs/skills --skill tutor-me --skill interview-me
 ```
 
 It asks which agents to install it for: pick every agent you use. Other ways, and updates: [Installing](../install.md).
 
-**It needs:** Nothing.
+**It needs:** [`interview-me`](./interview-me.md) from this repository, which it runs to settle your goal in the first session. When `interview-me` is missing, the skill stops and gives you the command:
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
+```
 
 **Where to run it:** A new, empty folder for the topic, outside any project. Make it yourself, such as `learn/docker` in your home folder, and open your agent in it. The skill does not make the folder: it writes its files in the folder you run it in. Come back to the same folder for every session of that topic.
 
@@ -24,8 +28,8 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 
 ## What it does
 
-1. It asks what you want to do with the topic, and three short questions that show what you know already.
-2. It builds a small lesson from official docs and known experts, as a file for itself. You never need to read it.
+1. The first session starts with an interview on what you want to do with the topic: one question at a time, with its guess each time, until you say yes to its summary. Then three short questions show what you know already. For a tool, a language or a framework, it finds the version you work with.
+2. It builds a small lesson from official docs and known experts for your version, kept in `SOURCES.md`, as a file for itself. You never need to read it. A question you ask on the side is answered from a source too, with its link.
 3. It teaches the lesson in the chat, one part at a time. Each part starts by asking whether you know it already.
 4. It asks questions that make you recall or use the idea, one per message, and moves on after two right answers in a row.
 5. A final check mixes the parts. The next session starts with a short recall of older lessons.
@@ -50,11 +54,19 @@ Every answer gets a reply:
 ```text
 You:    /tutor-me Docker
 
-Agent:  What do you want to be able to do with Docker?
+Agent:  What I understand: you want to learn Docker for your own work.
+        How sure: 30%. Missing: what you will use it for, and what done looks like.
 
-You:    Run my Node app and its database on any machine with one command.
+        ❓ Do you want Docker to run an app you already have, more than to learn it in general?
+        ➡️ My guess: yes, since most people start Docker for one app of theirs.
 
-Agent:  Good. Three short questions to see where you start. First one:
+You:    Yes. Run my Node app and its database on any machine with one command.
+```
+
+A few questions later, it says your goal back in a short summary, and you say yes. It writes `GOAL.md` from it, then:
+
+```text
+Agent:  Three short questions to see where you start. First one:
         what is the difference between an image and a container, in your words?
 
 You:    I don't know.

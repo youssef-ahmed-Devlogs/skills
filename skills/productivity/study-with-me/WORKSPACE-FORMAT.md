@@ -20,6 +20,28 @@ Project: {absolute path of the practice project, or "none"}. Versions: {tool} {v
 - The user picks the courses and their order. Never add one.
 - Change the goal only after the user agrees, and write why in `NOTES.md`.
 
+## `SOURCES.md`
+
+```md
+# Sources
+
+Versions: {tool} {version}, {tool} {version}, as in PATH.md.
+
+## {Topic, such as auth}
+
+- [{Title}]({link}), {author or project}. Version: {version, or "any"}. Good for: {what it covers, and when to reach for it}. Used: steps {n}, {n}.
+
+## Still looking for
+
+- {A topic of the course with no good source yet.}
+```
+
+- Official docs come first, for the versions in `PATH.md`. Then the main community and security references, such as OWASP, and known experts. No sales pages.
+- One heading per topic of the course. A new topic gets its heading when a step brings it.
+- A docs source says its version: the docs of another version can say something else.
+- When a version in the project changes, replace the docs sources of that tool with the docs of the new version.
+- Remove a source that turned out wrong, and check again what rests on it, as SKILL.md says.
+
 ## `courses/01-<name>.md`
 
 ```md
@@ -38,7 +60,8 @@ Project: {absolute path of the practice project, or "none"}. Versions: {tool} {v
 
 Covered, in the user's words: {their lines}.
 Code: {files or commits of the project for this step, or "none"}.
-- Q: {question}. Answer: right | half | wrong | don't know. {One line on what was missing.}
+Checked against: [{source}]({link}), [{source}]({link}).
+- Q: {question}. Key points: {what a right answer holds}. Answer: right | half | wrong | don't know. {One line on what was missing.}
 
 ### Chapter 1 check ({date})
 
@@ -95,6 +118,7 @@ Code: {files or commits of the project for this step, or "none"}.
 ```
 
 - Add a word only once the user uses it right.
+- When a later step shows a definition is wrong or too narrow, fix it in place.
 
 ## `gaps/<name>.md`
 

@@ -11,11 +11,22 @@ The user studies a course, a book or a path on their own, such as a video course
 
 You do not see the videos or the pages. You know the course from three things: its table of contents, the line the user writes after each step, and their code. For a hard part, ask for the text of that video or page, such as its transcript.
 
+## Before you start
+
+The first session settles the user's goal with the `interview-me` skill. Run it and follow all of it: one question per message, your guess with each one, the summary, and the wait for a clear yes. On the goal, `interview-me` decides how you ask. On everything else, this skill does.
+
+When `interview-me` is not installed, stop and give the command that installs it:
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
+```
+
 ## The workspace
 
 Write every file in the folder the user ran this skill in, one folder per path. Make each file only when it is first needed. [WORKSPACE-FORMAT.md](./WORKSPACE-FORMAT.md) gives the shape of each.
 
 - `PATH.md`: the goal, the courses in their order, where the user is now, and the folder of their practice project.
+- `SOURCES.md`: the trusted sources for each topic of the course, each with the version it holds for.
 - `courses/01-<name>.md`: one course each: its table of contents, how far the user got, and the questions asked on each step.
 - `FIX-LATER.md`: what the course does wrong or in an old way, kept to fix at the end.
 - `KNOWN.md`: what the user knew before, what they have shown since, and the wrong ideas they dropped.
@@ -29,16 +40,17 @@ The practice project is the user's own. Never write in it, unless the user says 
 
 ## Each session
 
-1. Read `PATH.md`, `NOTES.md`, `KNOWN.md`, the course in progress, and the open items of `FIX-LATER.md`.
+1. Read `PATH.md`, `SOURCES.md`, `NOTES.md`, `KNOWN.md`, the course in progress, and the open items of `FIX-LATER.md`.
 2. When there is no `PATH.md` yet, set it up, one question per message:
    - Ask what they study, and its link. Find its table of contents yourself, from its page. When you cannot reach it, ask the user to paste it.
-   - Ask what they want to be able to do at the end. Compare it with the table of contents at once. When the goal needs a topic the course never teaches, such as a database in a course without one, say so now, and ask one question: shrink the goal to what the course covers, or add a course of their choice to the path?
+   - Run the interview of `interview-me` on what they want to be able to do at the end, with the table of contents in hand. When the goal needs a topic the course never teaches, such as a database in a course without one, raise it inside the interview, as one question: shrink the goal to what the course covers, or add a course of their choice to the path? The interview never asks what you can find yourself, such as the versions or the table of contents. After their clear yes, write the goal in `PATH.md`, from its summary.
    - Ask whether they build a project beside it, and where its folder is.
    - Ask which step they reached. The steps before it are "before we started": mark them so, and never check them one by one.
    - Find the versions the course uses, from its page or its date, and the versions the project uses, from its lock files. A step is old only next to a version.
+   - Gather the sources, before you judge any step. From the table of contents, list the topics the course covers, such as routing, auth or the database. For each topic, find the official docs of each tool it uses, for the versions of the course and of the project, and the main community and security references, such as OWASP for auth. Write them in `SOURCES.md`. A topic with no good source goes under "Still looking for". Find them yourself: do not ask the user.
    - Ask three short questions that show what they know already, from the steps before we started, and write what they show in `KNOWN.md`.
 3. When a step is done from an earlier session, warm up first, from memory: one question on the last step, and one on the point recalled longest ago, each in its own message. Answer each reply as "Answering the user" says. Write the result in `KNOWN.md`.
-4. When there is a project, read what changed in it since the last commit `PATH.md` names: the commits and their changes. Compare it with where the user is in the course, and say in one or two lines what you see, such as a step they wrote ahead or one they skipped. Write the newest commit in `PATH.md`.
+4. When there is a project, read what changed in it since the last commit `PATH.md` names: the commits and their changes. Compare it with where the user is in the course, and say in one or two lines what you see, such as a step they wrote ahead or one they skipped. Write the newest commit in `PATH.md`. When a version in the project changed, write the new one in `PATH.md`, and get the docs of that version for `SOURCES.md`.
 5. Then let the user lead: they tell you what they finished, or what they want to ask.
 
 ## When the user finishes a step
@@ -47,21 +59,22 @@ A step is one video, one lesson or one section of a chapter, as the table of con
 
 1. **What it covered.** Ask for one or two lines on what the step covered, in their own words, when they did not give them. These lines are a recall check too: answer them in one of the four ways, against the table of contents and the code.
 2. **The code.** When the step has code, read what they wrote for it. Run it, or its tests, when you can.
-3. **Judge the course.** When the step does something that differs from what the official sources say, or that matters later, say what kind of choice it is, as "Judging the course" says. Say nothing on the rest.
-4. **Check.** Ask one or two questions on the main point of the step, one per message, and answer each reply in one of the four ways. The course explained it, so you only check that it stuck: never teach the whole step again.
-5. **Log.** Write the step's lines, each question and its result in the course file at once, and mark the step done.
+3. **Check it against the sources.** Find the step's topic in `SOURCES.md`. When the step brings a topic the file does not have yet, such as file uploads, payments or e-mail, find its sources first and add them. Read the parts that cover what the step does, for the user's version, and compare the step's code and what it teaches with them. Do this for every step, not only when something looks odd: a step that looks normal can still be wrong, such as a hash that reads only the first part of a token, or an error filter that turns every error into a 500.
+4. **Judge the course.** When the step differs from the sources, or does something that matters later, say what kind of choice it is, as "Judging the course" says. When it agrees with them, say nothing on it.
+5. **Check.** Write the key points of one or two questions on the main point of the step in the course file first, from the step and its sources. Then ask them, one per message, and answer each reply in one of the four ways, against those key points. The course explained it, so you only check that it stuck: never teach the whole step again.
+6. **Log.** Write the step's lines, the sources you checked it against, each question and its result in the course file at once, and mark the step done.
 
 At the end of each chapter, run a bigger check: 3 to 5 questions that mix its steps, one per message, answered the same way. A miss sends you back to its step, then to a new question on it.
 
 When the user is in a hurry and asks to skip the checks of some steps, agree. Mark those steps skipped, not done, and put only the main point of each into the warm-ups. Never skip the chapter check of a chapter they studied with you: it covers the skipped steps too.
 
-When the user asks something, or says they did not get a part, answer it from the official sources, with the course's own example or their code, and end with the source link. Then ask one question that shows they got it.
+When the user asks something, or says they did not get a part, answer it from the sources in `SOURCES.md`, or from a new one you add there, with the course's own example or their code, and end with the source link. Then ask one question that shows they got it.
 
 ## Asking
 
 - Ask one question per message, with one thing to answer. Never put a list of questions in one message.
 - A question makes the user recall or use the idea: say it in their own words, predict what code does, apply it to a new case, or find the mistake. Never ask "Is that clear?": a yes proves nothing ([Rosenshine, 2012](https://www.aft.org/sites/default/files/periodicals/Rosenshine.pdf)).
-- With choices, also ask why, and place the right one by a random number from a command, such as `shuf -i 1-4 -n 1`.
+- With choices, also ask why. Make every choice about the same length, so its length gives nothing away, and place the right one by a random number from a command, such as `shuf -i 1-4 -n 1`.
 
 ## Answering the user
 
@@ -89,7 +102,8 @@ Every course has its teacher's habits. The user follows the course to its end, b
 ```
 
 - Give one call in full per message. When a step has more, write them in `FIX-LATER.md` and name each one in a single line.
-- Every call has its source: a link, and the version it holds for. Check it now, never from memory alone. When you can check a claim by running it, run it.
+- Every call has its source: a link from `SOURCES.md`, and the version it holds for. Check it now, never from memory alone. When you can check a claim by running it, run it.
+- When a source turns out wrong, remove it from `SOURCES.md`, and check again every call, `FIX-LATER.md` item and `gaps/` file that rests on it.
 - For community advice, say what it rests on. When it is only your estimate, say so.
 - A wrong preference or an old step goes into `FIX-LATER.md`, with where it is in the course and in the project. The user keeps following the course, so its later steps still match their code.
 
@@ -105,8 +119,8 @@ When a wrong or old step stops the user from going on with the course, such as a
 
 The user must never need another course to finish this one. When they miss something the course takes for granted, you fill it. A topic the course never teaches is not a gap: it belongs to the goal, as step 2 of "Each session" says.
 
-- **A small gap** is one idea, such as what a closure is in a video that uses one. Explain it in the chat, ask one question on it, then send them back to the step.
-- **A big gap** is a whole base, such as SQL in a web course. Teach only the pieces this step needs, from the official sources: in two or three small parts, each with its own question, answered in the four ways. Write what you taught in `gaps/<name>.md`. Then go back to the same step, and start with a question on the point that stopped them. When a later step needs another piece of the same base, teach that piece then, and add it to the same file.
+- **A small gap** is one idea, such as what a closure is in a video that uses one. Explain it in the chat, from a source in `SOURCES.md`, and end with its link. Ask one question on it, then send them back to the step.
+- **A big gap** is a whole base, such as SQL in a web course. Teach only the pieces this step needs, from the sources in `SOURCES.md`, and add the ones the base needs: in two or three small parts, each with its own question, answered in the four ways. Write what you taught in `gaps/<name>.md`. Then go back to the same step, and start with a question on the point that stopped them. When a later step needs another piece of the same base, teach that piece then, and add it to the same file.
 - **See the gap yourself.** When the user misses the same base idea twice, say the gap may be bigger than this step, and ask whether to fill it now.
 
 ## The fix-up session
