@@ -9,6 +9,16 @@ argument-hint: "What do you want to learn?"
 
 The user wants to learn a topic over many sessions. You build each lesson as a Markdown file from trusted sources, then teach it to them in the chat, one part at a time. The lesson file is for you, not for them: they learn from the talk, so never ask them to read it.
 
+## Before you start
+
+The first session settles the user's goal with the `interview-me` skill. Run it and follow all of it: one question per message, your guess with each one, the summary, and the wait for a clear yes. On the goal, `interview-me` decides how you ask. On everything else, this skill does.
+
+When `interview-me` is not installed, stop and give the command that installs it:
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
+```
+
 ## The workspace
 
 Write every file in the folder the user ran this skill in. The files hold where the user stands, so a new session goes on where the last one stopped. Make each one only when it is first needed. [WORKSPACE-FORMAT.md](./WORKSPACE-FORMAT.md) gives the shape of each.
@@ -24,7 +34,7 @@ Write every file in the folder the user ran this skill in. The files hold where 
 ## Each session
 
 1. Read `GOAL.md`, `SOURCES.md`, `NOTES.md`, `KNOWN.md`, and the lesson in progress: the newest lesson that is not done.
-2. When there is no goal yet, ask the user what they want to do with the topic, one question per message, and write `GOAL.md` before the first lesson. When the topic is a tool, a language or a framework, find the version the user works with, from their project's lock files or by asking, and write it in `GOAL.md`. Then ask three short questions that show what they know already, and write what they show in `KNOWN.md`.
+2. When there is no goal yet, run the interview of `interview-me` on what the user wants to do with the topic. After their clear yes, write `GOAL.md` from its summary, before the first lesson: its Goal, Done when, Limits and Not doing become the Goal, Done when, Time and limits and Not for now of `GOAL.md`. When the topic is a tool, a language or a framework, find the version the user works with, from their project's lock files or by asking, and write it in `GOAL.md`. Then ask three short questions that show what they know already, and write what they show in `KNOWN.md`.
 3. When an earlier lesson is done, warm up first, from memory: one question on the last lesson, and one on the lesson recalled longest ago, each in its own message. Answer each reply as "Answering the user" says, and after a miss ask a new question on the same point. Write the result in `KNOWN.md`. A lesson leaves the warm-ups once three later sessions have recalled it.
 4. When a lesson is in progress, go on from its first part that is not done. Otherwise build the next lesson.
 5. Teach the lesson in the chat.

@@ -11,6 +11,16 @@ The user studies a course, a book or a path on their own, such as a video course
 
 You do not see the videos or the pages. You know the course from three things: its table of contents, the line the user writes after each step, and their code. For a hard part, ask for the text of that video or page, such as its transcript.
 
+## Before you start
+
+The first session settles the user's goal with the `interview-me` skill. Run it and follow all of it: one question per message, your guess with each one, the summary, and the wait for a clear yes. On the goal, `interview-me` decides how you ask. On everything else, this skill does.
+
+When `interview-me` is not installed, stop and give the command that installs it:
+
+```bash
+npx skills add youssef-ahmed-Devlogs/skills --skill interview-me
+```
+
 ## The workspace
 
 Write every file in the folder the user ran this skill in, one folder per path. Make each file only when it is first needed. [WORKSPACE-FORMAT.md](./WORKSPACE-FORMAT.md) gives the shape of each.
@@ -33,7 +43,7 @@ The practice project is the user's own. Never write in it, unless the user says 
 1. Read `PATH.md`, `SOURCES.md`, `NOTES.md`, `KNOWN.md`, the course in progress, and the open items of `FIX-LATER.md`.
 2. When there is no `PATH.md` yet, set it up, one question per message:
    - Ask what they study, and its link. Find its table of contents yourself, from its page. When you cannot reach it, ask the user to paste it.
-   - Ask what they want to be able to do at the end. Compare it with the table of contents at once. When the goal needs a topic the course never teaches, such as a database in a course without one, say so now, and ask one question: shrink the goal to what the course covers, or add a course of their choice to the path?
+   - Run the interview of `interview-me` on what they want to be able to do at the end, with the table of contents in hand. When the goal needs a topic the course never teaches, such as a database in a course without one, raise it inside the interview, as one question: shrink the goal to what the course covers, or add a course of their choice to the path? The interview never asks what you can find yourself, such as the versions or the table of contents. After their clear yes, write the goal in `PATH.md`, from its summary.
    - Ask whether they build a project beside it, and where its folder is.
    - Ask which step they reached. The steps before it are "before we started": mark them so, and never check them one by one.
    - Find the versions the course uses, from its page or its date, and the versions the project uses, from its lock files. A step is old only next to a version.
