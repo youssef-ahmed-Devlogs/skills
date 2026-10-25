@@ -24,8 +24,8 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 
 ## What it does
 
-1. It asks what you want to do with the topic, and three short questions that show what you know already.
-2. It builds a small lesson from official docs and known experts, as a file for itself. You never need to read it.
+1. It asks what you want to do with the topic, and three short questions that show what you know already. For a tool, a language or a framework, it finds the version you work with.
+2. It builds a small lesson from official docs and known experts for your version, kept in `SOURCES.md`, as a file for itself. You never need to read it. A question you ask on the side is answered from a source too, with its link.
 3. It teaches the lesson in the chat, one part at a time. Each part starts by asking whether you know it already.
 4. It asks questions that make you recall or use the idea, one per message, and moves on after two right answers in a row.
 5. A final check mixes the parts. The next session starts with a short recall of older lessons.

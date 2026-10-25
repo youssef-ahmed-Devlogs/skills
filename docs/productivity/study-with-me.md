@@ -24,9 +24,9 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 
 ## What it does
 
-1. **Setup, once:** it finds the course's table of contents and the versions it uses, asks your goal, where your practice project is, and which step you reached.
+1. **Setup, once:** it finds the course's table of contents and the versions it uses, asks your goal, where your practice project is, and which step you reached. Then it gathers its sources for each topic of the course: the official docs of each tool for those versions, and the main security and community references, such as OWASP for auth.
 2. **After each step:** you say in a line or two what the step covered. It reads the code you wrote for it, runs it when it can, and asks one or two questions on the main point.
-3. **It judges the course:** when a step differs from the official way, it says what kind of choice it is, with a source and a version.
+3. **It judges the course:** it checks every step against those sources, not only the ones that look odd, since a step that looks normal can still be wrong. When a step differs, it says what kind of choice it is, with a source and a version. A new topic, such as file uploads or payments, gets its sources first.
 4. **It fills gaps:** when you miss something the course takes for granted, it teaches just that, then sends you back to the same step.
 5. **At the end:** you fix the wrong and old steps in your project yourself, and it checks each fix.
 
@@ -95,6 +95,7 @@ When you miss the same base idea twice, such as what an object key is, it says t
 All in the folder you ran it in:
 
 - `PATH.md`: your goal, the courses, where you are, and your project's folder.
+- `SOURCES.md`: the sources it checks each step against, by topic, each with its version.
 - `courses/`: one file per course, with its table of contents and what you showed at each step.
 - `FIX-LATER.md`: the wrong and old steps, each with its source, to fix at the end.
 - `gaps/`: what it taught to fill a big gap, for you to read again.
