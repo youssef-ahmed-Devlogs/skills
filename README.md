@@ -26,6 +26,7 @@ Some skills call skills of [Matt Pocock](https://github.com/mattpocock/skills), 
 | [interview-with-docs](./docs/productivity/interview-with-docs.md) | The same interview in a project, with its glossary and ADRs written as you go |
 | [tutor-me](./docs/productivity/tutor-me.md) | Learn a topic from zero, with lessons the agent builds and teaches in the chat |
 | [study-with-me](./docs/productivity/study-with-me.md) | Follow a course, a book or a path, with a teacher who checks each step |
+| [build-with-me](./docs/productivity/build-with-me.md) | Build a project by hand, with a reviewer who checks it against the docs |
 | [catch-me-up](./docs/productivity/catch-me-up.md) | Learn a code project you did not write, and keep up as it changes every day |
 
 ### Your agents

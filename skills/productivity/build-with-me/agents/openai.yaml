@@ -1,0 +1,5 @@
+interface:
+  display_name: "Build with me"
+  short_description: "Build a project by hand, with a reviewer who checks it against the docs"
+policy:
+  allow_implicit_invocation: false
