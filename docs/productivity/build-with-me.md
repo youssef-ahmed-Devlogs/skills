@@ -32,7 +32,7 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 6. Each point gets one of five labels, with its source: official, community advice, sound preference, wrong preference, or old. A real danger, such as a security hole, is said at once.
 7. You fix each point by hand. It reads your fix, checks it against the same source, and marks it fixed.
 
-It never quizzes you. A course or repo you follow is only a list of what to build: its code is judged like yours.
+It never quizzes you. From the first session, it explains an idea in small chunks, one per message, and goes to the next only when you say it is clear. It keeps what it learns only in its notes, never in the agent's own memory. A course or repo you follow is only a list of what to build: its code is judged like yours.
 
 ## When to use it
 
@@ -88,7 +88,7 @@ You change the hash by hand, and say it is done. It reads the change, runs the t
 - **A project you already built:** it reads the code and the lock files first, asks only what it cannot find, and reviews what you point at.
 - **A course you build beside:** it reads the course for what to build only, and checks your code against the docs, not against the teacher's code.
 - **A source of your own:** an article or a repo you trust goes into the sources, marked as yours. When it disagrees with the official docs, it says so, with both links.
-- **Stuck on an idea:** a point rests on something you do not know, such as how a transaction works. It explains only what the point needs, with its source, and goes back to the point.
+- **Stuck on an idea:** a point rests on something you do not know, such as how a transaction works. It explains only what the point needs, in small chunks with its source, and goes back to the point once you say it is clear.
 
 ## What you get
 
