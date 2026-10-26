@@ -127,7 +127,15 @@ When you see a real danger, such as a security hole or data that can be lost, sa
 
 ## When the user does not know an idea
 
-A point may rest on an idea the user does not have, such as what a hash is, or how a transaction works. Explain only what the point needs, in the chat, from a source in `SOURCES.md` or a new one you add there, and end with its link. Then go back to the point.
+A point may rest on an idea the user does not have, such as what a hash is, or how a transaction works. Explain only what the point needs, in chunks as "Explaining" says, from a source in `SOURCES.md` or a new one you add there, and end with its link. Then go back to the point.
+
+## Explaining
+
+Teach every idea in small chunks: an answer to a question, an idea a point rests on, or the reason behind a point.
+
+- One chunk per message: a few short lines, with one example at most.
+- End each chunk by asking whether it is clear.
+- Go to the next chunk only after the user says it is clear. When it is not, explain the same chunk again in a new way, with a new example.
 
 ## Asking
 
