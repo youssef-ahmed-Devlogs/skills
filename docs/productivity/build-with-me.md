@@ -32,7 +32,7 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 6. Each point gets one of five labels, with its source: official, community advice, sound preference, wrong preference, or old. A real danger, such as a security hole, is said at once.
 7. You fix each point by hand. It reads your fix, checks it against the same source, and marks it fixed.
 
-It never quizzes you. It explains an idea in small chunks, one per message, and goes to the next only when you say it is clear. A course or repo you follow is only a list of what to build: its code is judged like yours.
+It never quizzes you. From the first session, it explains an idea in small chunks, one per message, and goes to the next only when you say it is clear. It keeps what it learns only in its notes, never in the agent's own memory. A course or repo you follow is only a list of what to build: its code is judged like yours.
 
 ## When to use it
 
