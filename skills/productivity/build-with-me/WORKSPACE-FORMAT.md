@@ -57,7 +57,7 @@ Versions: {tool} {version}, {tool} {version}, as in PROJECT.md.
 - {A topic of the project with no good source yet.}
 ```
 
-- Official docs come first, for the versions in `PROJECT.md`. Then the main community and security references, such as OWASP, and known experts. No sales pages.
+- Order the sources of each topic as "Sources" in SKILL.md says: the subject's official docs, for the versions in `PROJECT.md`, then its community, then the docs and community of each inner tool. Security references, such as OWASP, go under the topic they guard. No sales pages.
 - A source the user brought says "The user's own", and its kind says where it ranks.
 - A docs source says its version: the docs of another version can say something else.
 - When a version in the project changes, replace the docs sources of that tool with the docs of the new version.
@@ -74,7 +74,7 @@ Versions: {tool} {version}, {tool} {version}, as in PROJECT.md.
 
 ## Fixed
 
-- **{Short title}**. Fixed {date}, by the user | by the agent, on the user's yes. Checked: {how, such as the tests ran}.
+- **{Short title}**. Fixed {date}, by the user | by the agent, on the user's yes. Checked: {how, such as read against the same source}.
 
 ## Kept
 
