@@ -27,12 +27,12 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 1. It asks what you are doing: a project you want to build, one you are building, or one already built that it should follow from here. You can bring a description, a README, or a course or repo you follow.
 2. It runs an interview with `interview-me` until the shape of the project is clear. When you do not know the domain, such as how an online shop works as a business, it finds sources on it and explains the few ideas the project needs.
 3. In the same interview, it asks your stack, any course or repo you follow, any source of your own you want to add, and how you want to work: in parts with fixed steps, or no fixed way, only reviews when you ask.
-4. It gathers the sources before it judges anything: the official docs of each tool for your versions, read from your lock files, and the main community and security references, such as OWASP for auth.
-5. You ask for a review whenever you want: two lines, a file, a plan, a commit, or the whole project. It checks it against the sources, the project's own rules and what the project must do, and runs it or its tests when it can.
-6. Each point gets one of five labels, with its source: official, community advice, sound preference, wrong preference, or old. A real danger, such as a security hole, is said at once.
+4. It gathers the sources before it judges anything, for your versions, read from your lock files, in one order: your framework's official docs, then its community (its core team's repos, then large projects built with it, then articles), then the docs and community of the tools inside it, such as an ORM. It goes down a level only when the level above says nothing. Security references, such as OWASP for auth, guard every level.
+5. You ask for a review whenever you want: two lines, a file, a plan, a commit, or the whole project. It checks it by reading it against the sources, the project's own rules and what the project must do. It runs nothing unless you say there is an error or a problem.
+6. Each point of a review gets one of five labels, with its source: official, community advice, sound preference, wrong preference, or old. A real danger, such as a security hole, is said at once.
 7. You fix each point by hand. It reads your fix, checks it against the same source, and marks it fixed.
 
-It never quizzes you. From the first session, it explains an idea in small chunks, one per message, and goes to the next only when you say it is clear. It keeps what it learns only in its notes, never in the agent's own memory. A course or repo you follow is only a list of what to build: its code is judged like yours.
+It never quizzes you. To teach a topic, it reads all your framework says on it first. It tells you what you will build, as a list of steps, then explains one step per message, in ten lines at most, and waits while you apply it. When your framework shows more than one way, it names each one and recommends one, with why. It keeps what it learns only in its notes, never in the agent's own memory. A course or repo you follow is only a list of what to build: its code is judged like yours.
 
 ## When to use it
 
@@ -81,14 +81,15 @@ Agent:  Right: the access token is short-lived, and the secret comes from the
         `sameSite`. Which one next?
 ```
 
-You change the hash by hand, and say it is done. It reads the change, runs the tests, and marks the point fixed.
+You change the hash by hand, and say it is done. It reads the change, checks it against the same source, and marks the point fixed.
 
 ## More use cases
 
 - **A project you already built:** it reads the code and the lock files first, asks only what it cannot find, and reviews what you point at.
 - **A course you build beside:** it reads the course for what to build only, and checks your code against the docs, not against the teacher's code.
 - **A source of your own:** an article or a repo you trust goes into the sources, marked as yours. When it disagrees with the official docs, it says so, with both links.
-- **Stuck on an idea:** a point rests on something you do not know, such as how a transaction works. It explains only what the point needs, in small chunks with its source, and goes back to the point once you say it is clear.
+- **Stuck on an idea:** a point rests on something you do not know, such as how a transaction works. It explains only what the point needs, in short steps with its source, and goes back to the point.
+- **A new part to build:** you ask how to show the products in pages. It reads all your framework says on lists in pages, tells you the steps, such as reading the page number, the database query, the total and the response, and explains one step per message while you write the code.
 
 ## What you get
 
