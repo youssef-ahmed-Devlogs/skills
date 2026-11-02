@@ -12,6 +12,7 @@ Every skill here has its own page, with a real example and the cases it fits. St
 | Follow a course, a book or a path, with a teacher beside you | `study-with-me` | [study-with-me](./productivity/study-with-me.md) |
 | Build a project by hand, with a reviewer who checks it against the docs | `build-with-me` | [build-with-me](./productivity/build-with-me.md) |
 | Learn a code project you did not write, and keep up as it changes | `catch-me-up` | [catch-me-up](./productivity/catch-me-up.md) |
+| See an agreed plan, unfamiliar project or completed change as diagrams | `to-diagram` | [to-diagram](./engineering/to-diagram.md) |
 | Add a rule, a skill or a check for your agents, in the right place | `add-rule-or-skill` | [add-rule-or-skill](./productivity/add-rule-or-skill.md) |
 | Understand what a skill does before you use it | `explain-skill` | [explain-skill](./productivity/explain-skill.md) |
 | Hand a list of fixes to CLI workers, and review each one | `delegating-to-cli` | [delegating-to-cli](./engineering/delegating-to-cli.md) |

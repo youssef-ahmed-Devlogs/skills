@@ -1,0 +1,5 @@
+interface:
+  display_name: "To Diagram"
+  short_description: "Turn plans and code into evidence-linked diagrams"
+policy:
+  allow_implicit_invocation: false

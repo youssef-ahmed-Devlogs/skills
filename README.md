@@ -1,6 +1,6 @@
 # Skills
 
-Agent skills for Claude Code, Codex, GitHub Copilot and other agents: think a plan through before the work starts, with its docs if you want, learn a topic or follow a course with a teacher beside you, keep up with a code project that changes every day, clean up old code safely, hand fixes to CLI workers, and keep your agents' rules in the right place.
+Agent skills for Claude Code, Codex, GitHub Copilot and other agents: think a plan through before the work starts, turn plans and code into diagrams, learn a topic or follow a course with a teacher beside you, keep up with a code project that changes every day, clean up old code safely, hand fixes to CLI workers, and keep your agents' rules in the right place.
 
 They are small and easy to change. Take the ones you need, and make them your own.
 
@@ -41,6 +41,7 @@ Some skills call skills of [Matt Pocock](https://github.com/mattpocock/skills), 
 | Skill | Use it to |
 | --- | --- |
 | [delegating-to-cli](./docs/engineering/delegating-to-cli.md) | Hand a list of fixes to CLI workers, one tab each, and review each one |
+| [to-diagram](./docs/engineering/to-diagram.md) | See an agreed plan, unfamiliar project or code change as diagrams |
 | [setup-refactor-issues](./docs/engineering/setup-refactor-issues.md) | Prepare a project to clean up its old code, once |
 | [refactor-issues](./docs/engineering/refactor-issues.md) | Open issues for old code that breaks your rules, safest first |
 | [implement-refactor-issues](./docs/engineering/implement-refactor-issues.md) | Do those issues in one pull request, with what users get kept the same |

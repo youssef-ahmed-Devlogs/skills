@@ -1,0 +1,63 @@
+<!doctype html>
+<html lang="__LANG__" dir="__DIR__">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="dark">
+<title>__TITLE__</title>
+<style>
+:root{--bg:#0b1020;--panel:#151d31;--panel2:#1d2940;--line:#35435d;--text:#eef3ff;--muted:#a9b7d0;--accent:#7dd3fc;--verified:#34d399;--planned:#fbbf24;--changed:#fb923c;--missing:#f87171;--unknown:#c4b5fd}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 15% 0,#182848 0,transparent 34%),var(--bg);color:var(--text);font:15px/1.55 system-ui,-apple-system,Segoe UI,Tahoma,Arial,sans-serif}a{color:var(--accent)}button{font:inherit;color:inherit;background:var(--panel2);border:1px solid var(--line);border-radius:8px;padding:.35rem .7rem;cursor:pointer}button:hover,button:focus-visible{border-color:var(--accent);outline:none}header,main{max-width:1300px;margin:auto;padding:1.5rem}header{padding-top:2.5rem}h1{font-size:clamp(1.7rem,4vw,2.5rem);line-height:1.2;margin:.2rem 0 .7rem}h2{font-size:1.35rem;margin:0 0 .6rem}h3{font-size:1.06rem;margin:0 0 .4rem}.eyebrow{text-transform:uppercase;letter-spacing:.12em;color:var(--accent);font-size:.77rem;font-weight:700}.muted{color:var(--muted)}.meta{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}.pill{border:1px solid var(--line);background:var(--panel);border-radius:100px;padding:.28rem .7rem;color:var(--muted)}.summary{font-size:1.08rem;max-width:80ch}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1rem}.card,.diagram,.tablewrap,.detail{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:1.1rem}.card ul{padding-inline-start:1.3rem;margin:.4rem 0}.card li+li{margin-top:.35rem}section{margin:1.5rem 0 2rem}.diagram{margin:1rem 0}.diagram-head{display:flex;align-items:start;justify-content:space-between;gap:1rem;flex-wrap:wrap}.diagram-head p{margin:.25rem 0}.toolbar{display:flex;gap:.35rem;direction:ltr}.viewport{margin-top:1rem;border:1px solid var(--line);border-radius:10px;overflow:hidden;background:#0d1728;min-height:360px;cursor:grab}.viewport.dragging{cursor:grabbing}.viewport svg{width:100%;height:min(67vh,640px);min-height:360px;display:block;touch-action:none}.node{cursor:pointer}.node:focus-visible{outline:none}.node:focus-visible .shape,.node:hover .shape{stroke:var(--accent);stroke-width:3}.edge{fill:none;stroke:#7990b1;stroke-width:2}.edge.return{stroke-dasharray:8 5}.edge.async{stroke-dasharray:2 5}.edge-label{fill:var(--muted);font-size:12px}.node-label{fill:var(--text);font-size:14px;font-weight:650}.node-sub{fill:var(--muted);font-size:11px}.shape{fill:#21304a;stroke:#58708f;stroke-width:1.5}.node[data-status="implemented"] .shape{stroke:var(--verified)}.node[data-status="planned"] .shape{stroke:var(--planned)}.node[data-status="changed"] .shape{stroke:var(--changed)}.node[data-status="missing"] .shape{stroke:var(--missing)}.node[data-status="unknown"] .shape{stroke:var(--unknown)}.seq-life{stroke:#53627b;stroke-width:1.5;stroke-dasharray:5 5}.field{fill:var(--muted);font-size:12px}.detail{position:sticky;bottom:1rem;box-shadow:0 16px 40px #0008;display:none}.detail.open{display:block}.detail .close{float:right}.detail p{margin:.4rem 0}.detail ul{margin:.4rem 0;padding-inline-start:1.3rem}.tablewrap{overflow:auto}table{width:100%;border-collapse:collapse;min-width:620px}th,td{padding:.7rem;text-align:start;border-bottom:1px solid var(--line);vertical-align:top}th{color:var(--accent);font-size:.85rem}code{font:12px/1.4 ui-monospace,SFMono-Regular,Consolas,monospace;unicode-bidi:plaintext;overflow-wrap:anywhere}.badge{display:inline-block;border-radius:100px;border:1px solid currentColor;padding:.1rem .5rem;font-size:.78rem;font-weight:650}.badge.matched,.badge.verified,.badge.implemented{color:var(--verified)}.badge.planned{color:var(--planned)}.badge.changed{color:var(--changed)}.badge.missing{color:var(--missing)}.badge.unknown,.badge.unverified{color:var(--unknown)}.skip{position:absolute;top:-3rem}.skip:focus{top:.4rem;background:var(--panel);padding:.4rem}footer{padding:1rem 1.5rem 3rem;color:var(--muted);text-align:center}@media print{body{background:white;color:#111}.card,.diagram,.tablewrap{background:white;color:#111;break-inside:avoid}.viewport{background:white}.node-label{fill:#111}.node-sub,.field,.edge-label{fill:#444}.shape{fill:#fff}button,.detail{display:none!important}}
+.node:hover .edge,.node:focus-visible .edge{stroke:var(--accent);stroke-width:4}.edge{pointer-events:stroke}.detail{position:fixed;bottom:1rem;left:1rem;right:1rem;max-width:620px;max-height:45vh;overflow:auto;margin:auto;z-index:1000}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">__SKIP__</a>
+<header>__HEADER__</header>
+<main id="main">__CONTENT__</main>
+<aside id="detail" class="detail" aria-live="polite" aria-label="__DETAIL_LABEL__"><button class="close" id="close-detail" aria-label="__CLOSE__">×</button><h3 id="detail-title"></h3><p id="detail-text"></p><p id="detail-status"></p><ul id="detail-evidence"></ul></aside>
+<footer>__FOOTER__</footer>
+<script id="report-data" type="application/json">__DATA__</script>
+<script>
+(() => {
+  const data = JSON.parse(document.getElementById('report-data').textContent);
+  const detail = document.getElementById('detail');
+  const byId = Object.fromEntries((data.evidence || []).map(e => [e.id, e]));
+  document.querySelectorAll('.node[data-key]').forEach(el => {
+    const open = () => {
+      const item = data.details[el.dataset.key];
+      if (!item) return;
+      document.getElementById('detail-title').textContent = item.label || '';
+      document.getElementById('detail-text').textContent = item.detail || '';
+      document.getElementById('detail-status').textContent = item.status || '';
+      const list = document.getElementById('detail-evidence'); list.replaceChildren();
+      for (const id of item.evidence || []) {
+        const li = document.createElement('li'); const a = document.createElement('a');
+        a.href = '#ev-' + id; a.textContent = id + ' — ' + (byId[id]?.claim || '');
+        li.append(a); list.append(li);
+      }
+      detail.classList.add('open');
+    };
+    el.addEventListener('click', open);
+    el.addEventListener('keydown', ev => { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); open(); } });
+  });
+  document.getElementById('close-detail').addEventListener('click', () => detail.classList.remove('open'));
+  document.addEventListener('keydown', ev => { if (ev.key === 'Escape') detail.classList.remove('open'); });
+  document.querySelectorAll('.viewport').forEach(view => {
+    const svg = view.querySelector('svg'); const original = svg.viewBox.baseVal;
+    const home = {x:original.x,y:original.y,w:original.width,h:original.height};
+    let box = {...home}, drag = null;
+    const set = () => svg.setAttribute('viewBox', `${box.x} ${box.y} ${box.w} ${box.h}`);
+    const zoom = (factor, cx=box.x+box.w/2, cy=box.y+box.h/2) => { const w=Math.max(200,Math.min(home.w*3,box.w*factor)); const h=w*box.h/box.w; box={x:cx-(cx-box.x)*w/box.w,y:cy-(cy-box.y)*h/box.h,w,h}; set(); };
+    view.parentElement.querySelector('[data-action="in"]').addEventListener('click',()=>zoom(.8));
+    view.parentElement.querySelector('[data-action="out"]').addEventListener('click',()=>zoom(1.25));
+    view.parentElement.querySelector('[data-action="reset"]').addEventListener('click',()=>{box={...home};set();});
+    svg.addEventListener('wheel',e=>{e.preventDefault(); const r=svg.getBoundingClientRect(); const cx=box.x+(e.clientX-r.left)/r.width*box.w; const cy=box.y+(e.clientY-r.top)/r.height*box.h; zoom(e.deltaY < 0 ? 0.88 : 1.12,cx,cy);},{passive:false});
+    svg.addEventListener('pointerdown',e=>{if(e.target.closest('.node'))return;drag={x:e.clientX,y:e.clientY,startX:box.x,startY:box.y};svg.setPointerCapture(e.pointerId);view.classList.add('dragging');});
+    svg.addEventListener('pointermove',e=>{if(!drag)return;const r=svg.getBoundingClientRect();box.x=drag.startX-(e.clientX-drag.x)*box.w/r.width;box.y=drag.startY-(e.clientY-drag.y)*box.h/r.height;set();});
+    svg.addEventListener('pointerup',()=>{drag=null;view.classList.remove('dragging');});
+    svg.addEventListener('pointercancel',()=>{drag=null;view.classList.remove('dragging');});
+  });
+})();
+</script>
+</body>
+</html>

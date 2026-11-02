@@ -1,0 +1,37 @@
+{
+  "title": "خطة متفق عليها: استرجاع مبلغ الطلب",
+  "language": "ar",
+  "phase": "plan",
+  "repository": "لم يُفحص مستودع",
+  "baseline": "الخطة المتفق عليها في المحادثة؛ مثال توضيحي",
+  "scope": "المصدر الوحيد هو وصف الخطة في هذا المثال. لا توجد أسماء ملفات أو دوال مؤكدة، ولم يُنفذ كود أو اختبار.",
+  "summary": "الخطة المقترحة تتحقق من أهلية الطلب، تطلب الاسترجاع من مزود الدفع، ثم تسجل النتيجة أو تعرض سبب الفشل.",
+  "decisions": ["اختيار Flowchart لأن قرار الأهلية ومسار فشل المزود هما لب الخطة."],
+  "unknowns": ["لم تُحسم سياسة إعادة المحاولة عند تعطل مزود الدفع.", "أسماء الملفات والدوال ستتحدد عند فحص المشروع."],
+  "evidence": [
+    {"id":"R1","kind":"request","claim":"الخطة المتفق عليها في المثال: التحقق من أهلية الطلب ثم طلب الاسترجاع ثم تسجيل النتيجة.","confidence":"planned"},
+    {"id":"A1","kind":"assumption","claim":"مسار رفض الأهلية لا يستدعي مزود الدفع؛ يحتاج تأكيد عند التطبيق.","confidence":"planned"},
+    {"id":"U1","kind":"assumption","claim":"سياسة إعادة المحاولة غير محددة في الخطة.","confidence":"unknown"}
+  ],
+  "diagrams": [
+    {
+      "id":"F1","type":"flowchart","title":"تدفق الاسترجاع المقترح","question":"متى نطلب الاسترجاع ومتى نرفض؟","reason":"يُظهر قرار الأهلية وفروع النجاح والفشل قبل بدء التنفيذ.",
+      "nodes":[
+        {"id":"request","label":"طلب استرجاع","kind":"start","status":"planned","evidence":["R1"]},
+        {"id":"eligible","label":"الطلب مؤهل؟","kind":"decision","status":"planned","evidence":["R1"]},
+        {"id":"provider","label":"طلب الاسترجاع من مزود الدفع","status":"planned","evidence":["R1"]},
+        {"id":"record","label":"تسجيل النتيجة","kind":"end","status":"planned","evidence":["R1"]},
+        {"id":"reject","label":"رفض مع سبب واضح","kind":"end","status":"planned","evidence":["A1"]},
+        {"id":"retry","label":"سياسة إعادة المحاولة؟","kind":"decision","status":"unknown","evidence":["U1"]}
+      ],
+      "edges":[
+        {"from":"request","to":"eligible","label":"بدء","status":"planned","evidence":["R1"]},
+        {"from":"eligible","to":"provider","label":"نعم","status":"planned","evidence":["R1"]},
+        {"from":"eligible","to":"reject","label":"لا","status":"planned","evidence":["A1"]},
+        {"from":"provider","to":"record","label":"نجاح","status":"planned","evidence":["R1"]},
+        {"from":"provider","to":"retry","label":"فشل أو مهلة","status":"unknown","evidence":["U1"]}
+      ]
+    }
+  ],
+  "audit": []
+}
