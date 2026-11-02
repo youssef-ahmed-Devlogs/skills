@@ -1,0 +1,186 @@
+{
+  "title": "Illustrative existing-project map",
+  "language": "en",
+  "phase": "explain",
+  "repository": "SYNTHETIC NestJS/Laravel fixture",
+  "baseline": "Illustrative fixture; no real repository inspected",
+  "scope": "Synthetic code-reading example. File paths and symbols are illustrative; no real repository or runtime was inspected.",
+  "summary": "The illustrative NestJS order API calls a Laravel inventory endpoint and stores orders with line items.",
+  "decisions": [
+    "Use C4 for ownership and ER for persistent data; these answer different onboarding questions."
+  ],
+  "unknowns": [
+    "Deployment wiring and the external service response were not checked in this synthetic example."
+  ],
+  "evidence": [
+    {
+      "id": "P1",
+      "kind": "code",
+      "path": "src/orders/orders.controller.ts",
+      "symbol": "OrdersController.create",
+      "lines": "12-25",
+      "claim": "Synthetic example: POST /orders delegates to the order service.",
+      "confidence": "verified"
+    },
+    {
+      "id": "P2",
+      "kind": "code",
+      "path": "src/orders/orders.service.ts",
+      "symbol": "OrdersService.create",
+      "lines": "22-49",
+      "claim": "Synthetic example: service invokes the Laravel inventory client.",
+      "confidence": "verified"
+    },
+    {
+      "id": "P3",
+      "kind": "code",
+      "path": "app/Http/Controllers/InventoryController.php",
+      "symbol": "InventoryController::reserve",
+      "lines": "14-31",
+      "claim": "Synthetic example: Laravel endpoint handles inventory reservation.",
+      "confidence": "verified"
+    },
+    {
+      "id": "P4",
+      "kind": "code",
+      "path": "database/migrations/create_orders_table.php",
+      "symbol": "up",
+      "lines": "8-22",
+      "claim": "Synthetic example: orders table has id and status columns.",
+      "confidence": "verified"
+    },
+    {
+      "id": "P5",
+      "kind": "code",
+      "path": "database/migrations/create_order_items_table.php",
+      "symbol": "up",
+      "lines": "8-26",
+      "claim": "Synthetic example: order_items has an order_id foreign key to orders.",
+      "confidence": "verified"
+    }
+  ],
+  "diagrams": [
+    {
+      "id": "C1",
+      "type": "c4",
+      "level": "container",
+      "title": "Service ownership in the existing example",
+      "question": "Which service owns inventory in the sample code?",
+      "reason": "Shows a cross-service boundary.",
+      "nodes": [
+        {
+          "id": "client",
+          "label": "Client",
+          "kind": "person",
+          "status": "context",
+          "evidence": []
+        },
+        {
+          "id": "api",
+          "label": "NestJS Order API",
+          "kind": "container",
+          "status": "implemented",
+          "evidence": [
+            "P1"
+          ]
+        },
+        {
+          "id": "inventory",
+          "label": "Laravel Inventory",
+          "kind": "external",
+          "status": "implemented",
+          "evidence": [
+            "P3"
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "client",
+          "to": "api",
+          "label": "POST /orders",
+          "status": "implemented",
+          "evidence": [
+            "P1"
+          ]
+        },
+        {
+          "from": "api",
+          "to": "inventory",
+          "label": "reserve stock",
+          "status": "implemented",
+          "evidence": [
+            "P2",
+            "P3"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ER1",
+      "type": "er",
+      "title": "Observed sample order storage",
+      "question": "How do the example tables relate?",
+      "reason": "Shows the relationship defined in illustrative migration code.",
+      "nodes": [
+        {
+          "id": "orders",
+          "label": "orders",
+          "status": "implemented",
+          "evidence": [
+            "P4"
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": "bigint",
+              "key": "PK",
+              "nullable": false
+            },
+            {
+              "name": "status",
+              "type": "varchar",
+              "nullable": false
+            }
+          ]
+        },
+        {
+          "id": "items",
+          "label": "order_items",
+          "status": "implemented",
+          "evidence": [
+            "P5"
+          ],
+          "fields": [
+            {
+              "name": "id",
+              "type": "bigint",
+              "key": "PK",
+              "nullable": false
+            },
+            {
+              "name": "order_id",
+              "type": "bigint",
+              "key": "FK",
+              "nullable": false
+            }
+          ]
+        }
+      ],
+      "edges": [
+        {
+          "from": "orders",
+          "to": "items",
+          "label": "1 → many (synthetic migration)",
+          "cardinality": "||--o{",
+          "status": "implemented",
+          "evidence": [
+            "P4",
+            "P5"
+          ]
+        }
+      ]
+    }
+  ],
+  "audit": []
+}

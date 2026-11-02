@@ -1,0 +1,73 @@
+{
+  "title": "مثال توضيحي: مراجعة Checkout",
+  "language": "ar",
+  "phase": "combined",
+  "repository": "SYNTHETIC Laravel + NestJS fixture",
+  "baseline": "مثال مصطنع؛ لم يُفحص مستودع حقيقي",
+  "scope": "هذا المثال لا يصف نظامًا حقيقيًا. أسماء الملفات والدوال افتراضية وتُستخدم لتوضيح صيغة التقرير ومرحلتَي التخطيط والمراجعة.",
+  "summary": "خطة لفحص المخزون قبل تفويض الدفع، ثم مراجعة افتراضية تُظهر أن الاستدعاء الفعلي لخدمة المخزون جاء بعد التفويض. الرسم يوضح الأثر وحدود الإثبات في مثال تدريبي فقط.",
+  "decisions": [
+    "اختيار Flowchart لإظهار فرع نفاد المخزون، وSequence لترتيب مكالمات الخدمات، وState لعمر الطلب.",
+    "اعتبار Order.status مصدر حالة الطلب في هذا المثال الافتراضي."
+  ],
+  "unknowns": [
+    "لا توجد نتيجة اختبار تشغيل في هذا المثال؛ تمثيل السلوك مبني على مقاطع كود افتراضية فقط.",
+    "سلوك بوابة الدفع الخارجية غير مثبت في هذا التقرير."
+  ],
+  "evidence": [
+    {"id":"E1","kind":"request","claim":"المطلوب: رفض الطلب عند نفاد المخزون قبل تفويض الدفع.","confidence":"planned"},
+    {"id":"E2","kind":"assumption","claim":"التصميم المقترح يضيف فحص المخزون ثم تفويض الدفع.","confidence":"planned"},
+    {"id":"E3","kind":"code","path":"src/checkout/checkout.service.ts","symbol":"CheckoutService.placeOrder","lines":"20-48","claim":"في هذا المثال المصطنع، الكود يستدعي authorize قبل reserveStock.","confidence":"verified"},
+    {"id":"E4","kind":"code","path":"app/Http/Controllers/InventoryController.php","symbol":"InventoryController::reserve","lines":"17-33","claim":"في هذا المثال المصطنع، نقطة reserve ترجع رفضًا عند نقص الكمية.","confidence":"verified"},
+    {"id":"E5","kind":"code","path":"src/orders/order.entity.ts","symbol":"Order.status","lines":"12-16","claim":"في هذا المثال المصطنع، الطلب يخزن الحالة pending أو paid أو failed.","confidence":"verified"},
+    {"id":"E6","kind":"assumption","claim":"لم يثبت وجود تعويض تلقائي إذا فشل حجز المخزون بعد تفويض الدفع.","confidence":"unknown"}
+  ],
+  "diagrams": [
+    {
+      "id":"D1","type":"flowchart","title":"مسار إنشاء الطلب","question":"أين يحدث الرفض وما ترتيب الأثر الجانبي؟","reason":"القرار والفرع الفاشل أساسيان لفهم الخطأ.",
+      "nodes":[
+        {"id":"start","label":"POST /checkout","status":"implemented","evidence":["E3"],"kind":"start","detail":"طلب العميل"},
+        {"id":"auth","label":"تفويض الدفع","status":"implemented","evidence":["E3"],"detail":"authorize()"},
+        {"id":"stock","label":"المخزون متاح؟","status":"implemented","evidence":["E3","E4"],"kind":"decision","detail":"reserveStock()"},
+        {"id":"paid","label":"حفظ paid","status":"implemented","evidence":["E3","E5"],"kind":"end"},
+        {"id":"fail","label":"رفض الطلب","status":"implemented","evidence":["E4"],"kind":"end"}
+      ],
+      "edges":[
+        {"from":"start","to":"auth","label":"request","status":"implemented","evidence":["E3"]},
+        {"from":"auth","to":"stock","label":"authorized","status":"implemented","evidence":["E3"]},
+        {"from":"stock","to":"paid","label":"نعم","status":"implemented","evidence":["E3","E5"]},
+        {"from":"stock","to":"fail","label":"لا","status":"implemented","evidence":["E4"]}
+      ]
+    },
+    {
+      "id":"D2","type":"sequence","title":"تتابع الدفع والمخزون","question":"أي خدمة تُستدعى أولًا؟","reason":"الترتيب بين NestJS وبوابة الدفع وLaravel هو موضع المراجعة.",
+      "participants":[
+        {"id":"api","label":"NestJS Checkout","status":"implemented","evidence":["E3"]},
+        {"id":"gateway","label":"Payment gateway","status":"context","evidence":[],"detail":"نظام خارجي؛ سلوكه غير مفحوص"},
+        {"id":"inventory","label":"Laravel Inventory","status":"implemented","evidence":["E4"]}
+      ],
+      "messages":[
+        {"from":"api","to":"gateway","label":"authorize()","style":"call","status":"implemented","evidence":["E3"]},
+        {"from":"api","to":"inventory","label":"reserveStock()","style":"call","status":"implemented","evidence":["E3","E4"]},
+        {"from":"inventory","to":"api","label":"out of stock","style":"return","status":"implemented","evidence":["E4"]}
+      ]
+    },
+    {
+      "id":"D3","type":"state","title":"حالات الطلب","question":"ما الحالات المخزنة وما الانتقالات الموثقة؟","reason":"حالة الطلب مستقلة عن ترتيب استدعاءات الخدمات.",
+      "nodes":[
+        {"id":"pending","label":"pending","status":"implemented","evidence":["E5"]},
+        {"id":"paid","label":"paid","status":"implemented","evidence":["E5"]},
+        {"id":"failed","label":"failed","status":"implemented","evidence":["E5"]}
+      ],
+      "edges":[
+        {"from":"pending","to":"paid","label":"authorization + stock","status":"implemented","evidence":["E3","E5"]},
+        {"from":"pending","to":"failed","label":"stock rejection","status":"implemented","evidence":["E3","E4","E5"]}
+      ]
+    }
+  ],
+  "audit": [
+    {"step":"فحص المخزون قبل الدفع","planned":"reserveStock قبل authorize","actual":"authorize قبل reserveStock في المثال المصطنع","verdict":"changed","evidence":["E1","E3"],"note":"يحتاج مراجعة أثر التفويض عند رفض المخزون."},
+    {"step":"إرجاع فشل عند نفاد المخزون","planned":"رفض الطلب","actual":"دالة reserve ترجع رفضًا في المثال المصطنع","verdict":"matched","evidence":["E1","E4"],"note":"لم يُختبر التنفيذ وقت التشغيل."},
+    {"step":"تعويض تفويض الدفع عند فشل الحجز","planned":"غير محدد في الطلب","actual":"لا يوجد دليل كافٍ ضمن نطاق المثال","verdict":"unverified","evidence":["E6"],"note":"يلزم فحص مسار التعويض إذا كان جزءًا من المتطلبات."}
+  ]
+}
