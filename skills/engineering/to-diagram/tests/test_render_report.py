@@ -24,7 +24,7 @@ class ReportTests(unittest.TestCase):
         render.validate(first)
         template = (ROOT / "assets" / "report.html").read_text(encoding="utf-8")
         page = render.render_html(first, template)
-        self.assertEqual(page.count('<article class="diagram"'), 5)
+        self.assertEqual(page.count('<figure class="diagram"'), 5)
         self.assertIn('dir="rtl"', page)
         self.assertIn('data-key="D1:edge:0"', page)
         self.assertIn('data-action="in"', page)
@@ -165,6 +165,22 @@ class ReportTests(unittest.TestCase):
         for diagram in report["diagrams"]:
             draw = render.svg_sequence if diagram["type"] == "sequence" else render.svg_graph
             self.assertNotRegex(draw(diagram, {}), r'(fill|stroke)="#')
+
+    def test_each_diagram_reads_as_a_list_and_evidence_links_back_to_it(self):
+        report = self.load("architecture-data.json")
+        template = (ROOT / "assets" / "report.html").read_text(encoding="utf-8")
+        page = render.render_html(report, template)
+        self.assertEqual(page.count('<details class="as-text">'), len(report["diagrams"]))
+        self.assertIn('data-open="C1:node:1"', page)
+        evidence_row = page[page.index('id="ev-P2"'):page.index('id="ev-P3"')]
+        self.assertIn('data-open="C1:edge:1"', evidence_row)
+        self.assertIn('<ul class="stats">', page)
+
+    def test_an_edge_name_points_the_reading_way(self):
+        diagram = self.load("architecture-data.json")["diagrams"][0]
+        edge = diagram["edges"][0]
+        self.assertIn("</bdi> → <bdi>", render.element_name(diagram, "edge", edge))
+        self.assertIn("</bdi> ← <bdi>", render.element_name(diagram, "edge", edge, rtl=True))
 
     def test_report_text_cannot_break_out_of_embedded_json_or_html(self):
         report = self.load()
