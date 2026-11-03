@@ -27,7 +27,7 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 1. It decides whether you want to see a plan, understand existing code, or review a finished change.
 2. It reads the agreed plan or the relevant code and diff. It states what it checked and what it could not verify.
 3. It chooses one or more of Flowchart, Sequence, C4, ER and State. You do not have to choose.
-4. It makes one standalone HTML report by default. The page follows your system's light or dark mode, with a switch at the top to pick one, and keeps the text in a narrow centered column. It opens with a short count of diagrams, evidence and open questions. Each diagram has zoom (the buttons, or Ctrl and the scroll wheel), pan, a full-screen view, a status key, details and evidence for every step, and a list that reads the same diagram as text. Each evidence row lists the steps that cite it, and a click shows that step in its diagram. The diagrams read top to bottom, and right to left in an Arabic report, where every fixed word, such as a status, is in Arabic too. Ask for `.md` to get Markdown with Mermaid diagrams instead.
+4. It makes one standalone HTML report by default. The page follows your system's light or dark mode, with a switch at the top to pick one, and keeps the text in a narrow centered column. It opens with a short count of diagrams, evidence and open questions, and each section starts with one line on what it holds. Above each diagram, a short guide names its type, says what that type is for and how to read it, and shows a key of only the shapes that diagram uses. You need to know no diagram type before you start. The guides start open; close one and later visits start with them closed. Each diagram has zoom (the buttons, or Ctrl and the scroll wheel), pan, a full-screen view, a status key, details and evidence for every step, and a list that reads the same diagram as text. Each evidence row lists the steps that cite it, and a click shows that step in its diagram. The diagrams read top to bottom, and right to left in an Arabic report, where every fixed word, such as a status, is in Arabic too. Ask for `.md` to get Markdown with Mermaid diagrams instead.
 5. When there is a plan and finished code, it compares each important planned step with what the code does.
 
 ## When to use it
@@ -51,6 +51,9 @@ Agent:  I made ~/.to-diagram/plans/checkout-plan.html. The flowchart
         shows the stock check, the out-of-stock branch and the payment
         call. It marks the retry policy as unknown. I used the agreed
         plan; I did not inspect code.
+        A flowchart shows the steps of one process in order, and the
+        questions that split it. I chose it because your question is
+        where checkout can stop.
 
 You:    /to-diagram The checkout change is done. Show what the code does
         and compare it with that plan.
@@ -69,7 +72,7 @@ Agent:  I made ~/.to-diagram/shop/checkout-audit.html. The sequence
 
 ## What you get
 
-One offline HTML report by default, and the agent tells you its full path. When the agent has a browser tool, it looks at every diagram before it hands the report over; when it has none, it says so. It has embedded diagrams, an evidence table and, when a plan exists, a comparison with finished code. If you ask for `.md`, you get Markdown with Mermaid diagrams and the same evidence text. The skill does not change code unless you also ask for implementation.
+One offline HTML report by default, and the agent tells you its full path. In the same reply it names each diagram's type, says what that type shows, and why it chose it for your request. When the agent has a browser tool, it looks at every diagram before it hands the report over; when it has none, it says so. It has embedded diagrams, an evidence table and, when a plan exists, a comparison with finished code. If you ask for `.md`, you get Markdown with Mermaid diagrams and the same evidence text. The skill does not change code unless you also ask for implementation.
 
 ## Tips
 

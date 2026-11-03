@@ -33,7 +33,7 @@ The renderer accepts UTF-8 JSON. All displayed strings are escaped. The agent su
 
 ## Diagrams
 
-Common fields: `id`, `type`, `title`, `question`, `reason`. Types are exactly `flowchart`, `sequence`, `c4`, `er`, `state`. Every diagram node, edge, message, and participant may carry `detail`, `status`, and `evidence` (array of evidence IDs). Status is `planned`, `implemented`, `changed`, `missing`, `unknown`, or `context`. The renderer rejects missing evidence IDs and `implemented` elements without a code or observation reference.
+Common fields: `id`, `type`, `title`, `question`, `reason`. Write `reason` for a reader who does not know diagram types: why this type fits this question, in one sentence. The page and the chat text from `--explain` show it next to the renderer's own fixed text on what the type is and how to read it, so do not repeat that text. Types are exactly `flowchart`, `sequence`, `c4`, `er`, `state`. Every diagram node, edge, message, and participant may carry `detail`, `status`, and `evidence` (array of evidence IDs). Status is `planned`, `implemented`, `changed`, `missing`, `unknown`, or `context`. The renderer rejects missing evidence IDs and `implemented` elements without a code or observation reference.
 
 ### Flowchart, C4, ER, State
 
