@@ -682,6 +682,187 @@ def svg_sequence(diagram, details, rtl=False):
 
 # The page. Each function returns one part of it; render_html puts them in order inside the template.
 
+# How to read each diagram type. The text is fixed here, not written by the agent, so every report teaches a
+# type in the same words, and a reader who has never seen the type learns its name, its use and how to read it.
+
+GUIDE = {
+    "ar": {
+        "flowchart": {"name": "مخطط التدفق", "en": "Flowchart",
+                      "what": "يعرض خطوات عملية واحدة بالترتيب، والأسئلة التي تقسمها إلى فروع.",
+                      "when": "يُستخدم حين يكون السؤال: كيف يسير الطلب، وأين يتوقف أو يتفرع؟",
+                      "read": "ابدأ من الشكل المستدير في الأعلى، واتبع الأسهم إلى الأسفل. عند كل سؤال اتبع السهم الذي يحمل إجابتك.",
+                      "arrow": "الخطوة التالية.", "label": "الشرط أو الإجابة التي تأخذ هذا الطريق."},
+        "sequence": {"name": "مخطط التسلسل", "en": "Sequence diagram",
+                     "what": "يعرض من يخاطب من وبأي ترتيب: كل عمود مشارك، وكل سهم رسالة بين مشاركين.",
+                     "when": "يُستخدم حين يكون السؤال: بأي ترتيب تتواصل الأجزاء، ومن ينتظر رد من؟",
+                     "read": "الزمن يسير إلى الأسفل، فاقرأ الأسهم من الأعلى إلى الأسفل. يبدأ السهم من النقطة وينتهي عند المشارك الذي يستلم الرسالة."},
+        "c4": {"name": "مخطط البنية", "en": "C4 model",
+               "what": "يعرض أجزاء النظام، ومسؤولية كل جزء، والحدود التي تعبرها الطلبات والبيانات.",
+               "when": "يُستخدم حين يكون السؤال: أي جزء مسؤول عن هذا، وأي جزء يعتمد على أي جزء؟",
+               "read": "كل صندوق جزء من النظام، والسهم يعني أن الجزء يستخدم الجزء الذي يشير إليه.",
+               "arrow": "الجزء الذي يُستخدم أو يُستدعى.", "label": "ما يُستخدم الجزء من أجله.",
+               "levels": {"context": "هذه الرسمة على مستوى السياق: النظام كله، ومن حوله من أشخاص وأنظمة.",
+                          "container": "هذه الرسمة على مستوى الحاويات: التطبيقات والخدمات وقواعد البيانات داخل النظام.",
+                          "component": "هذه الرسمة على مستوى المكونات: الأجزاء داخل تطبيق واحد، مثل الكلاسات والخدمات."}},
+        "er": {"name": "مخطط الكيانات والعلاقات", "en": "Entity-relationship diagram",
+               "what": "يعرض جداول قاعدة البيانات وأعمدتها، والعلاقات التي تربط الجداول.",
+               "when": "يُستخدم حين يكون السؤال: أين تُحفظ البيانات، وبأي جدول يرتبط كل جدول؟",
+               "read": "كل صندوق جدول: اسمه في الأعلى وأعمدته تحت الخط. السهم يربط جدولين.",
+               "arrow": "علاقة بين جدولين.", "label": "نوع العلاقة، مثل واحد إلى كثير."},
+        "state": {"name": "مخطط الحالات", "en": "State diagram",
+                  "what": "يعرض الحالات التي يمر بها شيء واحد، مثل طلب أو مهمة، وما ينقله من حالة إلى أخرى.",
+                  "when": "يُستخدم حين يكون السؤال: بأي حالات يمر هذا الشيء، وأي انتقال مسموح؟",
+                  "read": "كل صندوق حالة، وكل سهم انتقال من حالة إلى أخرى. الحالة التي لا يخرج منها سهم نهاية.",
+                  "arrow": "انتقال إلى حالة أخرى.", "label": "الحدث أو الشرط الذي يسبب الانتقال."},
+        "marks": {"start": "بداية الطريق أو نهايته.", "process": "خطوة تُنفَّذ.", "decision": "سؤال، وكل سهم يخرج منه إجابة مختلفة.",
+                  "external": "شيء خارج النظام المشروح.", "box": "جزء من النظام.", "person": "شخص يستخدم النظام.", "state": "حالة.",
+                  "table": "جدول، وأعمدته تحت الخط.", "participant": "مشارك، مثل كلاس أو خدمة أو شخص.",
+                  "lifeline": "خط حياة المشارك، والزمن يسير عليه إلى الأسفل.", "call": "طلب أو استدعاء.", "return": "رد على طلب سابق.",
+                  "async": "رسالة لا ينتظر مرسلها ردًا.", "self": "عمل يقوم به المشارك داخله.",
+                  "PK": "مفتاح أساسي يميز كل صف.", "FK": "مفتاح أجنبي يشير إلى صف في جدول آخر.", "UK": "قيمة لا تتكرر في الجدول.", "NULL": "العمود قد يبقى فارغًا."},
+        "guide": "طريقة قراءة الرسمة", "read_line": "طريقة القراءة", "marks_line": "الأشكال في هذه الرسمة",
+        "explain_head": "الرسوم في التقرير، ولماذا اخترنا كل واحدة:", "also": "ويُسمى {} بالإنجليزية", "explain_title": "الرسمة في التقرير",
+        "explain_what": "ماذا يعرض هذا النوع", "explain_why": "لماذا اخترناه هنا", "explain_foot": "طريقة قراءة كل رسمة مشروحة فوقها في التقرير، مع معنى كل شكل فيها.",
+    },
+    "en": {
+        "flowchart": {"name": "Flowchart", "en": "",
+                      "what": "Shows the steps of one process in order, and the questions that split it into branches.",
+                      "when": "Use it when the question is: how does a request move, and where does it stop or branch?",
+                      "read": "Start at the rounded shape at the top and follow the arrows down. At each question, follow the arrow that carries your answer.",
+                      "arrow": "The next step.", "label": "The condition or answer that takes this path."},
+        "sequence": {"name": "Sequence diagram", "en": "",
+                     "what": "Shows who talks to whom and in what order: each column is a participant, and each arrow is a message between two of them.",
+                     "when": "Use it when the question is: in what order do the parts talk, and who waits for whose answer?",
+                     "read": "Time runs down, so read the arrows from top to bottom. An arrow starts at the dot and ends at the participant that receives the message."},
+        "c4": {"name": "C4 model diagram", "en": "",
+               "what": "Shows the parts of a system, what each part owns, and the boundaries that requests and data cross.",
+               "when": "Use it when the question is: which part owns this, and which part depends on which?",
+               "read": "Each box is a part of the system. An arrow means the part uses the part it points to.",
+               "arrow": "The part that is used or called.", "label": "What the part is used for.",
+               "levels": {"context": "This diagram is at the context level: the whole system, and the people and systems around it.",
+                          "container": "This diagram is at the container level: the apps, services and databases inside the system.",
+                          "component": "This diagram is at the component level: the parts inside one app, such as classes and services."}},
+        "er": {"name": "Entity-relationship (ER) diagram", "en": "",
+               "what": "Shows the database tables, their columns, and the relationships that link the tables.",
+               "when": "Use it when the question is: where is the data stored, and which table links to which?",
+               "read": "Each box is a table: its name on top, its columns under the line. An arrow links two tables.",
+               "arrow": "A relationship between two tables.", "label": "The kind of relationship, such as one to many."},
+        "state": {"name": "State diagram", "en": "",
+                  "what": "Shows the states that one thing, such as an order or a job, goes through, and what moves it from one state to another.",
+                  "when": "Use it when the question is: which states does this go through, and which moves are allowed?",
+                  "read": "Each box is a state, and each arrow is a move from one state to another. A state with no arrow out is an end.",
+                  "arrow": "A move to another state.", "label": "The event or condition that causes the move."},
+        "marks": {"start": "The start or the end of the path.", "process": "A step that runs.", "decision": "A question; each arrow out of it is a different answer.",
+                  "external": "Something outside the system being explained.", "box": "A part of the system.", "person": "A person who uses the system.", "state": "A state.",
+                  "table": "A table, with its columns under the line.", "participant": "A participant, such as a class, a service or a person.",
+                  "lifeline": "The participant's lifeline; time runs down it.", "call": "A request or a call.", "return": "An answer to an earlier request.",
+                  "async": "A message whose sender does not wait for an answer.", "self": "Work the participant does inside itself.",
+                  "PK": "Primary key: identifies each row.", "FK": "Foreign key: points to a row in another table.", "UK": "A value that never repeats in the table.", "NULL": "The column may be empty."},
+        "guide": "How to read this diagram", "read_line": "How to read it", "marks_line": "Shapes in this diagram",
+        "explain_head": "The diagrams in the report, and why each one was chosen:", "also": "{}", "explain_title": "In the report",
+        "explain_what": "What this type shows", "explain_why": "Why it was chosen here", "explain_foot": "Each diagram in the report has a short guide above it on how to read it, with the meaning of each shape.",
+    },
+}
+MARK_SHAPES = {"start": "pill", "person": "pill", "process": "rect", "box": "rect", "state": "rect", "participant": "rect", "decision": "hex",
+               "external": "dashed", "table": "table", "lifeline": "life", "arrow": "arrow", "call": "call", "return": "return", "async": "async",
+               "self": "self", "label": "label"}
+
+
+def guide_marks(diagram):
+    """The marks this diagram really draws, in a fixed order, so its key explains only what is on the page."""
+    kind = diagram["type"]
+    if kind == "sequence":
+        styles = {m.get("style", "call") for m in diagram["messages"]}
+        marks = ["participant", "lifeline"] + [st for st in ("call", "return", "async") if st in styles]
+        return marks + (["self"] if any(m["from"] == m["to"] for m in diagram["messages"]) else [])
+    nodes, edges = diagram["nodes"], diagram["edges"]
+    kinds = [n.get("kind", "") for n in nodes]
+    if kind == "flowchart":
+        marks = ["start"] if {"start", "end"} & set(kinds) else []
+        marks += ["process"] if any(k not in {"start", "end", "decision", "external"} for k in kinds) else []
+        marks += [k for k in ("decision", "external") if k in kinds]
+    elif kind == "c4":
+        marks = ["person"] if "person" in kinds else []
+        marks += ["box"] if any(k not in {"person", "external"} for k in kinds) else []
+        marks += ["external"] if "external" in kinds else []
+    elif kind == "er":
+        fields = [f for n in nodes for f in n.get("fields", [])]
+        marks = ["table"] + [k for k in ("PK", "FK", "UK") if any(f.get("key") == k for f in fields)]
+        marks += ["NULL"] if any(f.get("nullable") is True for f in fields) else []
+    else:
+        marks = ["state"]
+    return marks + (["arrow"] if edges else []) + (["label"] if any(e.get("label") for e in edges) else [])
+
+
+def mark_icon(shape):
+    """A small picture of one mark, drawn with the diagram's own classes, so it follows the theme. Arrows turn in a right-to-left page."""
+    head = '<path class="arrowhead" d="M34 9L42 14L34 19Z"/>'
+    dot = '<circle class="seq-dot" cx="5" cy="14" r="3.5"/>'
+    pics = {
+        "pill": '<rect class="shape" x="2" y="5" width="40" height="18" rx="9"/>',
+        "rect": '<rect class="shape" x="2" y="5" width="40" height="18" rx="4"/>',
+        "hex": '<path class="shape" d="M9 5H35L42 14L35 23H9L2 14Z"/>',
+        "dashed": '<rect class="shape external" x="2" y="5" width="40" height="18" rx="4"/>',
+        "table": '<rect class="shape" x="2" y="2" width="40" height="24" rx="4"/><path class="field-rule" d="M7 11H37"/>',
+        "life": '<path class="seq-life" d="M22 1V27"/>',
+        "arrow": f'<path class="edge" d="M3 14H35"/>{head}',
+        "call": f'<path class="edge" d="M5 14H35"/>{head}{dot}',
+        "return": f'<path class="edge return" d="M5 14H35"/>{head}{dot}',
+        "async": f'<path class="edge async" d="M5 14H35"/>{head}{dot}',
+        "self": '<circle class="seq-dot" cx="5" cy="5" r="3.5"/><path class="edge" d="M4 5H28Q38 5 38 14Q38 23 28 23H12"/><path class="arrowhead" d="M13 18L5 23L13 28Z"/>',
+        "label": '<rect class="edge-label-bg" x="3" y="6" width="38" height="16" rx="4"/><path class="label-line" d="M10 14H34"/>',
+    }
+    turn = " turn" if shape in {"arrow", "call", "return", "async", "self"} else ""
+    return f'<svg class="mark{turn}" viewBox="0 0 44 28" aria-hidden="true"><g class="node">{pics[shape]}</g></svg>'
+
+
+def diagram_guide(diagram, lang):
+    """What the diagram type is called, what it is for, how to read it, and a key of the shapes this diagram uses."""
+    g = GUIDE[lang]
+    info = g[diagram["type"]]
+    level = f' {info["levels"][diagram["level"]]}' if diagram["type"] == "c4" else ""
+    english = f' <span class="en" lang="en" dir="ltr">{s(info["en"])}</span>' if info["en"] else ""
+    keys = ""
+    for mark in guide_marks(diagram):
+        meaning = info.get(mark) or g["marks"][mark]
+        icon = f'<code class="key-mark" dir="ltr">{s(mark)}</code>' if mark in {"PK", "FK", "UK", "NULL"} else mark_icon(MARK_SHAPES[mark])
+        keys += f"<li>{icon}<span>{s(meaning)}</span></li>"
+    return (f'<details class="guide" open><summary><span class="guide-label">{s(g["guide"])}</span><span class="guide-type">{s(info["name"])}{english}</span></summary>'
+            f'<div class="guide-body"><p>{s(info["what"])} {s(info["when"])}{s(level)}</p><p><strong>{s(g["read_line"])}:</strong> {s(info["read"])}</p>'
+            f'<ul class="marks" aria-label="{s(g["marks_line"])}">{keys}</ul></div></details>')
+
+
+def explain_text(report):
+    """Ready text for the agent's chat reply: each diagram's type, what that type shows, and why it was chosen for this task."""
+    lang = "ar" if report["language"].lower().startswith("ar") else "en"
+    g = GUIDE[lang]
+    out = [g["explain_head"], ""]
+    for n, d in enumerate(report["diagrams"], 1):
+        info = g[d["type"]]
+        named = " " + g["also"].format(info["en"]) if info["en"] else ""
+        out += [f'{n}. **{info["name"]}**{named}', f'   - {g["explain_title"]}: {d["title"]}', f'   - {g["explain_what"]}: {info["what"]}', f'   - {g["explain_why"]}: {d["reason"]}']
+    return "\n".join(out + ["", g["explain_foot"]])
+
+
+# One line under each section title, and what each confidence level means, so the page never assumes the reader knows the method.
+SECTION_HELP = {
+    "ar": {"overview": "ما فحصناه، وما قررناه، وما بقي بلا إجابة. اقرأه أولًا لتعرف حدود التقرير.",
+           "diagrams": "كل رسمة تجيب عن سؤال واحد، وفوقها شرح لطريقة قراءتها. لون إطار العنصر يبين حالته كما في المفتاح، واضغط أي عنصر لترى تفاصيله وأدلته.",
+           "audit": "كل صف خطوة من الخطة: ما كان مخططًا، وما وجدناه منفذًا، وهل يتطابقان.",
+           "evidence": "كل ما في التقرير يستند إلى دليل هنا. رقم الدليل يظهر بجانب كل عنصر، وعمود «مستخدم في» يعيدك إلى العنصر في رسمته.",
+           "levels": "معنى درجات الثقة",
+           "verified": "قرأناه في الكود أو رأيناه يعمل.", "inferred": "استنتجناه من الكود، ولم نره يعمل.",
+           "planned": "مكتوب في الخطة، ولم يُنفذ بعد.", "unknown": "لم نجد عليه دليلًا كافيًا."},
+    "en": {"overview": "What was inspected, what was decided, and what is still open. Read it first to know the limits of the report.",
+           "diagrams": "Each diagram answers one question, and a short guide above it explains how to read it. The colour of an element's border shows its status, as in the key. Select any element to see its details and evidence.",
+           "audit": "Each row is one step of the plan: what was planned, what was found built, and whether they match.",
+           "evidence": "Everything in the report rests on evidence listed here. The evidence number appears next to each element, and the Used in column takes you back to the element in its diagram.",
+           "levels": "What the confidence levels mean",
+           "verified": "Read in the code or seen working.", "inferred": "Concluded from the code, but not seen working.",
+           "planned": "Written in the plan, not built yet.", "unknown": "Not enough evidence was found."},
+}
+
+
 ICONS = {
     "in": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
     "out": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>',
@@ -743,8 +924,12 @@ def bullet_list(values, empty):
     return "<ul>" + "".join(f"<li>{s(v)}</li>" for v in values) + "</ul>" if values else f'<p class="empty">{s(empty)}</p>'
 
 
-def page_overview(report, u):
-    return (f'<section id="overview" aria-labelledby="overview-title"><h2 id="overview-title" class="section-title">{s(u["overview"])}</h2>'
+def section_intro(part, lang):
+    return f'<p class="section-intro">{s(SECTION_HELP[lang][part])}</p>'
+
+
+def page_overview(report, u, lang):
+    return (f'<section id="overview" aria-labelledby="overview-title"><h2 id="overview-title" class="section-title">{s(u["overview"])}</h2>{section_intro("overview", lang)}'
             f'<div class="panel"><h3>{s(u["scope"])}</h3><p>{s(report["scope"])}</p></div>'
             f'<div class="two"><div class="panel"><h3>{s(u["decisions"])}</h3>{bullet_list(report["decisions"], u["empty"])}</div>'
             f'<div class="panel"><h3>{s(u["unknowns"])}</h3>{bullet_list(report["unknowns"], u["empty"])}</div></div></section>')
@@ -769,7 +954,7 @@ def diagram_figure(diagram, details, u, lang, rtl):
             f'<figcaption class="diagram-head"><div class="titles"><span class="chip">{s(chip)}</span><h3 id="{title_id}">{s(diagram["title"])}</h3>'
             f'<p class="question"><strong>{s(u["question"])}:</strong> {s(diagram["question"])}</p><p class="reason">{s(u["why"])}: {s(diagram["reason"])}</p></div>'
             f'<div class="tools" role="toolbar" aria-label="{s(diagram["title"])}">{tools}</div></figcaption>'
-            f'<div class="viewport">{svg}</div><p class="hint">{s(u["help"])}</p>{diagram_text(diagram, u, lang, rtl)}</figure>')
+            f'{diagram_guide(diagram, lang)}<div class="viewport">{svg}</div><p class="hint">{s(u["help"])}</p>{diagram_text(diagram, u, lang, rtl)}</figure>')
 
 
 def page_diagrams(report, details, u, lang, rtl):
@@ -777,7 +962,7 @@ def page_diagrams(report, details, u, lang, rtl):
     legend = "".join(f'<li><i class="swatch {s(st)}"></i>{s(term(st, lang))}</li>' for st in STATUS_ORDER[:-1] if st in used)
     head = f'<div class="section-head"><h2 id="diagrams-title" class="section-title">{s(u["diagrams"])}</h2>' + (f'<ul class="legend" aria-label="{s(u["statuses"])}">{legend}</ul>' if legend else "") + "</div>"
     body = "".join(diagram_figure(d, details, u, lang, rtl) for d in report["diagrams"]) or f'<p class="empty">{s(u["empty"])}</p>'
-    return f'<section id="diagrams" class="wide" aria-labelledby="diagrams-title">{head}{body}</section>'
+    return f'<section id="diagrams" class="wide" aria-labelledby="diagrams-title">{head}{section_intro("diagrams", lang)}{body}</section>'
 
 
 def page_audit(report, u, lang):
@@ -792,7 +977,7 @@ def page_audit(report, u, lang):
     for row in report["audit"]:
         cells = (s(row["step"]), s(row["planned"]), s(row["actual"]), badge(row["verdict"], lang), s(row.get("note", "")), evidence_links(row.get("evidence", [])))
         rows += "<tr>" + "".join(f'<td data-label="{s(h)}">{c}</td>' for h, c in zip(heads, cells)) + "</tr>"
-    return (f'<section id="audit" aria-labelledby="audit-title"><div class="section-head"><h2 id="audit-title" class="section-title">{s(u["audit"])}</h2><ul class="verdicts">{summary}</ul></div>'
+    return (f'<section id="audit" aria-labelledby="audit-title"><div class="section-head"><h2 id="audit-title" class="section-title">{s(u["audit"])}</h2><ul class="verdicts">{summary}</ul></div>{section_intro("audit", lang)}'
             f'<div class="tablewrap"><table class="stack"><thead><tr>{"".join(f"<th scope=col>{s(h)}</th>" for h in heads)}</tr></thead><tbody>{rows}</tbody></table></div></section>')
 
 
@@ -812,7 +997,10 @@ def page_evidence(report, u, lang):
         rows += (f'<tr id="ev-{s(e["id"])}"><th scope="row" class="id">{s(e["id"])}</th><td data-label="{s(u["source"])}"><code>{s(location)}</code><span class="kind">{s(term(e["kind"], lang))}</span></td>'
                  f'<td data-label="{s(u["claim"])}">{s(e["claim"])}</td><td data-label="{s(u["confidence"])}">{badge(e["confidence"], lang)}</td><td data-label="{s(u["used_in"])}">{used_in}</td></tr>')
     heads = ("ID", u["source"], u["claim"], u["confidence"], u["used_in"])
-    return (f'<section id="evidence" aria-labelledby="evidence-title"><h2 id="evidence-title" class="section-title">{s(u["evidence"])}</h2>'
+    used = {e["confidence"] for e in report["evidence"]}
+    levels = "".join(f'<div><dt>{badge(c, lang)}</dt><dd>{s(SECTION_HELP[lang][c])}</dd></div>' for c in ("verified", "inferred", "planned", "unknown") if c in used)
+    levels = f'<dl class="levels" aria-label="{s(SECTION_HELP[lang]["levels"])}">{levels}</dl>' if levels else ""
+    return (f'<section id="evidence" aria-labelledby="evidence-title"><h2 id="evidence-title" class="section-title">{s(u["evidence"])}</h2>{section_intro("evidence", lang)}{levels}'
             f'<div class="tablewrap"><table class="stack"><thead><tr>{"".join(f"<th scope=col>{s(h)}</th>" for h in heads)}</tr></thead><tbody>{rows}</tbody></table></div></section>')
 
 
@@ -821,7 +1009,7 @@ def render_html(report, template):
     lang = "ar" if rtl else "en"
     u = UI[lang]
     details = {}
-    content = page_hero(report, u, lang) + page_toc(report, u) + page_overview(report, u) + page_diagrams(report, details, u, lang, rtl) + page_audit(report, u, lang) + page_evidence(report, u, lang)
+    content = page_hero(report, u, lang) + page_toc(report, u) + page_overview(report, u, lang) + page_diagrams(report, details, u, lang, rtl) + page_audit(report, u, lang) + page_evidence(report, u, lang)
     for item in details.values():
         item["state"] = item["status"]
         item["status"] = term(item["status"], lang)
@@ -905,7 +1093,9 @@ def render_md(report):
         out.append("")
     out += [f'## {u["diagrams"]}',""]
     for d in report["diagrams"]:
-        out += [f'### {d["title"]} ({d["type"]}' + (f', {d["level"]}' if d["type"]=="c4" else "") + ")", "",f'**{u["question"]}:** {d["question"]}  ',f'**{u["why"]}:** {d["reason"]}',"","```mermaid",render_mermaid(d),"```","",f'| {u["element"]} | {u["status"]} | {u["evidence"]} |',"| --- | --- | --- |"]
+        info = GUIDE[lang][d["type"]]
+        level = f' {info["levels"][d["level"]]}' if d["type"]=="c4" else ""
+        out += [f'### {d["title"]}', "", f'**{info["name"]}**' + (" " + GUIDE[lang]["also"].format(info["en"]) if info["en"] else "") + f'. {info["what"]}{level}  ', f'**{GUIDE[lang]["read_line"]}:** {info["read"]}', "", f'**{u["question"]}:** {d["question"]}  ',f'**{u["why"]}:** {d["reason"]}',"","```mermaid",render_mermaid(d),"```","",f'| {u["element"]} | {u["status"]} | {u["evidence"]} |',"| --- | --- | --- |"]
         elems = [(x.get("label",x.get("id","")),x) for x in d.get("nodes",d.get("participants",[]))]
         elems += [(f"{x['from']} → {x['to']}" + (f": {x['label']}" if x.get("label") else ""),x) for x in d.get("edges",d.get("messages",[]))]
         out += [f'| {md_cell(name)} | {term(x["status"], lang)} | {", ".join(x.get("evidence",[])) or "—"} |' for name,x in elems]
@@ -927,12 +1117,16 @@ def main(argv=None):
     parser.add_argument("input",type=Path,help="UTF-8 report JSON")
     parser.add_argument("-o","--output",type=Path,help="Output .html (default) or .md")
     parser.add_argument("--check",action="store_true",help="Validate without writing")
+    parser.add_argument("--explain",action="store_true",help="Print chat text on each diagram's type and why it was chosen, without writing")
     args=parser.parse_args(argv)
     try:
         report=json.loads(args.input.read_text(encoding="utf-8"))
         validate(report)
         if args.check:
             print(f"Valid report: {args.input}")
+            return 0
+        if args.explain:
+            print(explain_text(report))
             return 0
         output=args.output or args.input.with_suffix(".html")
         if output.suffix.lower() not in {".html",".md"}:

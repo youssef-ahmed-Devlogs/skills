@@ -1,4 +1,6 @@
+import contextlib
 import importlib.util
+import io
 import json
 import re
 from pathlib import Path
@@ -192,6 +194,43 @@ class ReportTests(unittest.TestCase):
         self.assertNotIn('<img src=x', page)
         self.assertIn("&lt;img", page)
         self.assertIn("\\u003cimg", page)
+
+    def test_each_diagram_teaches_its_type_and_keys_only_the_shapes_it_draws(self):
+        report = self.load()
+        report["diagrams"] += self.load("architecture-data.json")["diagrams"]
+        template = (ROOT / "assets" / "report.html").read_text(encoding="utf-8")
+        page = render.render_html(report, template)
+        self.assertEqual(page.count('<details class="guide" open>'), len(report["diagrams"]))
+        for d in report["diagrams"]:
+            info = render.GUIDE["ar"][d["type"]]
+            self.assertIn(f'{info["name"]} <span class="en" lang="en" dir="ltr">{info["en"]}</span>', page)
+            self.assertIn(info["read"], page)
+        self.assertEqual(render.guide_marks(self.sequence(loop=True)), ["participant", "lifeline", "call", "self"])
+        flow = {"type": "flowchart", "nodes": [{"id": "a", "kind": "start"}, {"id": "b"}], "edges": [{"from": "a", "to": "b"}]}
+        self.assertEqual(render.guide_marks(flow), ["start", "process", "arrow"])
+        self.assertNotIn(render.GUIDE["en"]["marks"]["decision"], render.diagram_guide(flow, "en"))
+
+    def test_each_section_says_what_it_holds_and_the_confidence_levels_are_explained(self):
+        report = self.load()
+        page = render.render_html(report, (ROOT / "assets" / "report.html").read_text(encoding="utf-8"))
+        for part in ("overview", "diagrams", "evidence"):
+            self.assertIn(render.SECTION_HELP["ar"][part], page)
+        for level in {e["confidence"] for e in report["evidence"]}:
+            self.assertIn(render.SECTION_HELP["ar"][level], page)
+        self.assertIn(render.GUIDE["ar"][report["diagrams"][0]["type"]]["read"], render.render_md(report))
+
+    def test_explain_prints_chat_text_on_each_type_and_why_it_was_chosen(self):
+        report = self.load()
+        out = io.StringIO()
+        with contextlib.redirect_stdout(out):
+            self.assertEqual(render.main([str(ROOT / "examples" / "order-checkout.json"), "--explain"]), 0)
+        text = out.getvalue()
+        for d in report["diagrams"]:
+            self.assertIn(render.GUIDE["ar"][d["type"]]["name"], text)
+            self.assertIn(d["reason"], text)
+        # Every Arabic line starts with an Arabic word after its list mark, so the chat lays it out right to left.
+        for line in filter(None, text.splitlines()):
+            self.assertRegex(line.strip(), r"^(\d+\.|-)?\s*\**[؀-ۿ]")
 
     def test_cli_writes_html_default_and_explicit_markdown(self):
         source = ROOT / "examples" / "order-checkout.json"
