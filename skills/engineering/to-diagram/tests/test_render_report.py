@@ -24,7 +24,7 @@ class ReportTests(unittest.TestCase):
         render.validate(first)
         template = (ROOT / "assets" / "report.html").read_text(encoding="utf-8")
         page = render.render_html(first, template)
-        self.assertEqual(page.count('<article class="diagram">'), 5)
+        self.assertEqual(page.count('<article class="diagram"'), 5)
         self.assertIn('dir="rtl"', page)
         self.assertIn('data-key="D1:edge:0"', page)
         self.assertIn('data-action="in"', page)
@@ -134,8 +134,9 @@ class ReportTests(unittest.TestCase):
         template = (ROOT / "assets" / "report.html").read_text(encoding="utf-8")
         page = render.render_html(report, template)
         self.assertNotIn("Code Flow Audit", page)
-        self.assertIn("تقرير الرسوم · شرح", page)
-        self.assertIn('<span class="badge verified">متحقق منه</span>', page)
+        self.assertIn('<p class="kicker">شرح</p>', page)
+        self.assertIn("<span>تقرير الرسوم</span>", page)
+        self.assertIn('<span class="badge verified"><i></i>متحقق منه</span>', page)
         self.assertIn('"status":"منفّذ"', page)
         self.assertIn("| منفّذ |", render.render_md(report))
 
@@ -153,6 +154,17 @@ class ReportTests(unittest.TestCase):
             for css in ("node-label", "edge-label", "field"):
                 for tag in re.findall(rf'<text class="{css}"[^>]*>', svg):
                     self.assertIn("data-fit=", tag)
+
+    def test_the_page_follows_light_and_dark_and_the_svg_has_no_fixed_colour(self):
+        report = self.load()
+        template = (ROOT / "assets" / "report.html").read_text(encoding="utf-8")
+        page = render.render_html(report, template)
+        self.assertIn('content="light dark"', page)
+        self.assertIn("prefers-color-scheme:dark", page)
+        self.assertEqual(page.count("data-theme-choice="), 3)
+        for diagram in report["diagrams"]:
+            draw = render.svg_sequence if diagram["type"] == "sequence" else render.svg_graph
+            self.assertNotRegex(draw(diagram, {}), r'(fill|stroke)="#')
 
     def test_report_text_cannot_break_out_of_embedded_json_or_html(self):
         report = self.load()
