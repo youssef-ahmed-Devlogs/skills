@@ -94,8 +94,8 @@ class ReportTests(unittest.TestCase):
                    "nodes": [{"id": "a", "label": "فحص auth", "status": "context"}, {"id": "b", "label": "AccessDenied page", "status": "context"}],
                    "edges": [{"from": "a", "to": "b", "status": "context"}]}
         svg = render.svg_graph(diagram, {}, rtl=True)
-        self.assertIn('direction="rtl">فحص auth</text>', svg)
-        self.assertIn('direction="ltr">AccessDenied page</text>', svg)
+        self.assertRegex(svg, r'direction="rtl"[^>]*>فحص auth</text>')
+        self.assertRegex(svg, r'direction="ltr"[^>]*>AccessDenied page</text>')
         self.assertNotIn('class="edge-label"', svg)
 
     def test_edge_label_is_optional_and_rtl_mirrors_the_layout(self):
@@ -107,6 +107,52 @@ class ReportTests(unittest.TestCase):
         ltr = render.svg_graph(diagram, {}, rtl=False)
         rtl = render.svg_graph(diagram, {}, rtl=True)
         self.assertNotEqual(ltr, rtl)
+
+    def sequence(self, label="POST /checkout", loop=False):
+        return {"id": "S9", "type": "sequence", "title": "t", "question": "q", "reason": "r",
+                "participants": [{"id": "a", "label": "Checkout API", "status": "context"}, {"id": "b", "label": "مزوّد الدفع الخارجي", "status": "context"}],
+                "messages": [{"from": "a", "to": "a" if loop else "b", "label": label, "status": "context"}]}
+
+    def test_a_long_sequence_label_widens_the_gap_and_stays_in_its_box(self):
+        label = "يطلب تفويض المبلغ من مزوّد الدفع مع رقم الطلب ومفتاح عدم التكرار"
+        svg = render.svg_sequence(self.sequence(label), {}, rtl=True)
+        lines = [float(x) for x in re.findall(r'<line class="seq-life" x1="([\d.]+)"', svg)]
+        widest = max(render.text_width(line, render.LABEL_SIZE) for line in render.wrap(label, 300, render.LABEL_SIZE))
+        self.assertGreater(abs(lines[0] - lines[1]), widest)
+        self.assertIn('class="edge-label-bg"', svg)
+        self.assertGreater(lines[0], lines[1])
+
+    def test_a_self_message_label_sits_beside_its_loop(self):
+        svg = render.svg_sequence(self.sequence("validates the cart", loop=True), {})
+        loop_x = float(re.search(r'<line class="seq-life" x1="([\d.]+)"', svg).group(1))
+        label_x = float(re.search(r'class="edge-label-bg" x="([\d.]+)"', svg).group(1))
+        self.assertGreater(label_x, loop_x + 70)
+
+    def test_an_arabic_report_shows_no_schema_word_in_english(self):
+        report = self.load("architecture-data.json")
+        report["language"] = "ar"
+        template = (ROOT / "assets" / "report.html").read_text(encoding="utf-8")
+        page = render.render_html(report, template)
+        self.assertNotIn("Code Flow Audit", page)
+        self.assertIn("تقرير الرسوم · شرح", page)
+        self.assertIn('<span class="badge verified">متحقق منه</span>', page)
+        self.assertIn('"status":"منفّذ"', page)
+        self.assertIn("| منفّذ |", render.render_md(report))
+
+    def test_a_nullable_field_says_so(self):
+        diagram = self.load("architecture-data.json")["diagrams"][1]
+        diagram["nodes"][1]["fields"].append({"name": "coupon_id", "type": "bigint", "key": "FK", "nullable": True})
+        self.assertIn(">FK coupon_id bigint NULL</text>", render.svg_graph(diagram, {}))
+        self.assertIn('bigint coupon_id FK "nullable"', render.render_mermaid(diagram))
+
+    def test_every_text_in_a_box_carries_its_room(self):
+        report = self.load()
+        for diagram in report["diagrams"]:
+            draw = render.svg_sequence if diagram["type"] == "sequence" else render.svg_graph
+            svg = draw(diagram, {})
+            for css in ("node-label", "edge-label", "field"):
+                for tag in re.findall(rf'<text class="{css}"[^>]*>', svg):
+                    self.assertIn("data-fit=", tag)
 
     def test_report_text_cannot_break_out_of_embedded_json_or_html(self):
         report = self.load()
