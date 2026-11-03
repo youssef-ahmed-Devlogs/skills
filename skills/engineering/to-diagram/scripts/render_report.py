@@ -16,8 +16,8 @@ CONFIDENCES = {"verified", "inferred", "planned", "unknown"}
 VERDICTS = {"matched", "changed", "missing", "unverified"}
 EVIDENCE_KINDS = {"code", "test", "request", "assumption", "observation"}
 UI = {
-    "ar": {"report": "تقرير الرسوم", "phase": "المرحلة", "repository": "المشروع", "baseline": "المرجع", "scope": "نطاق الفحص", "decisions": "القرارات", "unknowns": "ما لم يُحسم", "diagrams": "الرسوم", "audit": "مقارنة الخطة بالتنفيذ", "evidence": "الأدلة", "question": "سؤال المراجعة", "why": "سبب الاختيار", "zoom": "تكبير", "out": "تصغير", "reset": "إعادة الضبط", "element": "العنصر", "status": "الحالة", "step": "الخطوة", "planned": "المخطط", "actual": "المنفذ", "result": "النتيجة", "note": "ملاحظة", "source": "المصدر", "claim": "ما يثبته", "confidence": "الثقة", "kind": "النوع", "empty": "لا توجد عناصر", "help": "اسحب للتنقل، وكبّر بـ Ctrl مع عجلة الفأرة أو بالأزرار، واضغط على عنصر للتفاصيل.", "footer": "تقرير مبني على الأدلة المذكورة؛ حدود الفحص موضحة أعلاه."},
-    "en": {"report": "Diagram report", "phase": "Phase", "repository": "Repository", "baseline": "Baseline", "scope": "Inspection scope", "decisions": "Decisions", "unknowns": "Unknowns", "diagrams": "Diagrams", "audit": "Plan vs implementation", "evidence": "Evidence", "question": "Review question", "why": "Why this diagram", "zoom": "Zoom in", "out": "Zoom out", "reset": "Reset", "element": "Element", "status": "Status", "step": "Step", "planned": "Planned", "actual": "Actual", "result": "Result", "note": "Note", "source": "Source", "claim": "Supported claim", "confidence": "Confidence", "kind": "Kind", "empty": "No items", "help": "Drag to pan, zoom with Ctrl and the scroll wheel or the buttons, and select an element for details.", "footer": "This report is bounded by the cited evidence and inspection scope."},
+    "ar": {"skip": "انتقل للمحتوى", "detail": "تفاصيل عنصر الرسم", "close": "إغلاق", "n_diagrams": "رسوم", "n_evidence": "دليل", "n_unknowns": "نقاط لم تُحسم", "n_gaps": "فروق عن الخطة", "as_text": "اقرأ الرسمة كقائمة", "used_in": "مستخدم في", "theme": "المظهر", "auto": "تلقائي", "light": "فاتح", "dark": "داكن", "contents": "المحتويات", "overview": "النطاق والقرارات", "statuses": "الحالات", "linked": "الأدلة المرتبطة", "full": "ملء الشاشة", "report": "تقرير الرسوم", "phase": "المرحلة", "repository": "المشروع", "baseline": "المرجع", "scope": "نطاق الفحص", "decisions": "القرارات", "unknowns": "ما لم يُحسم", "diagrams": "الرسوم", "audit": "مقارنة الخطة بالتنفيذ", "evidence": "الأدلة", "question": "سؤال المراجعة", "why": "سبب الاختيار", "zoom": "تكبير", "out": "تصغير", "reset": "إعادة الضبط", "element": "العنصر", "status": "الحالة", "step": "الخطوة", "planned": "المخطط", "actual": "المنفذ", "result": "النتيجة", "note": "ملاحظة", "source": "المصدر", "claim": "ما يثبته", "confidence": "الثقة", "kind": "النوع", "empty": "لا توجد عناصر", "help": "اسحب للتنقل، وكبّر بـ Ctrl مع عجلة الفأرة أو بالأزرار، واضغط على عنصر للتفاصيل.", "footer": "تقرير مبني على الأدلة المذكورة؛ حدود الفحص موضحة أعلاه."},
+    "en": {"skip": "Skip to content", "detail": "Diagram detail", "close": "Close", "n_diagrams": "diagrams", "n_evidence": "evidence items", "n_unknowns": "open questions", "n_gaps": "differences from plan", "as_text": "Read the diagram as a list", "used_in": "Used in", "theme": "Theme", "auto": "Auto", "light": "Light", "dark": "Dark", "contents": "Contents", "overview": "Scope and decisions", "statuses": "Statuses", "linked": "Linked evidence", "full": "Full screen", "report": "Diagram report", "phase": "Phase", "repository": "Repository", "baseline": "Baseline", "scope": "Inspection scope", "decisions": "Decisions", "unknowns": "Unknowns", "diagrams": "Diagrams", "audit": "Plan vs implementation", "evidence": "Evidence", "question": "Review question", "why": "Why this diagram", "zoom": "Zoom in", "out": "Zoom out", "reset": "Reset", "element": "Element", "status": "Status", "step": "Step", "planned": "Planned", "actual": "Actual", "result": "Result", "note": "Note", "source": "Source", "claim": "Supported claim", "confidence": "Confidence", "kind": "Kind", "empty": "No items", "help": "Drag to pan, zoom with Ctrl and the scroll wheel or the buttons, and select an element for details.", "footer": "This report is bounded by the cited evidence and inspection scope."},
 }
 
 
@@ -188,16 +188,7 @@ def term(value, lang):
 
 
 def badge(value, lang="en"):
-    return f'<span class="badge {s(value)}">{s(term(value, lang))}</span>'
-
-
-def list_card(title, values, empty):
-    body = "<ul>" + "".join(f"<li>{s(v)}</li>" for v in values) + "</ul>" if values else f'<p class="muted">{s(empty)}</p>'
-    return f'<div class="card"><h3>{s(title)}</h3>{body}</div>'
-
-
-def evidence_links(refs):
-    return ", ".join(f'<a href="#ev-{s(ref)}">{s(ref)}</a>' for ref in refs) or "—"
+    return f'<span class="badge {s(value)}"><i></i>{s(term(value, lang))}</span>'
 
 
 RTL_LETTER = re.compile(r"[֐-ࣿיִ-﷿ﹰ-﻿]")
@@ -573,7 +564,7 @@ def svg_graph(diagram, details, rtl=False):
         labels[i] = (choice, lines)
 
     marker = f'arr-{s(diagram["id"])}'
-    parts = [f'<svg role="img" aria-label="{s(diagram["title"])}" viewBox="0 0 {total_w:.0f} {total_h:.0f}" width="{total_w:.0f}" height="{total_h:.0f}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="{marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7990b1"/></marker></defs>']
+    parts = [f'<svg role="group" aria-label="{s(diagram["title"])}" viewBox="0 0 {total_w:.0f} {total_h:.0f}" width="{total_w:.0f}" height="{total_h:.0f}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="{marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M 0 0 L 10 5 L 0 10 z"/></marker></defs>']
     for i, e in enumerate(edges):
         key = detail_key(diagram, "edge", i)
         details[key] = {"label": e.get("label", ""), "detail": e.get("detail", ""), "status": e["status"], "evidence": e.get("evidence", [])}
@@ -607,7 +598,7 @@ def svg_graph(diagram, details, rtl=False):
             parts.append(svg_lines(z["detail"], cx, text_top + len(z["label"]) * NODE_LINE + 4, "node-sub", 11.5, 16, fit=room))
         if z["fields"]:
             line_y = top + 22 + len(z["label"]) * NODE_LINE + 4
-            parts.append(f'<path d="M {left+10:.1f} {line_y:.1f} H {left+w-10:.1f}" stroke="#52617c"/>')
+            parts.append(f'<path d="M {left+10:.1f} {line_y:.1f} H {left+w-10:.1f}" class="field-rule"/>')
             for k, field in enumerate(z["fields"]):
                 parts.append(f'<text class="field" x="{left+16:.1f}" y="{line_y + 8 + k*FIELD_LINE + 12.5*0.8:.1f}" direction="ltr" text-anchor="start" data-fit="{w - 28:.0f}">{s(field)}</text>')
         parts.append("</g>")
@@ -664,7 +655,7 @@ def svg_sequence(diagram, details, rtl=False):
     total_h = max(300, cur + 20)
 
     marker = f'arr-{s(diagram["id"])}'
-    parts = [f'<svg role="img" aria-label="{s(diagram["title"])}" viewBox="0 0 {total_w:.0f} {total_h:.0f}" width="{total_w:.0f}" height="{total_h:.0f}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="{marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7990b1"/></marker></defs>']
+    parts = [f'<svg role="group" aria-label="{s(diagram["title"])}" viewBox="0 0 {total_w:.0f} {total_h:.0f}" width="{total_w:.0f}" height="{total_h:.0f}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="{marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="arrowhead" d="M 0 0 L 10 5 L 0 10 z"/></marker></defs>']
     for i, p in enumerate(people):
         x, w = X(xs[p["id"]]), head_w[p["id"]]
         key = detail_key(diagram, "participant", i)
@@ -684,41 +675,160 @@ def svg_sequence(diagram, details, rtl=False):
             path = f"M {X(a):.1f} {y:.1f} L {X(b):.1f} {y:.1f}"
             box_left, box_top = (a + b) / 2 - lw / 2, y - lh - 6
         left = min(X(box_left), X(box_left + lw))
-        parts.append(f'<g class="node edge-group" data-status="{s(m["status"])}" data-key="{s(key)}" tabindex="0" role="button" aria-label="{s(m["label"])}"><path class="edge-hit" d="{path}"/><path class="{cls}" d="{path}" marker-end="url(#{marker})"/><circle cx="{X(a):.1f}" cy="{y:.1f}" r="5" fill="#7dd3fc"/><rect class="edge-label-bg" x="{left:.1f}" y="{box_top:.1f}" width="{lw:.1f}" height="{lh:.1f}" rx="5"/>{svg_lines(lines, left + lw / 2, box_top + 3, "edge-label", LABEL_SIZE, LABEL_LINE, fit=lw - 8)}</g>')
+        parts.append(f'<g class="node edge-group" data-status="{s(m["status"])}" data-key="{s(key)}" tabindex="0" role="button" aria-label="{s(m["label"])}"><path class="edge-hit" d="{path}"/><path class="{cls}" d="{path}" marker-end="url(#{marker})"/><circle cx="{X(a):.1f}" cy="{y:.1f}" r="4.5" class="seq-dot"/><rect class="edge-label-bg" x="{left:.1f}" y="{box_top:.1f}" width="{lw:.1f}" height="{lh:.1f}" rx="5"/>{svg_lines(lines, left + lw / 2, box_top + 3, "edge-label", LABEL_SIZE, LABEL_LINE, fit=lw - 8)}</g>')
     parts.append("</svg>")
     return "".join(parts)
 
 
+# The page. Each function returns one part of it; render_html puts them in order inside the template.
+
+ICONS = {
+    "in": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 5v14M5 12h14"/></svg>',
+    "out": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h14"/></svg>',
+    "reset": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 12a9 9 0 1 0 3-6.7L3 8"/><path d="M3 3v5h5"/></svg>',
+    "full": '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>',
+    "mark": '<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="7" height="6" rx="1.5"/><rect x="14" y="15" width="7" height="6" rx="1.5"/><path d="M6.5 9v4.5a2 2 0 0 0 2 2H14"/></svg>',
+}
+STATUS_ORDER = ("implemented", "planned", "changed", "missing", "unknown", "context")
+
+
+def evidence_links(refs):
+    return " ".join(f'<a class="ref" href="#ev-{s(ref)}">{s(ref)}</a>' for ref in refs) or "—"
+
+
+def elements(diagram):
+    """Every element of a diagram with its detail key, in drawing order: nodes or participants, then edges or messages."""
+    kind_a, kind_b = ("participant", "message") if diagram["type"] == "sequence" else ("node", "edge")
+    first = diagram.get("participants" if kind_a == "participant" else "nodes", [])
+    second = diagram.get("messages" if kind_b == "message" else "edges", [])
+    return [(detail_key(diagram, kind_a, i), kind_a, item) for i, item in enumerate(first)] + [(detail_key(diagram, kind_b, i), kind_b, item) for i, item in enumerate(second)]
+
+
+def element_name(diagram, kind, item, rtl=False):
+    """An element's name as safe HTML. Each name sits in <bdi>, so an arrow between two English names still points the reading way."""
+    if kind in {"node", "participant"}:
+        return f"<bdi>{s(item['label'])}</bdi>"
+    names = {n["id"]: n["label"] for n in diagram.get("nodes", diagram.get("participants", []))}
+    label = f": <bdi>{s(item['label'])}</bdi>" if item.get("label") else ""
+    return f"<bdi>{s(names[item['from']])}</bdi> {'←' if rtl else '→'} <bdi>{s(names[item['to']])}</bdi>{label}"
+
+
+def page_topbar(report, u):
+    theme = "".join(f'<button type="button" data-theme-choice="{c}" aria-pressed="false">{s(u[c])}</button>' for c in ("auto", "light", "dark"))
+    return (f'<header class="topbar"><div class="topbar-inner"><a class="brand" href="#top"><span class="brand-mark">{ICONS["mark"]}</span>'
+            f'<span>{s(u["report"])}</span><span class="brand-title">{s(report["title"])}</span></a>'
+            f'<div class="theme" role="group" aria-label="{s(u["theme"])}">{theme}</div></div></header>')
+
+
+def page_hero(report, u, lang):
+    facts = "".join(f'<div><dt>{s(u[k])}</dt><dd>{s(report[k])}</dd></div>' for k in ("repository", "baseline"))
+    counts = [(len(report["diagrams"]), u["n_diagrams"]), (len(report["evidence"]), u["n_evidence"]), (len(report["unknowns"]), u["n_unknowns"])]
+    if report["audit"]:
+        counts.append((sum(1 for row in report["audit"] if row["verdict"] != "matched"), u["n_gaps"]))
+    stats = "".join(f'<li><b>{n}</b><span>{s(name)}</span></li>' for n, name in counts)
+    return (f'<header class="hero" id="top"><p class="kicker">{s(term(report["phase"], lang))}</p><h1>{s(report["title"])}</h1>'
+            f'<p class="lede">{s(report["summary"])}</p><ul class="stats">{stats}</ul><dl class="facts">{facts}</dl></header>')
+
+
+def page_toc(report, u):
+    items = [f'<li><a href="#overview">{s(u["overview"])}</a></li>']
+    items += [f'<li><a href="#d-{s(d["id"])}">{s(d["title"])}</a></li>' for d in report["diagrams"]]
+    if report["audit"]:
+        items.append(f'<li><a href="#audit">{s(u["audit"])}</a></li>')
+    items.append(f'<li><a href="#evidence">{s(u["evidence"])}</a></li>')
+    return f'<nav class="toc" aria-label="{s(u["contents"])}"><ol>{"".join(items)}</ol></nav>'
+
+
+def bullet_list(values, empty):
+    return "<ul>" + "".join(f"<li>{s(v)}</li>" for v in values) + "</ul>" if values else f'<p class="empty">{s(empty)}</p>'
+
+
+def page_overview(report, u):
+    return (f'<section id="overview" aria-labelledby="overview-title"><h2 id="overview-title" class="section-title">{s(u["overview"])}</h2>'
+            f'<div class="panel"><h3>{s(u["scope"])}</h3><p>{s(report["scope"])}</p></div>'
+            f'<div class="two"><div class="panel"><h3>{s(u["decisions"])}</h3>{bullet_list(report["decisions"], u["empty"])}</div>'
+            f'<div class="panel"><h3>{s(u["unknowns"])}</h3>{bullet_list(report["unknowns"], u["empty"])}</div></div></section>')
+
+
+def diagram_text(diagram, u, lang, rtl):
+    """The diagram as a list, for screen readers, for search, and for anyone who reads faster than they trace lines."""
+    rows = []
+    for key, kind, item in elements(diagram):
+        detail = f'<span class="t-detail">{s(item["detail"])}</span>' if item.get("detail") else ""
+        refs = f'<span class="t-refs">{evidence_links(item.get("evidence", []))}</span>' if item.get("evidence") else ""
+        rows.append(f'<li class="t-{kind}"><button type="button" class="t-name" data-open="{s(key)}">{element_name(diagram, kind, item, rtl)}</button>{badge(item["status"], lang)}{detail}{refs}</li>')
+    return f'<details class="as-text"><summary>{s(u["as_text"])}</summary><ol>{"".join(rows)}</ol></details>'
+
+
+def diagram_figure(diagram, details, u, lang, rtl):
+    svg = svg_sequence(diagram, details, rtl=rtl) if diagram["type"] == "sequence" else svg_graph(diagram, details, rtl=rtl)
+    chip = term(diagram["type"], lang) + (f' · {term(diagram["level"], lang)}' if diagram["type"] == "c4" else "")
+    tools = "".join(f'<button type="button" data-action="{a}" aria-label="{s(u[k])}" title="{s(u[k])}">{ICONS[a]}</button>' for a, k in (("out", "out"), ("in", "zoom"), ("reset", "reset"), ("full", "full")))
+    title_id = f'd-{s(diagram["id"])}-title'
+    return (f'<figure class="diagram" id="d-{s(diagram["id"])}" aria-labelledby="{title_id}">'
+            f'<figcaption class="diagram-head"><div class="titles"><span class="chip">{s(chip)}</span><h3 id="{title_id}">{s(diagram["title"])}</h3>'
+            f'<p class="question"><strong>{s(u["question"])}:</strong> {s(diagram["question"])}</p><p class="reason">{s(u["why"])}: {s(diagram["reason"])}</p></div>'
+            f'<div class="tools" role="toolbar" aria-label="{s(diagram["title"])}">{tools}</div></figcaption>'
+            f'<div class="viewport">{svg}</div><p class="hint">{s(u["help"])}</p>{diagram_text(diagram, u, lang, rtl)}</figure>')
+
+
+def page_diagrams(report, details, u, lang, rtl):
+    used = {item["status"] for d in report["diagrams"] for _, _, item in elements(d) if item.get("status")}
+    legend = "".join(f'<li><i class="swatch {s(st)}"></i>{s(term(st, lang))}</li>' for st in STATUS_ORDER[:-1] if st in used)
+    head = f'<div class="section-head"><h2 id="diagrams-title" class="section-title">{s(u["diagrams"])}</h2>' + (f'<ul class="legend" aria-label="{s(u["statuses"])}">{legend}</ul>' if legend else "") + "</div>"
+    body = "".join(diagram_figure(d, details, u, lang, rtl) for d in report["diagrams"]) or f'<p class="empty">{s(u["empty"])}</p>'
+    return f'<section id="diagrams" class="wide" aria-labelledby="diagrams-title">{head}{body}</section>'
+
+
+def page_audit(report, u, lang):
+    if not report["audit"]:
+        return ""
+    counts = {}
+    for row in report["audit"]:
+        counts[row["verdict"]] = counts.get(row["verdict"], 0) + 1
+    summary = "".join(f'<li>{badge(v, lang)}<b>{n}</b></li>' for v, n in counts.items())
+    heads = (u["step"], u["planned"], u["actual"], u["result"], u["note"], u["evidence"])
+    rows = ""
+    for row in report["audit"]:
+        cells = (s(row["step"]), s(row["planned"]), s(row["actual"]), badge(row["verdict"], lang), s(row.get("note", "")), evidence_links(row.get("evidence", [])))
+        rows += "<tr>" + "".join(f'<td data-label="{s(h)}">{c}</td>' for h, c in zip(heads, cells)) + "</tr>"
+    return (f'<section id="audit" aria-labelledby="audit-title"><div class="section-head"><h2 id="audit-title" class="section-title">{s(u["audit"])}</h2><ul class="verdicts">{summary}</ul></div>'
+            f'<div class="tablewrap"><table class="stack"><thead><tr>{"".join(f"<th scope=col>{s(h)}</th>" for h in heads)}</tr></thead><tbody>{rows}</tbody></table></div></section>')
+
+
+def page_evidence(report, u, lang):
+    cited = {}
+    for d in report["diagrams"]:
+        for key, kind, item in elements(d):
+            for ref in item.get("evidence", []):
+                cited.setdefault(ref, []).append((key, d, kind, item))
+    rows = ""
+    for e in report["evidence"]:
+        location = " · ".join(filter(None, [e.get("path", ""), e.get("symbol", ""), e.get("lines", "")])) or term(e["kind"], lang)
+        uses = "".join(f'<li><button type="button" data-open="{s(key)}">{element_name(d, kind, item, lang == "ar")}</button></li>' for key, d, kind, item in cited.get(e["id"], [])[:6])
+        more = len(cited.get(e["id"], [])) - 6
+        uses += f'<li class="more">+{more}</li>' if more > 0 else ""
+        used_in = f'<ul class="used-in">{uses}</ul>' if uses else '<span class="empty">—</span>'
+        rows += (f'<tr id="ev-{s(e["id"])}"><th scope="row" class="id">{s(e["id"])}</th><td data-label="{s(u["source"])}"><code>{s(location)}</code><span class="kind">{s(term(e["kind"], lang))}</span></td>'
+                 f'<td data-label="{s(u["claim"])}">{s(e["claim"])}</td><td data-label="{s(u["confidence"])}">{badge(e["confidence"], lang)}</td><td data-label="{s(u["used_in"])}">{used_in}</td></tr>')
+    heads = ("ID", u["source"], u["claim"], u["confidence"], u["used_in"])
+    return (f'<section id="evidence" aria-labelledby="evidence-title"><h2 id="evidence-title" class="section-title">{s(u["evidence"])}</h2>'
+            f'<div class="tablewrap"><table class="stack"><thead><tr>{"".join(f"<th scope=col>{s(h)}</th>" for h in heads)}</tr></thead><tbody>{rows}</tbody></table></div></section>')
+
+
 def render_html(report, template):
-    ar = report["language"].lower().startswith("ar")
-    lang = "ar" if ar else "en"
+    rtl = report["language"].lower().startswith("ar")
+    lang = "ar" if rtl else "en"
     u = UI[lang]
     details = {}
-    header = f'<div class="eyebrow">{s(u["report"])} · {s(term(report["phase"], lang))}</div><h1>{s(report["title"])}</h1><p class="summary">{s(report["summary"])}</p><div class="meta"><span class="pill">{s(report["repository"])}</span><span class="pill">{s(u["phase"])}: {s(term(report["phase"], lang))}</span><span class="pill">{s(report["baseline"])}</span></div>'
-    content = f'<section class="grid">{list_card(u["decisions"],report["decisions"],u["empty"])}{list_card(u["unknowns"],report["unknowns"],u["empty"])}<div class="card"><h3>{s(u["scope"])}</h3><p>{s(report["scope"])}</p></div></section>'
-    content += f'<section id="diagrams"><h2>{s(u["diagrams"])}</h2>'
-    if not report["diagrams"]:
-        content += f'<p class="muted">{s(u["empty"])}</p>'
-    for diagram in report["diagrams"]:
-        svg = svg_sequence(diagram,details,rtl=ar) if diagram["type"] == "sequence" else svg_graph(diagram,details,rtl=ar)
-        content += f'<article class="diagram"><div class="diagram-head"><div><div class="eyebrow">{s(term(diagram["type"], lang))}' + (f' · {s(term(diagram["level"], lang))}' if diagram["type"] == "c4" else "") + f'</div><h3>{s(diagram["title"])}</h3><p><strong>{s(u["question"])}:</strong> {s(diagram["question"])}</p><p class="muted"><strong>{s(u["why"])}:</strong> {s(diagram["reason"])}</p></div><div class="toolbar"><button data-action="in" aria-label="{s(u["zoom"])}">+</button><button data-action="out" aria-label="{s(u["out"])}">−</button><button data-action="reset" aria-label="{s(u["reset"])}">↺</button></div></div><div class="viewport">{svg}</div><p class="muted">{s(u["help"])}</p></article>'
-    content += "</section>"
-    if report["audit"]:
-        content += f'<section id="audit"><h2>{s(u["audit"])}</h2><div class="tablewrap"><table><thead><tr><th>{s(u["step"])}</th><th>{s(u["planned"])}</th><th>{s(u["actual"])}</th><th>{s(u["result"])}</th><th>{s(u["note"])}</th><th>{s(u["evidence"])}</th></tr></thead><tbody>'
-        for row in report["audit"]:
-            content += f'<tr><td>{s(row["step"])}</td><td>{s(row["planned"])}</td><td>{s(row["actual"])}</td><td>{badge(row["verdict"], lang)}</td><td>{s(row.get("note",""))}</td><td>{evidence_links(row.get("evidence",[]))}</td></tr>'
-        content += "</tbody></table></div></section>"
-    content += f'<section id="evidence"><h2>{s(u["evidence"])}</h2><div class="tablewrap"><table><thead><tr><th>ID</th><th>{s(u["source"])}</th><th>{s(u["claim"])}</th><th>{s(u["confidence"])}</th></tr></thead><tbody>'
-    for e in report["evidence"]:
-        location = " · ".join(filter(None,[e.get("path",""),e.get("symbol",""),e.get("lines","")])) or e["kind"]
-        content += f'<tr id="ev-{s(e["id"])}"><td><strong>{s(e["id"])}</strong></td><td><code>{s(location)}</code><br><span class="muted">{s(term(e["kind"], lang))}</span></td><td>{s(e["claim"])}</td><td>{badge(e["confidence"], lang)}</td></tr>'
-    content += "</tbody></table></div></section>"
+    content = page_hero(report, u, lang) + page_toc(report, u) + page_overview(report, u) + page_diagrams(report, details, u, lang, rtl) + page_audit(report, u, lang) + page_evidence(report, u, lang)
     for item in details.values():
+        item["state"] = item["status"]
         item["status"] = term(item["status"], lang)
-    data = json.dumps({"evidence":report["evidence"],"details":details},ensure_ascii=False,separators=(",",":"))
-    data = data.replace("<","\\u003c").replace(">","\\u003e").replace("&","\\u0026")
-    replacements = {"__LANG__":s(report["language"]),"__DIR__":"rtl" if ar else "ltr","__TITLE__":s(report["title"]),"__SKIP__":"انتقل للمحتوى" if ar else "Skip to content","__DETAIL_LABEL__":"تفاصيل عنصر الرسم" if ar else "Diagram detail","__CLOSE__":"إغلاق" if ar else "Close","__HEADER__":header,"__CONTENT__":content,"__FOOTER__":s(u["footer"]),"__DATA__":data}
-    return re.sub(r"__(?:LANG|DIR|TITLE|SKIP|DETAIL_LABEL|CLOSE|HEADER|CONTENT|FOOTER|DATA)__", lambda match: replacements[match.group()], template)
+    data = json.dumps({"evidence": report["evidence"], "details": details}, ensure_ascii=False, separators=(",", ":"))
+    data = data.replace("<", "\\u003c").replace(">", "\\u003e").replace("&", "\\u0026")
+    replacements = {"__LANG__": s(report["language"]), "__DIR__": "rtl" if rtl else "ltr", "__TITLE__": s(report["title"]), "__SKIP__": s(u["skip"]), "__DETAIL_LABEL__": s(u["detail"]), "__CLOSE__": s(u["close"]), "__LINKED__": s(u["linked"]), "__TOPBAR__": page_topbar(report, u), "__CONTENT__": content, "__FOOTER__": s(u["footer"]), "__DATA__": data}
+    return re.sub(r"__(?:LANG|DIR|TITLE|SKIP|DETAIL_LABEL|CLOSE|LINKED|TOPBAR|CONTENT|FOOTER|DATA)__", lambda match: replacements[match.group()], template)
 
 
 def mermaid_text(value):
