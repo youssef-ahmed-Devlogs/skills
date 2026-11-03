@@ -16,8 +16,8 @@ CONFIDENCES = {"verified", "inferred", "planned", "unknown"}
 VERDICTS = {"matched", "changed", "missing", "unverified"}
 EVIDENCE_KINDS = {"code", "test", "request", "assumption", "observation"}
 UI = {
-    "ar": {"phase": "المرحلة", "repository": "المشروع", "baseline": "المرجع", "scope": "نطاق الفحص", "decisions": "القرارات", "unknowns": "ما لم يُحسم", "diagrams": "الرسوم", "audit": "مقارنة الخطة بالتنفيذ", "evidence": "الأدلة", "question": "سؤال المراجعة", "why": "سبب الاختيار", "zoom": "تكبير", "out": "تصغير", "reset": "إعادة الضبط", "element": "العنصر", "status": "الحالة", "step": "الخطوة", "planned": "المخطط", "actual": "المنفذ", "result": "النتيجة", "note": "ملاحظة", "source": "المصدر", "claim": "ما يثبته", "confidence": "الثقة", "kind": "النوع", "empty": "لا توجد عناصر", "help": "اسحب للتنقل، وكبّر بـ Ctrl مع عجلة الفأرة أو بالأزرار، واضغط على عنصر للتفاصيل.", "footer": "تقرير مبني على الأدلة المذكورة؛ حدود الفحص موضحة أعلاه."},
-    "en": {"phase": "Phase", "repository": "Repository", "baseline": "Baseline", "scope": "Inspection scope", "decisions": "Decisions", "unknowns": "Unknowns", "diagrams": "Diagrams", "audit": "Plan vs implementation", "evidence": "Evidence", "question": "Review question", "why": "Why this diagram", "zoom": "Zoom in", "out": "Zoom out", "reset": "Reset", "element": "Element", "status": "Status", "step": "Step", "planned": "Planned", "actual": "Actual", "result": "Result", "note": "Note", "source": "Source", "claim": "Supported claim", "confidence": "Confidence", "kind": "Kind", "empty": "No items", "help": "Drag to pan, zoom with Ctrl and the scroll wheel or the buttons, and select an element for details.", "footer": "This report is bounded by the cited evidence and inspection scope."},
+    "ar": {"report": "تقرير الرسوم", "phase": "المرحلة", "repository": "المشروع", "baseline": "المرجع", "scope": "نطاق الفحص", "decisions": "القرارات", "unknowns": "ما لم يُحسم", "diagrams": "الرسوم", "audit": "مقارنة الخطة بالتنفيذ", "evidence": "الأدلة", "question": "سؤال المراجعة", "why": "سبب الاختيار", "zoom": "تكبير", "out": "تصغير", "reset": "إعادة الضبط", "element": "العنصر", "status": "الحالة", "step": "الخطوة", "planned": "المخطط", "actual": "المنفذ", "result": "النتيجة", "note": "ملاحظة", "source": "المصدر", "claim": "ما يثبته", "confidence": "الثقة", "kind": "النوع", "empty": "لا توجد عناصر", "help": "اسحب للتنقل، وكبّر بـ Ctrl مع عجلة الفأرة أو بالأزرار، واضغط على عنصر للتفاصيل.", "footer": "تقرير مبني على الأدلة المذكورة؛ حدود الفحص موضحة أعلاه."},
+    "en": {"report": "Diagram report", "phase": "Phase", "repository": "Repository", "baseline": "Baseline", "scope": "Inspection scope", "decisions": "Decisions", "unknowns": "Unknowns", "diagrams": "Diagrams", "audit": "Plan vs implementation", "evidence": "Evidence", "question": "Review question", "why": "Why this diagram", "zoom": "Zoom in", "out": "Zoom out", "reset": "Reset", "element": "Element", "status": "Status", "step": "Step", "planned": "Planned", "actual": "Actual", "result": "Result", "note": "Note", "source": "Source", "claim": "Supported claim", "confidence": "Confidence", "kind": "Kind", "empty": "No items", "help": "Drag to pan, zoom with Ctrl and the scroll wheel or the buttons, and select an element for details.", "footer": "This report is bounded by the cited evidence and inspection scope."},
 }
 
 
@@ -169,8 +169,26 @@ def validate(report):
     return evidence
 
 
-def badge(value):
-    return f'<span class="badge {s(value)}">{s(value)}</span>'
+TERMS = {
+    "ar": {
+        "plan": "خطة", "explain": "شرح", "audit": "مراجعة", "combined": "خطة ومراجعة",
+        "implemented": "منفّذ", "planned": "مخطط", "changed": "متغيّر", "missing": "ناقص", "unknown": "غير معروف", "context": "سياق",
+        "verified": "متحقق منه", "inferred": "مستنتج", "matched": "مطابق", "unverified": "لم يُتحقق منه",
+        "code": "كود", "test": "تست", "request": "طلب", "assumption": "افتراض", "observation": "ملاحظة",
+        "flowchart": "مخطط تدفق", "sequence": "تسلسل", "c4": "معمارية C4", "er": "جداول ER", "state": "حالات",
+        "container": "حاويات", "component": "مكوّنات",
+    },
+    "en": {"c4": "C4", "er": "ER"},
+}
+
+
+def term(value, lang):
+    """A fixed value of the schema, such as a status, in the report's language."""
+    return TERMS[lang].get(value, value)
+
+
+def badge(value, lang="en"):
+    return f'<span class="badge {s(value)}">{s(term(value, lang))}</span>'
 
 
 def list_card(title, values, empty):
@@ -227,11 +245,12 @@ def wrap(text, max_width, size, bold=False):
     return lines or [""]
 
 
-def svg_lines(lines, cx, top, css, size, line_height, anchor="middle"):
+def svg_lines(lines, cx, top, css, size, line_height, anchor="middle", fit=None):
     """Text lines, each with its own direction, so a line that starts with English keeps its order."""
     out = []
     for i, line in enumerate(lines):
-        out.append(f'<text class="{css}" x="{cx:.1f}" y="{top + i*line_height + size*0.8:.1f}" text-anchor="{anchor}" direction="{text_dir(line)}">{s(line)}</text>')
+        limit = f' data-fit="{fit:.0f}"' if fit else ""
+        out.append(f'<text class="{css}" x="{cx:.1f}" y="{top + i*line_height + size*0.8:.1f}" text-anchor="{anchor}" direction="{text_dir(line)}"{limit}>{s(line)}</text>')
     return "".join(out)
 
 
@@ -252,7 +271,7 @@ def size_node(node, diagram_type):
     decision = diagram_type == "flowchart" and node.get("kind") == "decision"
     inset = 64 if decision else 36
     fields = node.get("fields", []) if diagram_type == "er" else []
-    field_texts = [f"{f.get('key', '')} {f['name']} {f.get('type', '')}".strip() for f in fields]
+    field_texts = [f"{f.get('key', '')} {f['name']} {f.get('type', '')}{' NULL' if f.get('nullable') is True else ''}".strip() for f in fields]
     base = 300 if decision else 260
     label = wrap(node["label"], base - inset, 14, bold=True)
     widest = max([text_width(x, 14, True) for x in label] + [text_width(x, 12.5) for x in field_texts] + [0])
@@ -563,7 +582,7 @@ def svg_graph(diagram, details, rtl=False):
         key = detail_key(diagram, "edge", i)
         left = min(X(rect[0]), X(rect[2]))
         cx = left + (rect[2] - rect[0]) / 2
-        parts.append(f'<g class="node" data-status="{s(edges[i]["status"])}" data-key="{s(key)}"><rect class="edge-label-bg" x="{left:.1f}" y="{Y(rect[1]):.1f}" width="{rect[2]-rect[0]:.1f}" height="{rect[3]-rect[1]:.1f}" rx="5"/>{svg_lines(lines, cx, Y(rect[1]) + 3, "edge-label", LABEL_SIZE, LABEL_LINE)}</g>')
+        parts.append(f'<g class="node" data-status="{s(edges[i]["status"])}" data-key="{s(key)}"><rect class="edge-label-bg" x="{left:.1f}" y="{Y(rect[1]):.1f}" width="{rect[2]-rect[0]:.1f}" height="{rect[3]-rect[1]:.1f}" rx="5"/>{svg_lines(lines, cx, Y(rect[1]) + 3, "edge-label", LABEL_SIZE, LABEL_LINE, fit=rect[2] - rect[0] - 8)}</g>')
     for i, node in enumerate(nodes):
         n, z = node["id"], sizes[node["id"]]
         key = detail_key(diagram, "node", i)
@@ -582,67 +601,120 @@ def svg_graph(diagram, details, rtl=False):
             parts.append(f'<rect class="{css}" x="{left:.1f}" y="{top:.1f}" width="{w:.1f}" height="{h:.1f}" rx="{radius:.1f}"/>')
         text_h = len(z["label"]) * NODE_LINE + (4 + len(z["detail"]) * 16 if z["detail"] else 0)
         text_top = top + 22 if z["fields"] else top + (h - text_h) / 2
-        parts.append(svg_lines(z["label"], cx, text_top, "node-label", 14, NODE_LINE))
+        room = w - (56 if z["decision"] else 20)
+        parts.append(svg_lines(z["label"], cx, text_top, "node-label", 14, NODE_LINE, fit=room))
         if z["detail"]:
-            parts.append(svg_lines(z["detail"], cx, text_top + len(z["label"]) * NODE_LINE + 4, "node-sub", 11.5, 16))
+            parts.append(svg_lines(z["detail"], cx, text_top + len(z["label"]) * NODE_LINE + 4, "node-sub", 11.5, 16, fit=room))
         if z["fields"]:
             line_y = top + 22 + len(z["label"]) * NODE_LINE + 4
             parts.append(f'<path d="M {left+10:.1f} {line_y:.1f} H {left+w-10:.1f}" stroke="#52617c"/>')
             for k, field in enumerate(z["fields"]):
-                parts.append(f'<text class="field" x="{left+16:.1f}" y="{line_y + 8 + k*FIELD_LINE + 12.5*0.8:.1f}" direction="ltr" text-anchor="start">{s(field)}</text>')
+                parts.append(f'<text class="field" x="{left+16:.1f}" y="{line_y + 8 + k*FIELD_LINE + 12.5*0.8:.1f}" direction="ltr" text-anchor="start" data-fit="{w - 28:.0f}">{s(field)}</text>')
         parts.append("</g>")
     parts.append("</svg>")
     return "".join(parts)
 
 
-def svg_sequence(diagram, details):
-    parts_data = diagram["participants"]
-    messages = diagram["messages"]
-    width = max(650, len(parts_data)*230+80)
-    height = max(350, 175+len(messages)*95)
-    xs = {p["id"]: 155+i*230 for i,p in enumerate(parts_data)}
-    parts = [f'<svg role="img" aria-label="{s(diagram["title"])}" viewBox="0 0 {width} {height}" width="{width}" height="{height}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="arr-{s(diagram["id"])}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7990b1"/></marker></defs>']
-    for i,p in enumerate(parts_data):
-        x=xs[p["id"]]; key=detail_key(diagram,"participant",i)
-        details[key]={"label":p["label"],"detail":p.get("detail", ""),"status":p["status"],"evidence":p.get("evidence", [])}
-        parts.append(f'<line class="seq-life" x1="{x}" x2="{x}" y1="90" y2="{height-30}"/><g class="node" data-status="{s(p["status"])}" data-key="{s(key)}" tabindex="0" role="button" aria-label="{s(p["label"])}"><rect class="shape" x="{x-95}" y="30" width="190" height="60" rx="12"/>{svg_lines(wrap(p["label"],170,14,True)[:2],x,60-len(wrap(p["label"],170,14,True)[:2])*19/2,"node-label",14,NODE_LINE)}</g>')
-    for i,m in enumerate(messages):
-        x1,x2=xs[m["from"]],xs[m["to"]]; y=135+i*95
-        cls="edge " + s(m.get("style","call"))
-        if x1 == x2:
-            path=f"M {x1} {y} C {x1+105} {y-24}, {x1+105} {y+42}, {x1} {y+42}"
+def svg_sequence(diagram, details, rtl=False):
+    people, messages = diagram["participants"], diagram["messages"]
+    ids = [p["id"] for p in people]
+    order = {pid: i for i, pid in enumerate(ids)}
+    heads = {p["id"]: wrap(p["label"], 180, 14, bold=True) for p in people}
+    head_w = {pid: max(140, min(230, max(text_width(line, 14, True) for line in lines) + 36)) for pid, lines in heads.items()}
+    head_h = max(len(lines) for lines in heads.values()) * NODE_LINE + 26
+
+    # The gap between two neighbour lifelines fits both heads and the labels of the messages between them.
+    gap = [max(190, head_w[a] / 2 + head_w[b] / 2 + 36) for a, b in zip(ids, ids[1:])]
+    for m in messages:
+        a, b = order[m["from"]], order[m["to"]]
+        if a == b:
+            continue
+        lo, hi = min(a, b), max(a, b)
+        need = max(text_width(line, LABEL_SIZE) for line in wrap(m["label"], 300, LABEL_SIZE)) + 44
+        have = sum(gap[lo:hi])
+        if need > have:
+            for k in range(lo, hi):
+                gap[k] += (need - have) / (hi - lo)
+    loops = any(m["from"] == m["to"] for m in messages)
+    xs, left = {}, MARGIN + head_w[ids[0]] / 2
+    for i, pid in enumerate(ids):
+        xs[pid] = left
+        if i < len(gap):
+            left += gap[i]
+    right_pad = 260 if loops else 0
+    total_w = max(600, left + head_w[ids[-1]] / 2 + MARGIN + right_pad)
+
+    def X(v):
+        return total_w - v if rtl else v
+
+    rows, cur = [], 30 + head_h + 44
+    for m in messages:
+        a, b = xs[m["from"]], xs[m["to"]]
+        room = 220 if a == b else abs(b - a) - 40
+        lines = wrap(m["label"], room, LABEL_SIZE)
+        lw = max(text_width(line, LABEL_SIZE) for line in lines) + 14
+        lh = len(lines) * LABEL_LINE + 6
+        if a == b:
+            rows.append((a, b, cur, lines, lw, lh))
+            cur += max(56, lh + 20) + 24
         else:
-            path=f"M {x1} {y} L {x2} {y}"
-        key=detail_key(diagram,"message",i)
-        details[key]={"label":m["label"],"detail":m.get("detail", ""),"status":m["status"],"evidence":m.get("evidence", [])}
-        parts.append(f'<g class="node" data-status="{s(m["status"])}" data-key="{s(key)}" tabindex="0" role="button" aria-label="{s(m["label"])}"><path class="{cls}" d="{path}" marker-end="url(#arr-{s(diagram["id"])})"/><text class="edge-label" x="{(x1+x2)/2}" y="{y-12}" text-anchor="middle" direction="{text_dir(m["label"])}">{s(m["label"])}</text><circle cx="{x1}" cy="{y}" r="5" fill="#7dd3fc"/></g>')
+            y = cur + lh + 8
+            rows.append((a, b, y, lines, lw, lh))
+            cur = y + 30
+    total_h = max(300, cur + 20)
+
+    marker = f'arr-{s(diagram["id"])}'
+    parts = [f'<svg role="img" aria-label="{s(diagram["title"])}" viewBox="0 0 {total_w:.0f} {total_h:.0f}" width="{total_w:.0f}" height="{total_h:.0f}" xmlns="http://www.w3.org/2000/svg"><defs><marker id="{marker}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#7990b1"/></marker></defs>']
+    for i, p in enumerate(people):
+        x, w = X(xs[p["id"]]), head_w[p["id"]]
+        key = detail_key(diagram, "participant", i)
+        details[key] = {"label": p["label"], "detail": p.get("detail", ""), "status": p["status"], "evidence": p.get("evidence", [])}
+        lines = heads[p["id"]]
+        top = 30 + (head_h - len(lines) * NODE_LINE) / 2
+        parts.append(f'<line class="seq-life" x1="{x:.1f}" x2="{x:.1f}" y1="{30 + head_h:.1f}" y2="{total_h - 20:.1f}"/><g class="node" data-status="{s(p["status"])}" data-key="{s(key)}" tabindex="0" role="button" aria-label="{s(p["label"])}"><rect class="shape" x="{x - w/2:.1f}" y="30" width="{w:.1f}" height="{head_h:.1f}" rx="12"/>{svg_lines(lines, x, top, "node-label", 14, NODE_LINE, fit=w - 16)}</g>')
+    for i, (m, (a, b, y, lines, lw, lh)) in enumerate(zip(messages, rows)):
+        key = detail_key(diagram, "message", i)
+        details[key] = {"label": m["label"], "detail": m.get("detail", ""), "status": m["status"], "evidence": m.get("evidence", [])}
+        cls = "edge " + s(m.get("style", "call"))
+        if a == b:
+            h = max(56, lh + 20)
+            path = f"M {X(a):.1f} {y:.1f} L {X(a + 56):.1f} {y:.1f} Q {X(a + 70):.1f} {y:.1f} {X(a + 70):.1f} {y + 14:.1f} L {X(a + 70):.1f} {y + h - 14:.1f} Q {X(a + 70):.1f} {y + h:.1f} {X(a + 56):.1f} {y + h:.1f} L {X(a + 4):.1f} {y + h:.1f}"
+            box_left, box_top = a + 82, y + (h - lh) / 2
+        else:
+            path = f"M {X(a):.1f} {y:.1f} L {X(b):.1f} {y:.1f}"
+            box_left, box_top = (a + b) / 2 - lw / 2, y - lh - 6
+        left = min(X(box_left), X(box_left + lw))
+        parts.append(f'<g class="node edge-group" data-status="{s(m["status"])}" data-key="{s(key)}" tabindex="0" role="button" aria-label="{s(m["label"])}"><path class="edge-hit" d="{path}"/><path class="{cls}" d="{path}" marker-end="url(#{marker})"/><circle cx="{X(a):.1f}" cy="{y:.1f}" r="5" fill="#7dd3fc"/><rect class="edge-label-bg" x="{left:.1f}" y="{box_top:.1f}" width="{lw:.1f}" height="{lh:.1f}" rx="5"/>{svg_lines(lines, left + lw / 2, box_top + 3, "edge-label", LABEL_SIZE, LABEL_LINE, fit=lw - 8)}</g>')
     parts.append("</svg>")
     return "".join(parts)
 
 
 def render_html(report, template):
     ar = report["language"].lower().startswith("ar")
-    u = UI["ar" if ar else "en"]
+    lang = "ar" if ar else "en"
+    u = UI[lang]
     details = {}
-    header = f'<div class="eyebrow">Code Flow Audit · {s(report["phase"])}</div><h1>{s(report["title"])}</h1><p class="summary">{s(report["summary"])}</p><div class="meta"><span class="pill">{s(report["repository"])}</span><span class="pill">{s(u["phase"])}: {s(report["phase"])}</span><span class="pill">{s(report["baseline"])}</span></div>'
+    header = f'<div class="eyebrow">{s(u["report"])} · {s(term(report["phase"], lang))}</div><h1>{s(report["title"])}</h1><p class="summary">{s(report["summary"])}</p><div class="meta"><span class="pill">{s(report["repository"])}</span><span class="pill">{s(u["phase"])}: {s(term(report["phase"], lang))}</span><span class="pill">{s(report["baseline"])}</span></div>'
     content = f'<section class="grid">{list_card(u["decisions"],report["decisions"],u["empty"])}{list_card(u["unknowns"],report["unknowns"],u["empty"])}<div class="card"><h3>{s(u["scope"])}</h3><p>{s(report["scope"])}</p></div></section>'
     content += f'<section id="diagrams"><h2>{s(u["diagrams"])}</h2>'
     if not report["diagrams"]:
         content += f'<p class="muted">{s(u["empty"])}</p>'
     for diagram in report["diagrams"]:
-        svg = svg_sequence(diagram,details) if diagram["type"] == "sequence" else svg_graph(diagram,details,rtl=ar)
-        content += f'<article class="diagram"><div class="diagram-head"><div><div class="eyebrow">{s(diagram["type"])}' + (f' · {s(diagram["level"])}' if diagram["type"] == "c4" else "") + f'</div><h3>{s(diagram["title"])}</h3><p><strong>{s(u["question"])}:</strong> {s(diagram["question"])}</p><p class="muted"><strong>{s(u["why"])}:</strong> {s(diagram["reason"])}</p></div><div class="toolbar"><button data-action="in" aria-label="{s(u["zoom"])}">+</button><button data-action="out" aria-label="{s(u["out"])}">−</button><button data-action="reset" aria-label="{s(u["reset"])}">↺</button></div></div><div class="viewport">{svg}</div><p class="muted">{s(u["help"])}</p></article>'
+        svg = svg_sequence(diagram,details,rtl=ar) if diagram["type"] == "sequence" else svg_graph(diagram,details,rtl=ar)
+        content += f'<article class="diagram"><div class="diagram-head"><div><div class="eyebrow">{s(term(diagram["type"], lang))}' + (f' · {s(term(diagram["level"], lang))}' if diagram["type"] == "c4" else "") + f'</div><h3>{s(diagram["title"])}</h3><p><strong>{s(u["question"])}:</strong> {s(diagram["question"])}</p><p class="muted"><strong>{s(u["why"])}:</strong> {s(diagram["reason"])}</p></div><div class="toolbar"><button data-action="in" aria-label="{s(u["zoom"])}">+</button><button data-action="out" aria-label="{s(u["out"])}">−</button><button data-action="reset" aria-label="{s(u["reset"])}">↺</button></div></div><div class="viewport">{svg}</div><p class="muted">{s(u["help"])}</p></article>'
     content += "</section>"
     if report["audit"]:
         content += f'<section id="audit"><h2>{s(u["audit"])}</h2><div class="tablewrap"><table><thead><tr><th>{s(u["step"])}</th><th>{s(u["planned"])}</th><th>{s(u["actual"])}</th><th>{s(u["result"])}</th><th>{s(u["note"])}</th><th>{s(u["evidence"])}</th></tr></thead><tbody>'
         for row in report["audit"]:
-            content += f'<tr><td>{s(row["step"])}</td><td>{s(row["planned"])}</td><td>{s(row["actual"])}</td><td>{badge(row["verdict"])}</td><td>{s(row.get("note",""))}</td><td>{evidence_links(row.get("evidence",[]))}</td></tr>'
+            content += f'<tr><td>{s(row["step"])}</td><td>{s(row["planned"])}</td><td>{s(row["actual"])}</td><td>{badge(row["verdict"], lang)}</td><td>{s(row.get("note",""))}</td><td>{evidence_links(row.get("evidence",[]))}</td></tr>'
         content += "</tbody></table></div></section>"
     content += f'<section id="evidence"><h2>{s(u["evidence"])}</h2><div class="tablewrap"><table><thead><tr><th>ID</th><th>{s(u["source"])}</th><th>{s(u["claim"])}</th><th>{s(u["confidence"])}</th></tr></thead><tbody>'
     for e in report["evidence"]:
         location = " · ".join(filter(None,[e.get("path",""),e.get("symbol",""),e.get("lines","")])) or e["kind"]
-        content += f'<tr id="ev-{s(e["id"])}"><td><strong>{s(e["id"])}</strong></td><td><code>{s(location)}</code><br><span class="muted">{s(e["kind"])}</span></td><td>{s(e["claim"])}</td><td>{badge(e["confidence"])}</td></tr>'
+        content += f'<tr id="ev-{s(e["id"])}"><td><strong>{s(e["id"])}</strong></td><td><code>{s(location)}</code><br><span class="muted">{s(term(e["kind"], lang))}</span></td><td>{s(e["claim"])}</td><td>{badge(e["confidence"], lang)}</td></tr>'
     content += "</tbody></table></div></section>"
+    for item in details.values():
+        item["status"] = term(item["status"], lang)
     data = json.dumps({"evidence":report["evidence"],"details":details},ensure_ascii=False,separators=(",",":"))
     data = data.replace("<","\\u003c").replace(">","\\u003e").replace("&","\\u0026")
     replacements = {"__LANG__":s(report["language"]),"__DIR__":"rtl" if ar else "ltr","__TITLE__":s(report["title"]),"__SKIP__":"انتقل للمحتوى" if ar else "Skip to content","__DETAIL_LABEL__":"تفاصيل عنصر الرسم" if ar else "Diagram detail","__CLOSE__":"إغلاق" if ar else "Close","__HEADER__":header,"__CONTENT__":content,"__FOOTER__":s(u["footer"]),"__DATA__":data}
@@ -686,7 +758,8 @@ def render_mermaid(diagram):
                     if re.fullmatch(r"[A-Za-z][A-Za-z0-9_()\[\]-]*",typ) and re.fullmatch(r"[A-Za-z][A-Za-z0-9_\-]*",name):
                         key=f.get("key", "")
                         key=f" {key}" if key in {"PK","FK","UK"} else ""
-                        out.append(f"        {typ} {name}{key}")
+                        note = ' "nullable"' if f.get("nullable") is True else ""
+                        out.append(f"        {typ} {name}{key}{note}")
                 out.append("    }")
             else:
                 out.append(f'    {ids[n["id"]]}["{alias}"]')
@@ -713,8 +786,9 @@ def md_cell(value):
 
 
 def render_md(report):
-    u=UI["ar" if report["language"].lower().startswith("ar") else "en"]
-    out=[f'# {report["title"]}',"",f'**{u["phase"]}:** {report["phase"]}  ',f'**{u["repository"]}:** {report["repository"]}  ',f'**{u["baseline"]}:** {report["baseline"]}',"",report["summary"],"",f'**{u["scope"]}:** {report["scope"]}',""]
+    lang="ar" if report["language"].lower().startswith("ar") else "en"
+    u=UI[lang]
+    out=[f'# {report["title"]}',"",f'**{u["phase"]}:** {term(report["phase"], lang)}  ',f'**{u["repository"]}:** {report["repository"]}  ',f'**{u["baseline"]}:** {report["baseline"]}',"",report["summary"],"",f'**{u["scope"]}:** {report["scope"]}',""]
     for key in ("decisions","unknowns"):
         out += [f"## {u[key]}",""]
         out += [f"- {v}" for v in report[key]] or [f'- {u["empty"]}']
@@ -724,16 +798,16 @@ def render_md(report):
         out += [f'### {d["title"]} ({d["type"]}' + (f', {d["level"]}' if d["type"]=="c4" else "") + ")", "",f'**{u["question"]}:** {d["question"]}  ',f'**{u["why"]}:** {d["reason"]}',"","```mermaid",render_mermaid(d),"```","",f'| {u["element"]} | {u["status"]} | {u["evidence"]} |',"| --- | --- | --- |"]
         elems = [(x.get("label",x.get("id","")),x) for x in d.get("nodes",d.get("participants",[]))]
         elems += [(f"{x['from']} → {x['to']}" + (f": {x['label']}" if x.get("label") else ""),x) for x in d.get("edges",d.get("messages",[]))]
-        out += [f'| {md_cell(name)} | {x["status"]} | {", ".join(x.get("evidence",[])) or "—"} |' for name,x in elems]
+        out += [f'| {md_cell(name)} | {term(x["status"], lang)} | {", ".join(x.get("evidence",[])) or "—"} |' for name,x in elems]
         out.append("")
     if report["audit"]:
         out += [f'## {u["audit"]}',"",f'| {u["step"]} | {u["planned"]} | {u["actual"]} | {u["result"]} | {u["note"]} | {u["evidence"]} |',"| --- | --- | --- | --- | --- | --- |"]
-        out += ["| " + " | ".join(md_cell(row.get(k,"")) for k in ("step","planned","actual","verdict","note")) + " | " + ", ".join(row.get("evidence",[])) + " |" for row in report["audit"]]
+        out += ["| " + " | ".join(md_cell(row.get(k,"")) for k in ("step","planned","actual")) + " | " + term(row["verdict"], lang) + " | " + md_cell(row.get("note","")) + " | " + ", ".join(row.get("evidence",[])) + " |" for row in report["audit"]]
         out.append("")
     out += [f'## {u["evidence"]}',"",f'| ID | {u["kind"]} | {u["source"]} | {u["claim"]} | {u["confidence"]} |',"| --- | --- | --- | --- | --- |"]
     for e in report["evidence"]:
         location=" · ".join(filter(None,[e.get("path",""),e.get("symbol",""),e.get("lines","")])) or "—"
-        out.append("| " + " | ".join(md_cell(v) for v in (e["id"],e["kind"],location,e["claim"],e["confidence"])) + " |")
+        out.append("| " + " | ".join(md_cell(v) for v in (e["id"],term(e["kind"], lang),location,e["claim"],term(e["confidence"], lang))) + " |")
     out.append("")
     return "\n".join(out)
 

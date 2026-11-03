@@ -42,6 +42,13 @@
   });
   document.getElementById('close-detail').addEventListener('click', () => detail.classList.remove('open'));
   document.addEventListener('keydown', ev => { if (ev.key === 'Escape') detail.classList.remove('open'); });
+  // The renderer guesses text widths without the real font. A line still wider than its box is squeezed to fit.
+  const fit = () => document.querySelectorAll('text[data-fit]').forEach(el => {
+    const room = Number(el.dataset.fit);
+    el.removeAttribute('textLength'); el.removeAttribute('lengthAdjust');
+    if (el.getComputedTextLength() > room) { el.setAttribute('textLength', room); el.setAttribute('lengthAdjust', 'spacingAndGlyphs'); }
+  });
+  fit(); if (document.fonts) document.fonts.ready.then(fit);
   document.querySelectorAll('.viewport').forEach(view => {
     const svg = view.querySelector('svg'); const original = svg.viewBox.baseVal;
     const home = {x:original.x,y:original.y,w:original.width,h:original.height};

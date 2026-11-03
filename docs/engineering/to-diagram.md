@@ -16,7 +16,7 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 
 **It needs:** Python 3.9 or later and a terminal tool to run its bundled renderer. It calls no other skill. The HTML report needs no network connection.
 
-**Where to run it:** In any session for a plan from the chat. For existing or changed code, start inside that project's folder. The agent writes the report in the current folder or the output folder you name. It may use a temporary JSON file to build the report.
+**Where to run it:** In any session for a plan from the chat. For existing or changed code, start inside that project's folder. The agent writes the report in the folder you name, or else in `~/.to-diagram/<project>/`, outside the project, so it adds no file to your repository. A plan from the chat alone goes in `~/.to-diagram/plans/`. The report's JSON stays beside it, so the agent can render it again.
 
 **Call it:** in Claude Code or GitHub Copilot, type `/to-diagram` and your request. In Codex, type `$to-diagram` and your request.
 
@@ -27,7 +27,7 @@ It asks which agents to install it for: pick every agent you use. Other ways, an
 1. It decides whether you want to see a plan, understand existing code, or review a finished change.
 2. It reads the agreed plan or the relevant code and diff. It states what it checked and what it could not verify.
 3. It chooses one or more of Flowchart, Sequence, C4, ER and State. You do not have to choose.
-4. It makes one standalone HTML report by default, with zoom (the buttons, or Ctrl and the scroll wheel), pan, details and evidence for diagram steps. The diagrams read top to bottom, and right to left in an Arabic report. Ask for `.md` to get Markdown with Mermaid diagrams instead.
+4. It makes one standalone HTML report by default, with zoom (the buttons, or Ctrl and the scroll wheel), pan, details and evidence for diagram steps. The diagrams read top to bottom, and right to left in an Arabic report, where every fixed word, such as a status, is in Arabic too. Ask for `.md` to get Markdown with Mermaid diagrams instead.
 5. When there is a plan and finished code, it compares each important planned step with what the code does.
 
 ## When to use it
@@ -47,16 +47,18 @@ A shop team agrees that checkout should check stock before it asks the payment p
 ```text
 You:    /to-diagram Show our checkout plan before we write code.
 
-Agent:  I made checkout-plan.html. The flowchart shows the stock check,
-        the out-of-stock branch and the payment call. It marks the retry
-        policy as unknown. I used the agreed plan; I did not inspect code.
+Agent:  I made ~/.to-diagram/plans/checkout-plan.html. The flowchart
+        shows the stock check, the out-of-stock branch and the payment
+        call. It marks the retry policy as unknown. I used the agreed
+        plan; I did not inspect code.
 
 You:    /to-diagram The checkout change is done. Show what the code does
         and compare it with that plan.
 
-Agent:  I made checkout-audit.html. The sequence diagram shows that the
-        payment call comes before the stock check. The audit marks that
-        step as changed and links it to the service method I read.
+Agent:  I made ~/.to-diagram/shop/checkout-audit.html. The sequence
+        diagram shows that the payment call comes before the stock check.
+        The audit marks that step as changed and links it to the service
+        method I read.
 ```
 
 ## More use cases
@@ -67,7 +69,7 @@ Agent:  I made checkout-audit.html. The sequence diagram shows that the
 
 ## What you get
 
-One offline HTML report by default. It has embedded diagrams, an evidence table and, when a plan exists, a comparison with finished code. If you ask for `.md`, you get Markdown with Mermaid diagrams and the same evidence text. The skill does not change code unless you also ask for implementation.
+One offline HTML report by default, and the agent tells you its full path. When the agent has a browser tool, it looks at every diagram before it hands the report over; when it has none, it says so. It has embedded diagrams, an evidence table and, when a plan exists, a comparison with finished code. If you ask for `.md`, you get Markdown with Mermaid diagrams and the same evidence text. The skill does not change code unless you also ask for implementation.
 
 ## Tips
 
