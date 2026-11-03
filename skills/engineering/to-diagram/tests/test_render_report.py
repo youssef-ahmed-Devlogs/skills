@@ -1,5 +1,6 @@
 import importlib.util
 import json
+import re
 from pathlib import Path
 import tempfile
 import unittest
@@ -57,6 +58,55 @@ class ReportTests(unittest.TestCase):
         report["diagrams"][0]["nodes"][0]["evidence"] = ["E1"]
         with self.assertRaisesRegex(ValueError, "requires code or observation"):
             render.validate(report)
+
+    def boxes(self, svg, pattern):
+        return [tuple(float(v) for v in m) for m in re.findall(pattern, svg)]
+
+    def test_edge_labels_and_nodes_do_not_overlap(self):
+        for name in ("order-checkout.json", "architecture-data.json", "agreed-plan.json"):
+            report = self.load(name)
+            for diagram in report["diagrams"]:
+                if diagram["type"] == "sequence":
+                    continue
+                svg = render.svg_graph(diagram, {}, rtl=report["language"].startswith("ar"))
+                labels = self.boxes(svg, r'class="edge-label-bg" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"')
+                nodes = self.boxes(svg, r'<rect class="shape[^"]*" x="([\d.]+)" y="([\d.]+)" width="([\d.]+)" height="([\d.]+)"')
+                rects = [(x, y, x + w, y + h) for x, y, w, h in labels + nodes]
+                for i in range(len(rects)):
+                    for j in range(i + 1, len(rects)):
+                        a, b = rects[i], rects[j]
+                        self.assertFalse(a[0] < b[2] and b[0] < a[2] and a[1] < b[3] and b[1] < a[3], f"{name} {diagram['id']}: {a} overlaps {b}")
+
+    def test_er_fields_stay_inside_their_table(self):
+        diagram = self.load("architecture-data.json")["diagrams"][1]
+        diagram["nodes"][1]["fields"] += [{"name": f"extra_{k}", "type": "varchar"} for k in range(4)]
+        svg = render.svg_graph(diagram, {})
+        for match in re.finditer(r'<rect class="shape" x="[\d.]+" y="([\d.]+)" width="[\d.]+" height="([\d.]+)"/>(.*?)</g>', svg):
+            bottom = float(match.group(1)) + float(match.group(2))
+            for y in re.findall(r'class="field" x="[\d.]+" y="([\d.]+)"', match.group(3)):
+                self.assertLess(float(y), bottom - 4)
+
+    def test_each_text_line_takes_the_direction_of_its_first_letter(self):
+        self.assertEqual(render.text_dir("Gate::before هل هو"), "ltr")
+        self.assertEqual(render.text_dir("فحص Gate::before"), "rtl")
+        self.assertEqual(render.text_dir("123 - users"), "ltr")
+        diagram = {"id": "D9", "type": "flowchart", "title": "t", "question": "q", "reason": "r",
+                   "nodes": [{"id": "a", "label": "فحص auth", "status": "context"}, {"id": "b", "label": "AccessDenied page", "status": "context"}],
+                   "edges": [{"from": "a", "to": "b", "status": "context"}]}
+        svg = render.svg_graph(diagram, {}, rtl=True)
+        self.assertIn('direction="rtl">فحص auth</text>', svg)
+        self.assertIn('direction="ltr">AccessDenied page</text>', svg)
+        self.assertNotIn('class="edge-label"', svg)
+
+    def test_edge_label_is_optional_and_rtl_mirrors_the_layout(self):
+        report = self.load("agreed-plan.json")
+        report["diagrams"][0]["edges"][0].pop("label")
+        render.validate(report)
+        self.assertNotIn('|""|', render.render_md(report))
+        diagram = report["diagrams"][0]
+        ltr = render.svg_graph(diagram, {}, rtl=False)
+        rtl = render.svg_graph(diagram, {}, rtl=True)
+        self.assertNotEqual(ltr, rtl)
 
     def test_report_text_cannot_break_out_of_embedded_json_or_html(self):
         report = self.load()
