@@ -20,7 +20,13 @@
   <div data-slot="preferences"></div>
 </header>
 <div class="desk">
-  <aside id="course-tree"></aside>
+  <aside class="guide-column"><article class="step-guide">
+    <div class="rail-head"><small data-slot="guide-position"></small><strong class="badge" data-slot="step-role"></strong></div>
+    <h2 data-slot="step-title"></h2><div data-slot="explanation"></div>
+    <div class="callout" data-slot="callout" hidden></div><div data-slot="changes"></div>
+    <div class="step-actions"><button class="tool" data-action="back"></button><button class="primary" data-action="next"></button></div>
+    <small class="shortcuts" data-slot="shortcuts"></small>
+  </article><section class="outcomes"><strong data-copy="goals"></strong><ul data-slot="goal-list"></ul></section></aside>
   <main class="lesson">
     <header class="lesson-head">
       <small data-slot="breadcrumb"></small><div class="title-row"><h1 data-slot="lesson-title"></h1>
@@ -36,11 +42,5 @@
     </section>
     <section class="step-rail"><div class="rail-head"><strong data-copy="inLesson"></strong><small data-slot="position"></small></div><div data-slot="timeline"></div></section>
   </main>
-  <aside class="guide-column"><article class="step-guide">
-    <div class="rail-head"><small data-slot="guide-position"></small><strong class="badge" data-slot="step-role"></strong></div>
-    <h2 data-slot="step-title"></h2><div data-slot="explanation"></div>
-    <div class="callout" data-slot="callout" hidden></div><div data-slot="changes"></div>
-    <div class="step-actions"><button class="tool" data-action="back"></button><button class="primary" data-action="next"></button></div>
-    <small class="shortcuts" data-slot="shortcuts"></small>
-  </article><section class="outcomes"><strong data-copy="goals"></strong><ul data-slot="goal-list"></ul></section></aside>
+  <aside id="course-tree"></aside>
 </div>

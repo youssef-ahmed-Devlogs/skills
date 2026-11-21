@@ -31,7 +31,8 @@ code,kbd,pre { font-family:var(--mono); direction:ltr; unicode-bidi:isolate }
 .mode-nav { margin-inline:auto }
 .preferences { flex-shrink:0 }
 .preferences :is(button,select),.tool { border:1px solid var(--edge); border-radius:8px; padding:4px 8px; background:var(--panel) }
-.desk { display:grid; grid-template-columns:clamp(225px,15vw,280px) minmax(0,1fr) clamp(285px,19vw,345px); gap:14px; padding:12px 14px; align-items:start }
+.desk { display:grid; grid-template-columns:clamp(285px,19vw,345px) minmax(0,1fr) clamp(225px,15vw,280px); gap:14px; padding:12px 14px; align-items:start }
+.desk:not(:has(> #course-tree)) { grid-template-columns:clamp(285px,19vw,345px) minmax(0,1fr) }
 .desk > * { min-width:0 }
 .studio-card,.lesson,.step-guide,.outcomes,.step-rail,.stage { border:1px solid var(--line); border-radius:12px; background:var(--panel); box-shadow:0 2px 5px rgb(50 35 15 / .06) }
 .lesson,.step-guide,.outcomes,.step-rail { padding:clamp(12px,1vw,18px) }
@@ -110,8 +111,8 @@ summary::-webkit-details-marker { display:none }
 .stage.expanded-stage { position:fixed; inset:0; z-index:10; max-height:100dvh; overflow:auto; border-radius:0 }
 @media(max-width:1000px) {
   .tree-toggle { display:inline-block }
-  .desk { grid-template-columns:minmax(0,1fr) minmax(235px,30%) }
-  .course-tree { position:fixed; inset-block:0; inset-inline-start:0; block-size:100dvh; width:min(300px,88vw); padding:12px; z-index:8; background:var(--paper) }
+  .desk, .desk:not(:has(> #course-tree)) { grid-template-columns:minmax(235px,30%) minmax(0,1fr) }
+  .course-tree { position:fixed; inset-block:0; inset-inline-end:0; block-size:100dvh; width:min(300px,88vw); padding:12px; z-index:8; background:var(--paper) }
   .course-tree:not([data-open]) { display:none }
   .mode-nav { flex-wrap:wrap }
 }
@@ -120,7 +121,7 @@ summary::-webkit-details-marker { display:none }
   .desk { display:block; padding:8px }
   .topbar { flex-wrap:wrap; gap:6px; padding:6px 8px }
   .preferences { margin-inline-start:auto }
-  .guide-column { margin-block-start:10px }
+  .guide-column { margin-block-end:10px }
   .stage { min-height:290px }
   .step-guide { min-height:0 }
   .mode-nav { order:3; width:100%; overflow:auto; flex-wrap:nowrap }
