@@ -8,9 +8,19 @@ description: Build a runnable visual learning website or interactive lesson for 
 
 Build a working learning experience in Arabic and English. Use the requested language for the first visit. Every lesson and course uses the supplied Designed to Scale shell, light and dark palettes, top language and theme controls, and bundled fonts. For a plan request, deliver a curriculum and a worked lesson storyboard. For a course, deliver the full learning path and a final application.
 
+## Interview first, then ask for approval
+
+For every new learning path or standalone lesson, begin with an interview in the user's language. Keep the interview and proposal in chat. Until the user explicitly approves the specific proposal, wait before creating or changing any files, including notes, outlines, mockups, starter code and previews.
+
+1. Ask one focused question and wait for the answer. Start with the learner's real goal or the most important gap in what they have already told you. If the initial brief is detailed, confirm the specific starting point with them. Carry answers forward between turns.
+2. Establish what the learner can already do unaided, what they have tried, and exactly where they get stuck. Ask for a concrete example. If the boundary is unclear, offer one small prediction or task in chat and discuss their reasoning before choosing the starting lesson. Accept a clear account of starting from zero. For a course made for others, ask the requester about the intended audience and confirm any unknowns with them. A topic name or a level label alone never establishes prerequisites.
+3. Ask about the time available, desired depth, type of practice and constraints that affect this course. Let earlier answers determine the next question. A recommendation can help choose the scope or format. The learner supplies the evidence of their ability.
+4. Present two things in chat: what you understood (goal, evidence of current skills, gaps and constraints), and the proposed path (starting point, ordered lesson titles, what the learner will do or demonstrate in each, and the final application). Explain briefly why the order fits this learner. For one lesson, propose its steps and practice instead.
+5. End the proposal by asking whether to build this exact version or change it. Stop and wait. An explicit yes to the current proposal authorizes the build. A diagnostic answer, an earlier request to build, silence, or a request for revisions does not. For revisions, present the updated proposal and ask again. For a plan-only request, finish with the agreed plan in chat.
+
 ## Design the path
 
-1. Define what a learner will be able to **do** at the end. Infer the starting level from the request, or use an approachable beginner entry. Choose a concrete situation the learner will revisit. Sketch the final task first and work backwards to its prerequisites.
+1. Use the confirmed starting point and approved goal. Choose a situation the learner will revisit. Work backwards from the final task to the prerequisites the interview showed they need.
 2. Give each lesson a question, the prior idea it uses, an observable outcome, and a new case where the learner must apply it. Group lessons where the learner's task changes, for example from reading a model, to changing it, to diagnosing a surprising result. Put the minimum vocabulary beside its first use.
 3. Connect lessons by consequence. The last step resolves the opening question and introduces a limit or question that motivates the next lesson. A final case should combine earlier decisions under a new constraint. Fit the number of lessons and steps to the topic and requested scope.
 
