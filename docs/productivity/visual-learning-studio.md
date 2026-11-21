@@ -25,6 +25,7 @@ Pick the agents you use. Other install options and updates are in [Installing](.
 ## What it does
 
 1. Interviews the learner one question at a time. It checks what they can do, where they get stuck and how much time they have. It shows the proposed lessons in chat and waits for approval before writing files.
+   If a needed skill is missing, it explains where the learner will use it and pauses. The learner can switch to a separate foundations course, include a short introduction in this course, or start the original topic directly. They then review and approve the lesson plan for their chosen route.
 2. Builds scenes that change one thing at a time and show its effect.
 3. Adds a course tree, a step guide, a timeline and controls for both languages and themes.
 4. Tests the path, the controls and the layout on small and large screens.
