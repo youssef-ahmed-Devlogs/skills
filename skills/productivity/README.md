@@ -12,6 +12,8 @@ You can type them, and the agent or another skill can also run them when the tas
 
 Reachable only when you type them (Claude Code: `disable-model-invocation: true`; Codex: `policy.allow_implicit_invocation: false` in `agents/openai.yaml`).
 
+- **[visual-learning-studio](./visual-learning-studio/SKILL.md)** builds a visual learning website with Arabic and English lessons, experiments and practice.
+
 - **[add-rule-or-skill](./add-rule-or-skill/SKILL.md)**: Talk through something new you want an agent to know or do, such as a rule, a skill or a check. It finds out whether it exists, and what it should be and where it goes, from today's official docs.
 - **[build-with-me](./build-with-me/SKILL.md)**: Build a real project by hand, with a senior reviewer beside you. It settles first what you build, its stack and how you want to work, gathers trusted sources for each tool and version, then reviews what you ask about against them: what is right, what is wrong and why, with a link. You write the code, and it checks your fixes.
 - **[catch-me-up](./catch-me-up/SKILL.md)**: Learn a code project you did not write, or no longer know, from its code, one part at a time. Each session starts with what changed since the last one: changes in what you learned are explained and checked, and the rest wait for their lesson. It writes only in its own folder, never in the project.

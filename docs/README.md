@@ -9,6 +9,7 @@ Every skill here has its own page, with a real example and the cases it fits. St
 | Say what you really want, before the agent builds or writes anything | `interview-me` | [interview-me](./productivity/interview-me.md) |
 | Do the same in a project, and write its glossary and ADRs as you go | `interview-with-docs` | [interview-with-docs](./productivity/interview-with-docs.md) |
 | Learn a topic from zero, with lessons the agent builds | `tutor-me` | [tutor-me](./productivity/tutor-me.md) |
+| Build an interactive course in Arabic and English | `visual-learning-studio` | [visual-learning-studio](./productivity/visual-learning-studio.md) |
 | Follow a course, a book or a path, with a teacher beside you | `study-with-me` | [study-with-me](./productivity/study-with-me.md) |
 | Build a project by hand, with a reviewer who checks it against the docs | `build-with-me` | [build-with-me](./productivity/build-with-me.md) |
 | Learn a code project you did not write, and keep up as it changes | `catch-me-up` | [catch-me-up](./productivity/catch-me-up.md) |

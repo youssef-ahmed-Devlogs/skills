@@ -1,0 +1,46 @@
+<!-- Insert this fragment once in the generated course body. Render every slot before showing the first lesson. -->
+<svg xmlns="http://www.w3.org/2000/svg" class="studio-symbols" aria-hidden="true">
+  <symbol id="vs-map" viewBox="0 0 24 24"><path d="M12 7v5M5 16v-4h14v4" fill="none" stroke="currentColor" stroke-width="1.8"/><g stroke="currentColor" stroke-width="1.5"><rect x="7" y="1" width="10" height="6" rx="2" fill="#f1cd9e"/><rect x="1" y="16" width="8" height="6" rx="2" fill="#aac5dd"/><rect x="15" y="16" width="8" height="6" rx="2" fill="#cbb9da"/></g></symbol>
+  <symbol id="vs-book" viewBox="0 0 24 24"><path d="M12 5Q7 2 2 4v15q5-2 10 1 5-3 10-1V4q-5-2-10 1v15"/></symbol>
+  <symbol id="vs-practice" viewBox="0 0 24 24"><path d="m4 18 1 3 3-1L21 7l-4-4zM14 6l4 4"/></symbol>
+  <symbol id="vs-lab" viewBox="0 0 24 24"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M2 9h20M6 6h1m2 0h1"/></symbol>
+  <symbol id="vs-sheets" viewBox="0 0 24 24"><path d="M3 3h7v7H3zM15 3h6v4M14 14h7v7h-7zM3 17v4h6"/></symbol>
+  <symbol id="vs-search" viewBox="0 0 24 24"><circle cx="10" cy="10" r="7"/><path d="m15 15 6 6"/></symbol>
+</svg>
+<header class="topbar">
+  <button type="button" class="tool tree-toggle" data-action="menu" aria-controls="course-tree" aria-expanded="false">☰</button>
+  <a class="brand" data-slot="home-link"><svg aria-hidden="true"><use href="#vs-map"/></svg><strong data-slot="course-title"></strong></a>
+  <nav class="mode-nav">
+    <a data-mode="learn"><svg><use href="#vs-book"/></svg><span data-copy="learn"></span></a>
+    <a data-mode="practice"><svg><use href="#vs-practice"/></svg><span data-copy="practice"></span></a>
+    <a data-mode="lab"><svg><use href="#vs-lab"/></svg><span data-copy="lab"></span></a>
+    <a data-mode="sheets"><svg><use href="#vs-sheets"/></svg><span data-copy="sheets"></span></a>
+  </nav>
+  <button type="button" class="tool search-launch" data-action="search"><svg aria-hidden="true"><use href="#vs-search"/></svg><span data-copy="search"></span><kbd>Ctrl K</kbd></button>
+  <div data-slot="preferences"></div>
+</header>
+<div class="desk">
+  <aside id="course-tree"></aside>
+  <main class="lesson">
+    <header class="lesson-head">
+      <small data-slot="breadcrumb"></small><div class="title-row"><h1 data-slot="lesson-title"></h1>
+      <div class="badges"><span class="badge time" data-slot="time"></span><span class="badge level" data-slot="difficulty"></span><span class="badge steps" data-slot="step-count"></span></div></div>
+      <p data-slot="lesson-question"></p>
+    </header>
+    <section class="stage">
+      <div class="stage-toolbar"><div class="readouts" data-slot="readouts"></div>
+        <div class="playback"><button class="tool" data-action="replay"><b aria-hidden="true">↻</b> <span data-copy="replay"></span></button> <button class="tool" data-action="pause"><b aria-hidden="true">Ⅱ</b> <span data-copy="pause"></span></button><button class="tool" data-action="expand">⛶</button></div>
+      </div>
+      <div class="scene" data-slot="scene"></div>
+      <div class="legend" data-slot="legend"></div>
+    </section>
+    <section class="step-rail"><div class="rail-head"><strong data-copy="inLesson"></strong><small data-slot="position"></small></div><div data-slot="timeline"></div></section>
+  </main>
+  <aside class="guide-column"><article class="step-guide">
+    <div class="rail-head"><small data-slot="guide-position"></small><strong class="badge" data-slot="step-role"></strong></div>
+    <h2 data-slot="step-title"></h2><div data-slot="explanation"></div>
+    <div class="callout" data-slot="callout" hidden></div><div data-slot="changes"></div>
+    <div class="step-actions"><button class="tool" data-action="back"></button><button class="primary" data-action="next"></button></div>
+    <small class="shortcuts" data-slot="shortcuts"></small>
+  </article><section class="outcomes"><strong data-copy="goals"></strong><ul data-slot="goal-list"></ul></section></aside>
+</div>

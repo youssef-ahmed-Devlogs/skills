@@ -1,0 +1,5 @@
+interface:
+  display_name: "Visual Learning Studio"
+  short_description: "Build a bilingual, interactive visual course"
+policy:
+  allow_implicit_invocation: false
