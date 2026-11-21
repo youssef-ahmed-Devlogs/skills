@@ -24,7 +24,7 @@ Pick the agents you use. Other install options and updates are in [Installing](.
 
 ## What it does
 
-1. Interviews the learner one question at a time. It checks what they can do, where they get stuck and how much time they have. It shows the proposed lessons in chat and waits for approval before writing files.
+1. Asks short questions about past experience and the learner's goal. It accepts their answers and proposes the lessons in chat. Explanations, code examples and quizzes belong in the site after approval.
    If a needed skill is missing, it explains where the learner will use it and pauses. The learner can switch to a separate foundations course, include a short introduction in this course, or start the original topic directly. They then review and approve the lesson plan for their chosen route.
 2. Opens with a lesson on what the subject is, why it arose and where it is used. Each new concept gets an explanation before its worked example and practice.
 3. Adds a course tree, a step guide, a timeline and controls for both languages and themes.
@@ -43,7 +43,7 @@ Pick the agents you use. Other install options and updates are in [Installing](.
 You:    /visual-learning-studio Build a beginner course on Git branches.
         I want readers to predict which branch moves after a commit.
 
-Agent:  What can your readers already do on their own in Git?
+Agent:  I'll use this chat to plan the site. Have your readers used Git before?
 You:    They can commit and read the log. They lose track of which branch moves.
 Agent:  How much practice time should the course fit?
 You:    Twenty minutes. Let them try it on a graph.
