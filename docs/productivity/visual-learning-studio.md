@@ -26,7 +26,7 @@ Pick the agents you use. Other install options and updates are in [Installing](.
 
 1. Interviews the learner one question at a time. It checks what they can do, where they get stuck and how much time they have. It shows the proposed lessons in chat and waits for approval before writing files.
    If a needed skill is missing, it explains where the learner will use it and pauses. The learner can switch to a separate foundations course, include a short introduction in this course, or start the original topic directly. They then review and approve the lesson plan for their chosen route.
-2. Builds scenes that change one thing at a time and show its effect.
+2. Opens with a lesson on what the subject is, why it arose and where it is used. Each new concept gets an explanation before its worked example and practice.
 3. Adds a course tree, a step guide, a timeline and controls for both languages and themes.
 4. Tests the path, the controls and the layout on small and large screens.
 
@@ -48,11 +48,11 @@ You:    They can commit and read the log. They lose track of which branch moves.
 Agent:  How much practice time should the course fit?
 You:    Twenty minutes. Let them try it on a graph.
 Agent:  They already know commits. The gap is tracking branch labels.
-        I suggest two short lessons. First, predict which label moves on a
-        commit. Then switch branches and trace the next commit. Finish by
+        I suggest two short lessons. First, what is a branch and why would
+        a team need one? Then switch branches and trace a commit. Finish by
         predicting both labels on an unfamiliar graph. Shall I build that?
 You:    Yes, build that version.
-Agent:  The course is ready. Open the first lesson and try the prediction.
+Agent:  The course is ready. Start with why teams use branches.
 ```
 
 ## More use cases

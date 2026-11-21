@@ -32,6 +32,10 @@ Carry the selected route into the interview summary and ordered lesson proposal.
 
 ## Design the path
 
+Make lesson one in both the proposal and the built course an introduction to the chosen subject. Name the subject in its title. Explain in plain language what it is, what people needed before it existed, how it arose, and what people use it for today. Use a verified historical detail when it explains the purpose. Adjust the depth to the interview. If the learner skipped prerequisites, introduce the chosen subject directly. In a course with an agreed prerequisite module, first orient the learner to the target and explain where that module fits.
+
+For a beginner JavaScript path, open with “What is JavaScript, and why did the web need it?” A visual can show what changes when a page responds to a click. Save declaring a variable for a later lesson. A reader should be able to explain what the subject is and why someone would use it before the first coding task.
+
 1. Use the confirmed starting point and approved goal. Choose a situation the learner will revisit. Work backwards from the final task to the prerequisites the interview showed they need.
 2. Give each lesson a question, the prior idea it uses, an observable outcome, and a new case where the learner must apply it. Group lessons where the learner's task changes, for example from reading a model, to changing it, to diagnosing a surprising result. Put the minimum vocabulary beside its first use.
 3. Connect lessons by consequence. The last step resolves the opening question and introduces a limit or question that motivates the next lesson. A final case should combine earlier decisions under a new constraint. Fit the number of lessons and steps to the topic and requested scope.
@@ -42,7 +46,7 @@ Ground the examples in the learner's reason for studying. Give each short lesson
 
 Storyboard the hard part before styling the course. For each meaningful transition record **what stays fixed, what changes, what the learner sees, and what they can infer**. Choose a representation using [the interaction guide](references/interaction-guide.md) when the subject, controls or form of evidence are unclear.
 
-- Open in a concrete situation with a visible initial state. Establish a baseline the learner can remember. Walk through a mechanism in small causal steps with stable positions and labels. Introduce a complication or counterexample, then let the learner resolve it using the model.
+- In a standalone lesson or a later lesson that introduces a concept, first name it, explain its purpose and connect it to what the learner already understands. Then show a concrete situation, walk through the mechanism and invite the learner to try it. Cover the subject's broader history in its opening lesson.
 - Give the learner something consequential to do. They might replay a transition, choose an input, move a component, compare interpretations, or predict which outcome a change will produce. Pick the smallest gesture that exposes the lesson's idea. A step button can be enough when the sequence itself is the subject.
 - Couple the diagram, annotations, measurements and explanation to the same state. Name the changed object and show the old and new value, relation or interpretation. Use real units, explicit assumptions and calculated values where appropriate. For qualitative subjects, show the evidence in the work itself.
 - Include a transfer check when it serves the outcome. Give an unfamiliar example, invite a choice, and explain it using visible evidence. Provide a way to revise or replay. Keep lesson navigation available. Track arrival at the recap separately from demonstrated skill whenever both are shown.
