@@ -27,7 +27,7 @@ Pick the agents you use. Other install options and updates are in [Installing](.
 1. Chooses each short question from the subject and what the learner has already said. A question can help choose the starting point, a foundation or a type of practice. Once the answers are enough to propose the lessons, it shows the plan in chat. Explanations, examples and quizzes belong in the site after approval.
    If a needed skill is missing, it explains where the learner will use it and pauses. The learner can switch to a separate foundations course, include a short introduction in this course, or start the original topic directly. They then review and approve the lesson plan for their chosen route.
 2. Opens with a lesson on what the subject is, why it arose and where it is used. Each new concept gets an explanation before its worked example and practice.
-3. Adds a course tree, a step guide, a timeline and controls for both languages and themes.
+3. Places the guide and controls on the right in Arabic and on the left in English. The lesson index sits across the scene on desktop. On a phone the guide comes first and the index opens in a drawer. The other course pages follow the same reading order.
 4. Tests the path, the controls and the layout on small and large screens.
 
 ## When to use it
