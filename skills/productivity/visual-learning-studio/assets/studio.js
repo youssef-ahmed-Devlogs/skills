@@ -239,5 +239,16 @@ const Studio = (() => {
     });
     return {refresh,closeDrawer};
   }
-  return {preferences,tree,timeline,guide,controls};
+  function codeBlock(source, language) {
+    const block = element("pre", "code-block");
+    const code = element("code", "", source);
+    block.dir = "ltr";
+    block.append(code);
+    if (language && globalThis.hljs?.getLanguage(language)) {
+      code.classList.add("language-" + language);
+      globalThis.hljs.highlightElement(code);
+    }
+    return block;
+  }
+  return {preferences,tree,timeline,guide,controls,codeBlock};
 })();

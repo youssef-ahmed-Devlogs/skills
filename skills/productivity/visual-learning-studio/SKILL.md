@@ -61,6 +61,8 @@ Start each build by reading [the shell integration guide](references/course-shel
 - Every multi-lesson course has Learn, Practice, Design Lab and Cheatsheets in the top bar. Implement a working activity for each using the same lesson data. Provide durable step URLs, local resume and concept search. For a single lesson, keep its prediction, experiment and recap accessible within the lesson.
 - Every output offers exactly العربية and English. Translate all learner-facing content and accessible labels. Use IBM Plex Sans Arabic for Arabic UI and diagrams, JetBrains Mono for English UI, and the bundled JetBrainsMono Nerd Font Mono for code blocks in both languages. Keep lesson explanations, objectives, captions and step labels bold and readable in every mode. Both top-bar switches work on small screens and preserve the current lesson, step, inputs and progress.
 
+Render every source example across lessons, practice, labs and reference sheets with the shared code block and its actual language. Format authored examples idiomatically with consistent indentation and line breaks. Preserve whitespace and literals in supplied code. Bundle the highlighter so syntax colors work offline in both themes.
+
 ## Verify through the learner's route
 
 Run the site. Enter from the normal starting screen and finish a lesson. Change a meaningful input or case, observe the predicted consequence and compare it to the explanation. Move backwards, replay and jump directly to a later step. A given step and input must reconstruct the same scene and readouts regardless of the path used to reach them. Check a new case against the lesson objective.

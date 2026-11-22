@@ -7,9 +7,12 @@ The supplied files are production inputs. Bring them into every generated course
 | [lesson-shell.html](../assets/lesson-shell.html) | Insert the fragment in the page body. Fill each content slot from real lesson data. Wire every action. |
 | [studio.css](../assets/studio.css) | Load once. Use its named colors in cards, controls, SVGs, canvas and overlays. Layout follows document direction. |
 | [studio.js](../assets/studio.js) | Load as a classic script before the course script. Use the preference controls, folder tree and timeline. |
+| [Highlight.js 11.11.1](../assets/highlight/highlight.min.js) | For courses with code, load the bundled classic script before rendering any snippets. Include its adjacent LICENSE. Embed it locally in single-file builds. |
 | [fonts](../assets/fonts/) | Keep the relative paths or embed the fonts used in a single-file HTML build. Ship the corresponding license and attribution files with the output. Code blocks must load the bundled Nerd Font offline. |
 
 ## Bind the shell
+
+Use `host.replaceChildren(Studio.codeBlock(snippet.source, snippet.language))` when rendering source, including after a step, input or language change. For example, pass `"javascript"` for a Node.js example even when the lesson text is Arabic. For a grammar outside the common bundle, include its matching Highlight.js language module locally before rendering. Plain output and logs can use `"plaintext"`. In a framework or static build, generate equivalent highlighted tokens with the same palette. Verify that the code element's text exactly matches the formatted source and the visible token colors change with the theme. Long lines scroll inside the block.
 
 Keep the shared type sizes and weights when porting the shell or adding views. Use bold 1rem text for lesson objectives, step explanations and outcomes. Use bold .875rem text for breadcrumbs, timeline labels, legend keys and short labels. Use the same text hierarchy in custom views. Let translations wrap. Mark code blocks with `<pre><code>` or `.code-block`; make syntax tokens inherit the code family. At handoff, check these roles on a narrow screen in both languages and themes. Check a real code block with the network disconnected and confirm the bundled face loads and long lines scroll inside the block.
 

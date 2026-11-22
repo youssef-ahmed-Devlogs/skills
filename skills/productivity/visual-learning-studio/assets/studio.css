@@ -12,6 +12,8 @@
   --time:#f4e3be; --level:#dce9d8; --count:#e4dcee; --warn:#f8e6df;
   --mono:"JetBrains Mono",ui-monospace,monospace; --ui:var(--mono);
   --code:"JetBrainsMono Nerd Font Mono","IBM Plex Sans Arabic",ui-monospace,monospace;
+  --syntax-keyword:#713477; --syntax-string:#2c593a; --syntax-title:#214e87;
+  --syntax-number:#873d16; --syntax-comment:#625c55;
 }
 :root[data-theme="dark"] {
   color-scheme:dark;
@@ -19,6 +21,8 @@
   --panel:#25211c; --timeline:#26231e; --active:#3f4c2b; --edge:#5f564a;
   --stage:#29251f; --grid:rgba(211,182,131,.10); --raised:#100e0c;
   --time:#5a4931; --level:#374d36; --count:#4e3b5d; --warn:#664239;
+  --syntax-keyword:#e5b1ef; --syntax-string:#b0d59e; --syntax-title:#9ccaff;
+  --syntax-number:#ffbc88; --syntax-comment:#c4baac;
 }
 html:lang(ar) { --ui:"IBM Plex Sans Arabic",Tahoma,sans-serif }
 * { box-sizing:border-box }
@@ -30,6 +34,12 @@ body { margin:0; color:var(--ink); background:var(--paper); font:14px/1.55 var(-
 code,kbd,pre { font-family:var(--mono); direction:ltr; unicode-bidi:isolate }
 pre,.code-block { font:400 1rem/1.6 var(--code); direction:ltr; unicode-bidi:isolate; text-align:start; max-inline-size:100%; min-inline-size:0; overflow-x:auto }
 pre code,.code-block code { font-family:inherit }
+.code-block { margin:0; padding:.875rem 1rem; inline-size:100%; white-space:pre; tab-size:4; background:var(--panel); color:var(--ink); border:1px solid var(--edge); border-radius:8px }
+.hljs :is(.hljs-keyword,.hljs-selector-tag,.hljs-meta,.hljs-doctag) { color:var(--syntax-keyword) }
+.hljs :is(.hljs-string,.hljs-regexp,.hljs-template-tag,.hljs-addition) { color:var(--syntax-string) }
+.hljs :is(.hljs-title,.hljs-name,.hljs-attr,.hljs-built_in,.hljs-type,.hljs-selector-class) { color:var(--syntax-title) }
+.hljs :is(.hljs-number,.hljs-literal,.hljs-symbol,.hljs-variable,.hljs-deletion) { color:var(--syntax-number) }
+.hljs :is(.hljs-comment,.hljs-quote) { color:var(--syntax-comment); font-style:italic }
 .topbar { display:flex; align-items:center; gap:12px; min-height:54px; padding:6px 16px; border-block-end:1px solid var(--edge); background:var(--panel) }
 .mode-nav,.preferences,.mode-nav a { display:flex; align-items:center; gap:8px }
 .mode-nav { margin-inline:auto }
