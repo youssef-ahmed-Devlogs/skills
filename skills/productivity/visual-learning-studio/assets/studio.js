@@ -1,8 +1,8 @@
 /* Framework-free components. Lesson content and scene state belong to the course. */
 const Studio = (() => {
   const labels = {
-    en: { course:"Course", lessons:"lessons", progress:"Progress", language:"Language", dark:"Switch to dark theme", light:"Switch to light theme", reached:"Reached recap", learn:"Learn", practice:"Practice", lab:"Design Lab", sheets:"Cheatsheets", search:"Search lessons & concepts…", replay:"Replay", pause:"Pause", resume:"Resume", inLesson:"In this lesson", goals:"You'll learn", expand:"Expand diagram", menu:"Course menu" },
-    ar: { course:"المقرر", lessons:"دروس", progress:"التقدّم", language:"اللغة", dark:"التبديل إلى الوضع الداكن", light:"التبديل إلى الوضع الفاتح", reached:"وصلت للخلاصة", learn:"تعلّم", practice:"تدريب", lab:"مختبر التصميم", sheets:"ملخصات", search:"ابحث في الدروس والمفاهيم…", replay:"إعادة", pause:"إيقاف مؤقت", resume:"استئناف", inLesson:"في هذا الدرس", goals:"ستتعلّم", expand:"تكبير الرسم", menu:"قائمة المقرر" }
+    en: { course:"Course", lessons:"lessons", progress:"Progress", language:"Language", dark:"Switch to dark theme", light:"Switch to light theme", reached:"Reached recap", learn:"Learn", practice:"Practice", lab:"Design Lab", sheets:"Cheatsheets", search:"Search lessons & concepts…", replay:"Replay", pause:"Pause", resume:"Resume", inLesson:"In this lesson", goals:"You'll learn", notes:"Notes", expand:"Expand diagram", menu:"Course menu" },
+    ar: { course:"المقرر", lessons:"دروس", progress:"التقدّم", language:"اللغة", dark:"التبديل إلى الوضع الداكن", light:"التبديل إلى الوضع الفاتح", reached:"وصلت للخلاصة", learn:"تعلّم", practice:"تدريب", lab:"مختبر التصميم", sheets:"ملخصات", search:"ابحث في الدروس والمفاهيم…", replay:"إعادة", pause:"إيقاف مؤقت", resume:"استئناف", inLesson:"في هذا الدرس", goals:"ستتعلّم", notes:"ملاحظات", expand:"تكبير الرسم", menu:"قائمة المقرر" }
   };
   const folders = ["#d3ae78","#3a9c53","#825dcb","#dc8051","#3389bf","#319b90","#ce5477","#909d48","#69798e"];
   function element(tag, className, text) {
@@ -130,7 +130,7 @@ const Studio = (() => {
       if (r.left < box.left || r.right > box.right) track.scrollBy({left:r.left+r.width/2-box.left-box.width/2});
     }
   }
-  function guide({lang, index, steps, goals, onBack, onNext, nextTitle, previousAvailable}) {
+  function guide({lang, index, steps, goals = [], onBack, onNext, nextTitle, previousAvailable}) {
     const current = steps[index];
     const slot = name => document.querySelector('[data-slot="'+name+'"]');
     const n = value => value.toLocaleString(lang);
@@ -150,11 +150,20 @@ const Studio = (() => {
     const changes = slot("changes");
     changes.replaceChildren();
     if (current.changes?.length) {
-      const items = element("ul");
-      current.changes.forEach(change => items.append(element("li","",change[lang])));
-      changes.append(element("strong","",lang === "ar" ? "ما الذي تغيّر" : "What changed"),items);
+      const items = element(current.changesOrdered ? "ol" : "ul");
+      for (const change of current.changes) {
+        const item = element("li");
+        item.append(element("bdi","",change[lang]));
+        items.append(item);
+      }
+      if (!current.changesOrdered) changes.append(element("strong","",lang === "ar" ? "ما الذي تغيّر" : "What changed"));
+      changes.append(items);
     }
+    const notes = callout.closest(".step-notes");
+    if (notes) notes.hidden = callout.hidden && !changes.childElementCount;
     const outcomeList = slot("goal-list");
+    const outcomes = outcomeList.closest(".outcomes");
+    if (outcomes) outcomes.hidden = goals.length === 0;
     outcomeList.replaceChildren(...goals.map(goal => {
       const item = element("li");
       const checked = index >= goal.at;
@@ -230,5 +239,16 @@ const Studio = (() => {
     });
     return {refresh,closeDrawer};
   }
-  return {preferences,tree,timeline,guide,controls};
+  function codeBlock(source, language) {
+    const block = element("pre", "code-block");
+    const code = element("code", "", source);
+    block.dir = "ltr";
+    block.append(code);
+    if (language && globalThis.hljs?.getLanguage(language)) {
+      code.classList.add("language-" + language);
+      globalThis.hljs.highlightElement(code);
+    }
+    return block;
+  }
+  return {preferences,tree,timeline,guide,controls,codeBlock};
 })();

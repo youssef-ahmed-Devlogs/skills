@@ -22,8 +22,12 @@
 <div class="desk">
   <aside class="guide-column"><article class="step-guide">
     <div class="rail-head"><small data-slot="guide-position"></small><strong class="badge" data-slot="step-role"></strong></div>
-    <h2 data-slot="step-title"></h2><div data-slot="explanation"></div>
-    <div class="callout" data-slot="callout" hidden></div><div data-slot="changes"></div>
+    <h2 data-slot="step-title"></h2>
+    <p data-slot="lesson-question"></p><div data-slot="explanation"></div>
+    <details class="step-notes" open hidden>
+      <summary data-copy="notes"></summary>
+      <div class="callout" data-slot="callout" hidden></div><div data-slot="changes"></div>
+    </details>
     <div class="step-actions"><button class="tool" data-action="back"></button><button class="primary" data-action="next"></button></div>
     <small class="shortcuts" data-slot="shortcuts"></small>
   </article><section class="outcomes"><strong data-copy="goals"></strong><ul data-slot="goal-list"></ul></section></aside>
@@ -31,7 +35,6 @@
     <header class="lesson-head">
       <small data-slot="breadcrumb"></small><div class="title-row"><h1 data-slot="lesson-title"></h1>
       <div class="badges"><span class="badge time" data-slot="time"></span><span class="badge level" data-slot="difficulty"></span><span class="badge steps" data-slot="step-count"></span></div></div>
-      <p data-slot="lesson-question"></p>
     </header>
     <section class="stage">
       <div class="stage-toolbar"><div class="readouts" data-slot="readouts"></div>
