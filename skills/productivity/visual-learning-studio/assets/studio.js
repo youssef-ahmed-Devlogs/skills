@@ -1,8 +1,8 @@
 /* Framework-free components. Lesson content and scene state belong to the course. */
 const Studio = (() => {
   const labels = {
-    en: { course:"Course", lessons:"lessons", progress:"Progress", language:"Language", dark:"Switch to dark theme", light:"Switch to light theme", reached:"Reached recap", learn:"Learn", practice:"Practice", lab:"Design Lab", sheets:"Cheatsheets", search:"Search lessons & concepts…", replay:"Replay", pause:"Pause", resume:"Resume", inLesson:"In this lesson", goals:"You'll learn", notes:"Notes", expand:"Expand diagram", menu:"Course menu" },
-    ar: { course:"المقرر", lessons:"دروس", progress:"التقدّم", language:"اللغة", dark:"التبديل إلى الوضع الداكن", light:"التبديل إلى الوضع الفاتح", reached:"وصلت للخلاصة", learn:"تعلّم", practice:"تدريب", lab:"مختبر التصميم", sheets:"ملخصات", search:"ابحث في الدروس والمفاهيم…", replay:"إعادة", pause:"إيقاف مؤقت", resume:"استئناف", inLesson:"في هذا الدرس", goals:"ستتعلّم", notes:"ملاحظات", expand:"تكبير الرسم", menu:"قائمة المقرر" }
+    en: { course:"Course", lessons:"lessons", progress:"Progress", language:"Language", dark:"Switch to dark theme", light:"Switch to light theme", reached:"Reached recap", learn:"Learn", practice:"Practice", lab:"Design Lab", sheets:"Cheatsheets", search:"Search lessons & concepts…", replay:"Replay", pause:"Pause", resume:"Resume", inLesson:"In this lesson", goals:"You'll learn", notes:"Notes", expand:"Expand diagram", menu:"Course index" },
+    ar: { course:"المقرر", lessons:"دروس", progress:"التقدّم", language:"اللغة", dark:"التبديل إلى الوضع الداكن", light:"التبديل إلى الوضع الفاتح", reached:"وصلت للخلاصة", learn:"تعلّم", practice:"تدريب", lab:"مختبر التصميم", sheets:"ملخصات", search:"ابحث في الدروس والمفاهيم…", replay:"إعادة", pause:"إيقاف مؤقت", resume:"استئناف", inLesson:"في هذا الدرس", goals:"ستتعلّم", notes:"ملاحظات", expand:"تكبير الرسم", menu:"الفهرس" }
   };
   const folders = ["#d3ae78","#3a9c53","#825dcb","#dc8051","#3389bf","#319b90","#ce5477","#909d48","#69798e"];
   function element(tag, className, text) {
@@ -78,7 +78,7 @@ const Studio = (() => {
     head.append(icon("folder"),element("span","",t.course),element("small","",lessonCount));
     const close = element("button","tool tree-toggle","×");
     close.type="button"; close.dataset.action="close-menu";
-    close.setAttribute("aria-label",lang==="ar" ? "إغلاق قائمة المقرر" : "Close course menu");
+    close.setAttribute("aria-label",lang==="ar" ? "إغلاق الفهرس" : "Close course index");
     head.append(close);
     const list = element("nav","tree-list"); list.setAttribute("aria-label",t.course);
     for (const [i,group] of chapters.entries()) {
@@ -182,11 +182,24 @@ const Studio = (() => {
     const stage = document.querySelector(".stage"), drawer = document.querySelector("#course-tree");
     const menu = action("menu"), expand = action("expand"), pause = action("pause");
     const scrim = element("button","drawer-scrim"); scrim.type="button"; scrim.tabIndex=-1; scrim.hidden=true;
-    drawer.after(scrim);
+    const compact = matchMedia("(max-width:1000px)");
+    drawer?.after(scrim);
+    if (menu) menu.hidden = !drawer;
     let paused = false;
+    function isOverlayOpen() {
+      return compact.matches && drawer?.hasAttribute("data-open");
+    }
+    function syncIndex() {
+      if (!drawer || !menu) return;
+      const open = compact.matches ? isOverlayOpen() : !drawer.hasAttribute("data-collapsed");
+      menu.setAttribute("aria-expanded",String(open));
+      scrim.hidden = !isOverlayOpen();
+    }
     function closeDrawer(restore=true) {
-      drawer.removeAttribute("data-open"); menu.setAttribute("aria-expanded","false"); scrim.hidden=true;
-      if (restore) menu.focus();
+      if (!drawer) return;
+      drawer.removeAttribute("data-open");
+      syncIndex();
+      if (restore) menu?.focus();
     }
     function closeStage() {
       stage.classList.remove("expanded-stage"); expand.setAttribute("aria-expanded","false"); expand.focus();
@@ -200,14 +213,40 @@ const Studio = (() => {
       scrim.setAttribute("aria-label",close);
       expand.setAttribute("aria-label",stage.classList.contains("expanded-stage") ? close : t.expand);
     }
-    menu.onclick = () => {
-      if (drawer.hasAttribute("data-open")) return closeDrawer();
-      drawer.setAttribute("data-open",""); menu.setAttribute("aria-expanded","true"); scrim.hidden=false;
-      drawer.querySelector("summary")?.focus();
-    };
-    scrim.onclick = () => closeDrawer();
-    drawer.addEventListener("click", e => { if (drawer.hasAttribute("data-open") && e.target.closest('a,[data-action="close-menu"]')) closeDrawer(); });
-    matchMedia("(max-width:1000px)").addEventListener("change",e=>{ if (!e.matches) closeDrawer(false); });
+    if (drawer && menu) {
+      function collapseIndex() {
+        drawer.setAttribute("data-collapsed","");
+        syncIndex();
+        menu.focus();
+      }
+      menu.onclick = () => {
+        if (compact.matches) {
+          if (isOverlayOpen()) return closeDrawer();
+          drawer.setAttribute("data-open","");
+          syncIndex();
+          drawer.querySelector('[data-action="close-menu"]')?.focus();
+        } else if (drawer.hasAttribute("data-collapsed")) {
+          drawer.removeAttribute("data-collapsed");
+          syncIndex();
+        } else {
+          collapseIndex();
+        }
+      };
+      scrim.onclick = () => closeDrawer();
+      drawer.addEventListener("click", e => {
+        if (e.target.closest('[data-action="close-menu"]')) {
+          if (compact.matches) closeDrawer();
+          else collapseIndex();
+        } else if (isOverlayOpen() && e.target.closest("a") && !e.ctrlKey && !e.metaKey && !e.shiftKey && !e.altKey) {
+          closeDrawer();
+        }
+      });
+      compact.addEventListener("change", () => {
+        const focusInIndex = drawer.contains(document.activeElement);
+        closeDrawer(focusInIndex && (compact.matches || drawer.hasAttribute("data-collapsed")));
+      });
+      syncIndex();
+    }
     expand.onclick = () => {
       if (stage.classList.contains("expanded-stage")) closeStage();
       else { stage.classList.add("expanded-stage"); expand.setAttribute("aria-expanded","true"); }
@@ -217,7 +256,7 @@ const Studio = (() => {
     pause.onclick = () => { paused=!paused; onPause(paused); refresh(); };
     document.addEventListener("keydown", e => {
       if (e.defaultPrevented) return;
-      const overlay=drawer.hasAttribute("data-open") ? drawer : stage.classList.contains("expanded-stage") ? stage : null;
+      const overlay=isOverlayOpen() ? drawer : stage.classList.contains("expanded-stage") ? stage : null;
       if (overlay && e.key==="Escape") {
         e.preventDefault(); if (overlay===drawer) closeDrawer(); else closeStage(); refresh(); return;
       }
@@ -228,7 +267,7 @@ const Studio = (() => {
         }
         return;
       }
-      if (drawer.hasAttribute("data-open") || document.querySelector("dialog[open]")) return;
+      if (isOverlayOpen() || document.querySelector("dialog[open]")) return;
       if ((e.ctrlKey||e.metaKey) && e.key.toLowerCase()==="k") { e.preventDefault(); onSearch(); return; }
       if (e.ctrlKey||e.metaKey||e.altKey||e.target.closest("input,select,textarea,[contenteditable=true]")) return;
       if (e.key.toLowerCase()==="r") { e.preventDefault(); onReplay(); }
