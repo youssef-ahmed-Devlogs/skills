@@ -45,8 +45,19 @@ pre:has(code),.code-block { color-scheme:dark; background:var(--code-surface); c
 .mode-nav { margin-inline:auto }
 .preferences { flex-shrink:0 }
 .preferences :is(button,select),.tool { border:1px solid var(--edge); border-radius:8px; padding:4px 8px; background:var(--panel) }
-.desk { display:grid; grid-template-columns:clamp(285px,19vw,345px) minmax(0,1fr) clamp(225px,15vw,280px); gap:14px; padding:12px 14px; align-items:start }
-.desk:not(:has(> #course-tree)) { grid-template-columns:clamp(285px,19vw,345px) minmax(0,1fr) }
+.desk {
+  --guide-width:clamp(285px,19vw,345px);
+  --index-width:clamp(225px,15vw,280px);
+  --column-gap:14px;
+  display:grid; grid-template-columns:var(--guide-width) minmax(0,1fr) var(--index-width); gap:var(--column-gap); padding:12px 14px; align-items:start
+}
+.desk:not(:has(> #course-tree)) { grid-template-columns:var(--guide-width) minmax(0,1fr) }
+@media (width > 1000px) {
+  .desk:has(> #course-tree[data-collapsed]) {
+    grid-template-columns:calc(var(--guide-width) + var(--index-width) + var(--column-gap)) minmax(0,1fr)
+  }
+  #course-tree[data-collapsed] { display:none }
+}
 .desk > * { min-width:0 }
 .studio-card,.lesson,.step-guide,.outcomes,.step-rail,.stage { border:1px solid var(--line); border-radius:12px; background:var(--panel); box-shadow:0 2px 5px rgb(50 35 15 / .06) }
 .lesson,.step-guide,.outcomes,.step-rail { padding:clamp(12px,1vw,18px) }
@@ -133,11 +144,13 @@ summary::-webkit-details-marker { display:none }
   font-size:1rem; font-weight:700; line-height:1.7; color:var(--ink)
 }
 .step-actions .primary { flex:1 }
-.tree-toggle { display:none }
+.tree-toggle:not([hidden]) { display:inline-flex; align-items:center; gap:6px; flex-shrink:0 }
+.tree-toggle svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.6 }
+.tree-toggle svg:dir(rtl) { transform:scaleX(-1) }
+.tree-toggle[aria-expanded="true"] { background:var(--active) }
 .drawer-scrim { position:fixed; inset:0; z-index:7; border:0; background:rgba(20,18,15,.4) }
 .stage.expanded-stage { position:fixed; inset:0; z-index:10; max-height:100dvh; overflow:auto; border-radius:0 }
 @media(max-width:1000px) {
-  .tree-toggle { display:inline-block }
   .desk, .desk:not(:has(> #course-tree)) { grid-template-columns:minmax(235px,30%) minmax(0,1fr) }
   .course-tree { position:fixed; inset-block:0; inset-inline-end:0; block-size:100dvh; width:min(300px,88vw); padding:12px; z-index:8; background:var(--paper) }
   .course-tree:not([data-open]) { display:none }
