@@ -130,7 +130,7 @@ const Studio = (() => {
       if (r.left < box.left || r.right > box.right) track.scrollBy({left:r.left+r.width/2-box.left-box.width/2});
     }
   }
-  function guide({lang, index, steps, goals, onBack, onNext, nextTitle, previousAvailable}) {
+  function guide({lang, index, steps, goals = [], onBack, onNext, nextTitle, previousAvailable}) {
     const current = steps[index];
     const slot = name => document.querySelector('[data-slot="'+name+'"]');
     const n = value => value.toLocaleString(lang);
@@ -150,13 +150,20 @@ const Studio = (() => {
     const changes = slot("changes");
     changes.replaceChildren();
     if (current.changes?.length) {
-      const items = element("ul");
-      current.changes.forEach(change => items.append(element("li","",change[lang])));
-      changes.append(element("strong","",lang === "ar" ? "ما الذي تغيّر" : "What changed"),items);
+      const items = element(current.changesOrdered ? "ol" : "ul");
+      for (const change of current.changes) {
+        const item = element("li");
+        item.append(element("bdi","",change[lang]));
+        items.append(item);
+      }
+      if (!current.changesOrdered) changes.append(element("strong","",lang === "ar" ? "ما الذي تغيّر" : "What changed"));
+      changes.append(items);
     }
     const notes = callout.closest(".step-notes");
     if (notes) notes.hidden = callout.hidden && !changes.childElementCount;
     const outcomeList = slot("goal-list");
+    const outcomes = outcomeList.closest(".outcomes");
+    if (outcomes) outcomes.hidden = goals.length === 0;
     outcomeList.replaceChildren(...goals.map(goal => {
       const item = element("li");
       const checked = index >= goal.at;

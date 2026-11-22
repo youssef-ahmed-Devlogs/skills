@@ -104,10 +104,12 @@ summary::-webkit-details-marker { display:none }
 .callout[data-kind="idea"] { background:color-mix(in srgb,var(--active) 55%,var(--panel)) }
 .callout[data-kind="tip"] { background:var(--level) }
 .callout p { margin:3px 0 }
-.step-notes { margin-block:8px; padding:12px; border-inline-start:3px solid var(--edge); background:var(--timeline); border-radius:8px }
-.step-notes h3 { margin:0 0 6px; font-size:1rem }
+.step-notes { margin-block:8px; padding:12px; border:1px solid var(--edge); background:var(--timeline); border-radius:8px }
+.step-notes > summary { font-size:1rem; font-weight:700 }
+.step-notes > summary::-webkit-details-marker { display:inline }
+.step-notes[open] > summary { margin-block-end:8px }
 .step-notes .callout { margin:0; padding:0; border:0; background:transparent }
-.step-notes [data-slot="changes"] ul { margin-block:4px 0; padding-inline-start:1.4em }
+.step-notes [data-slot="changes"] :is(ul,ol) { margin-block:4px 0; padding-inline-start:1.4em }
 .outcomes ul { padding:0; list-style:none }
 .outcomes li { display:flex; align-items:baseline; gap:8px; margin-block:6px }
 .goal-mark { display:inline-grid; place-items:center; align-self:flex-start; margin-top:3px; flex:none; width:15px; height:15px; border:1px solid var(--edge); border-radius:3px; line-height:1 }

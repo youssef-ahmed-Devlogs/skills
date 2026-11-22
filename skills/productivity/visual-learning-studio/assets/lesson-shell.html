@@ -24,10 +24,10 @@
     <div class="rail-head"><small data-slot="guide-position"></small><strong class="badge" data-slot="step-role"></strong></div>
     <h2 data-slot="step-title"></h2>
     <p data-slot="lesson-question"></p><div data-slot="explanation"></div>
-    <section class="step-notes" aria-labelledby="step-notes-title" hidden>
-      <h3 id="step-notes-title" data-copy="notes"></h3>
+    <details class="step-notes" open hidden>
+      <summary data-copy="notes"></summary>
       <div class="callout" data-slot="callout" hidden></div><div data-slot="changes"></div>
-    </section>
+    </details>
     <div class="step-actions"><button class="tool" data-action="back"></button><button class="primary" data-action="next"></button></div>
     <small class="shortcuts" data-slot="shortcuts"></small>
   </article><section class="outcomes"><strong data-copy="goals"></strong><ul data-slot="goal-list"></ul></section></aside>
