@@ -289,5 +289,9 @@ const Studio = (() => {
     }
     return block;
   }
-  return {preferences,tree,timeline,guide,controls,codeBlock};
+  function sceneX(distanceFromStart, width, minX = 0) {
+    const rtl = document.documentElement.dir === "rtl";
+    return minX + (rtl ? width - distanceFromStart : distanceFromStart);
+  }
+  return {preferences,tree,timeline,guide,controls,codeBlock,sceneX};
 })();
