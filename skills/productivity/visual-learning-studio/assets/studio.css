@@ -94,7 +94,8 @@ summary::-webkit-details-marker { display:none }
 .mode-nav svg,.search-launch svg { width:16px; height:16px; fill:none; stroke:currentColor; stroke-width:1.6 }
 .title-row,.rail-head { justify-content:space-between; flex-wrap:wrap }
 .lesson-head { padding:0 12px 10px }
-.lesson-head p { margin:4px 0; color:var(--secondary) }
+[data-slot="lesson-question"] { margin:0 }
+[data-slot="lesson-question"]:empty,.legend:empty { display:none }
 .stage { display:flex; flex-direction:column }
 .scene { flex:1; display:grid; grid-template-columns:minmax(0,1fr); place-items:center; min-width:0 }
 .scene > svg { max-width:100%; width:100%; height:auto }
@@ -103,6 +104,10 @@ summary::-webkit-details-marker { display:none }
 .callout[data-kind="idea"] { background:color-mix(in srgb,var(--active) 55%,var(--panel)) }
 .callout[data-kind="tip"] { background:var(--level) }
 .callout p { margin:3px 0 }
+.step-notes { margin-block:8px; padding:12px; border-inline-start:3px solid var(--edge); background:var(--timeline); border-radius:8px }
+.step-notes h3 { margin:0 0 6px; font-size:1rem }
+.step-notes .callout { margin:0; padding:0; border:0; background:transparent }
+.step-notes [data-slot="changes"] ul { margin-block:4px 0; padding-inline-start:1.4em }
 .outcomes ul { padding:0; list-style:none }
 .outcomes li { display:flex; align-items:baseline; gap:8px; margin-block:6px }
 .goal-mark { display:inline-grid; place-items:center; align-self:flex-start; margin-top:3px; flex:none; width:15px; height:15px; border:1px solid var(--edge); border-radius:3px; line-height:1 }
@@ -112,7 +117,7 @@ summary::-webkit-details-marker { display:none }
 .lesson-caption,[data-slot="breadcrumb"],.rail-head small,.legend,.shortcuts,.step-track button {
   font-size:.875rem; font-weight:700; line-height:1.6; color:var(--ink)
 }
-.lesson-head [data-slot="lesson-question"],[data-slot="explanation"],[data-slot="changes"],.callout,.outcomes li {
+[data-slot="lesson-question"],[data-slot="explanation"],[data-slot="changes"],.callout,.outcomes li {
   font-size:1rem; font-weight:700; line-height:1.7; color:var(--ink)
 }
 .step-actions .primary { flex:1 }

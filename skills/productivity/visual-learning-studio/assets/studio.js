@@ -1,8 +1,8 @@
 /* Framework-free components. Lesson content and scene state belong to the course. */
 const Studio = (() => {
   const labels = {
-    en: { course:"Course", lessons:"lessons", progress:"Progress", language:"Language", dark:"Switch to dark theme", light:"Switch to light theme", reached:"Reached recap", learn:"Learn", practice:"Practice", lab:"Design Lab", sheets:"Cheatsheets", search:"Search lessons & concepts…", replay:"Replay", pause:"Pause", resume:"Resume", inLesson:"In this lesson", goals:"You'll learn", expand:"Expand diagram", menu:"Course menu" },
-    ar: { course:"المقرر", lessons:"دروس", progress:"التقدّم", language:"اللغة", dark:"التبديل إلى الوضع الداكن", light:"التبديل إلى الوضع الفاتح", reached:"وصلت للخلاصة", learn:"تعلّم", practice:"تدريب", lab:"مختبر التصميم", sheets:"ملخصات", search:"ابحث في الدروس والمفاهيم…", replay:"إعادة", pause:"إيقاف مؤقت", resume:"استئناف", inLesson:"في هذا الدرس", goals:"ستتعلّم", expand:"تكبير الرسم", menu:"قائمة المقرر" }
+    en: { course:"Course", lessons:"lessons", progress:"Progress", language:"Language", dark:"Switch to dark theme", light:"Switch to light theme", reached:"Reached recap", learn:"Learn", practice:"Practice", lab:"Design Lab", sheets:"Cheatsheets", search:"Search lessons & concepts…", replay:"Replay", pause:"Pause", resume:"Resume", inLesson:"In this lesson", goals:"You'll learn", notes:"Notes", expand:"Expand diagram", menu:"Course menu" },
+    ar: { course:"المقرر", lessons:"دروس", progress:"التقدّم", language:"اللغة", dark:"التبديل إلى الوضع الداكن", light:"التبديل إلى الوضع الفاتح", reached:"وصلت للخلاصة", learn:"تعلّم", practice:"تدريب", lab:"مختبر التصميم", sheets:"ملخصات", search:"ابحث في الدروس والمفاهيم…", replay:"إعادة", pause:"إيقاف مؤقت", resume:"استئناف", inLesson:"في هذا الدرس", goals:"ستتعلّم", notes:"ملاحظات", expand:"تكبير الرسم", menu:"قائمة المقرر" }
   };
   const folders = ["#d3ae78","#3a9c53","#825dcb","#dc8051","#3389bf","#319b90","#ce5477","#909d48","#69798e"];
   function element(tag, className, text) {
@@ -154,6 +154,8 @@ const Studio = (() => {
       current.changes.forEach(change => items.append(element("li","",change[lang])));
       changes.append(element("strong","",lang === "ar" ? "ما الذي تغيّر" : "What changed"),items);
     }
+    const notes = callout.closest(".step-notes");
+    if (notes) notes.hidden = callout.hidden && !changes.childElementCount;
     const outcomeList = slot("goal-list");
     outcomeList.replaceChildren(...goals.map(goal => {
       const item = element("li");
