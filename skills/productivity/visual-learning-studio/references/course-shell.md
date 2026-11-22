@@ -7,9 +7,11 @@ The supplied files are production inputs. Bring them into every generated course
 | [lesson-shell.html](../assets/lesson-shell.html) | Insert the fragment in the page body. Fill each content slot from real lesson data. Wire every action. |
 | [studio.css](../assets/studio.css) | Load once. Use its named colors in cards, controls, SVGs, canvas and overlays. Layout follows document direction. |
 | [studio.js](../assets/studio.js) | Load as a classic script before the course script. Use the preference controls, folder tree and timeline. |
-| [fonts](../assets/fonts/) | Keep the relative paths or embed the bytes in a single-file HTML build. Include both OFL notices in distributed outputs. The fonts work offline. |
+| [fonts](../assets/fonts/) | Keep the relative paths or embed the fonts used in a single-file HTML build. Ship the corresponding license and attribution files with the output. Code blocks must load the bundled Nerd Font offline. |
 
 ## Bind the shell
+
+Keep the shared type sizes and weights when porting the shell or adding views. Use bold 1rem text for lesson objectives, step explanations and outcomes. Use bold .875rem text for breadcrumbs, timeline labels, legends and scene notes. Apply `.lesson-caption` to custom notes in any mode. Let translations wrap. Mark code blocks with `<pre><code>` or `.code-block`; make syntax tokens inherit the code family. At handoff, check these roles on a narrow screen in both languages and themes. Check a real code block with the network disconnected and confirm the bundled face loads and long lines scroll inside the block.
 
 Keep one stable ID per chapter, lesson, step and concept across both languages. A localized title has the shape `{ar, en}`. Chapters contain `{id, title, lessons}`. Each lesson has `{id, title, href}` with a real first-step URL. Each step has a localized `label`, teaching role, explanation, visible change, scene state and any relevant outcome IDs. Use the actual course router and a single experiment model. Keep language and theme outside that model.
 

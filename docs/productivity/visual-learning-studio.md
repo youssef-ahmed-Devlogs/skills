@@ -63,3 +63,5 @@ Agent:  The course is ready. Start with why teams use branches.
 ## What you get
 
 A working website in your chosen folder. Full courses include guided lessons, practice, a lab and quick reference sheets. The controls, scene labels and feedback support both languages. The course keeps your reading place and preferences on your device.
+
+Lesson goals, explanations and small captions use bold text. Code blocks use the bundled JetBrainsMono Nerd Font Mono in both languages, including offline.

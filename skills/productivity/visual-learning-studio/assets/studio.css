@@ -3,6 +3,7 @@
 @font-face { font-family:"IBM Plex Sans Arabic"; src:url("fonts/plex-600.ttf") format("truetype"); font-weight:600; font-display:swap }
 @font-face { font-family:"IBM Plex Sans Arabic"; src:url("fonts/plex-700.ttf") format("truetype"); font-weight:700; font-display:swap }
 @font-face { font-family:"JetBrains Mono"; src:url("fonts/JetBrainsMono.ttf") format("truetype"); font-weight:100 800; font-display:swap }
+@font-face { font-family:"JetBrainsMono Nerd Font Mono"; src:url("fonts/JetBrainsMonoNerdFontMono-Regular.ttf") format("truetype"); font-weight:400; font-display:swap }
 :root {
   color-scheme:light;
   --paper:#f4ebe0; --ink:#1d1b18; --secondary:#34302b; --line:#ddd3c5;
@@ -10,6 +11,7 @@
   --stage:#f8f1e7; --grid:rgba(116,88,45,.10); --raised:#1d1b18;
   --time:#f4e3be; --level:#dce9d8; --count:#e4dcee; --warn:#f8e6df;
   --mono:"JetBrains Mono",ui-monospace,monospace; --ui:var(--mono);
+  --code:"JetBrainsMono Nerd Font Mono","IBM Plex Sans Arabic",ui-monospace,monospace;
 }
 :root[data-theme="dark"] {
   color-scheme:dark;
@@ -26,6 +28,8 @@ body { margin:0; color:var(--ink); background:var(--paper); font:14px/1.55 var(-
 :where(button,summary,select) { cursor:pointer }
 :focus-visible { outline:2px solid var(--ink); outline-offset:3px }
 code,kbd,pre { font-family:var(--mono); direction:ltr; unicode-bidi:isolate }
+pre,.code-block { font:400 1rem/1.6 var(--code); direction:ltr; unicode-bidi:isolate; text-align:start; max-inline-size:100%; min-inline-size:0; overflow-x:auto }
+pre code,.code-block code { font-family:inherit }
 .topbar { display:flex; align-items:center; gap:12px; min-height:54px; padding:6px 16px; border-block-end:1px solid var(--edge); background:var(--panel) }
 .mode-nav,.preferences,.mode-nav a { display:flex; align-items:center; gap:8px }
 .mode-nav { margin-inline:auto }
@@ -53,7 +57,7 @@ code,kbd,pre { font-family:var(--mono); direction:ltr; unicode-bidi:isolate }
 .step-track li { flex:1 0 4em; text-align:center; position:relative }
 .step-track li::before { content:""; border-block-start:1px solid var(--edge); position:absolute; inset-block-start:13px; inset-inline:0 }
 .step-track li:first-child::before { inset-inline-start:50% } .step-track li:last-child::before { inset-inline-end:50% }
-.step-track button { position:relative; background:none; border:0; font-size:12px }
+.step-track button { position:relative; background:none; border:0 }
 .step-track .dot { display:block; margin:auto; width:25px; line-height:23px; background:var(--timeline); border:1px solid var(--ink); border-radius:50% }
 .step-track [aria-current="step"] .dot { background:var(--active); box-shadow:1px 2px var(--raised) }
 .step-track .past .dot { background:color-mix(in srgb,var(--active) 60%,var(--timeline)) }
@@ -92,9 +96,9 @@ summary::-webkit-details-marker { display:none }
 .lesson-head { padding:0 12px 10px }
 .lesson-head p { margin:4px 0; color:var(--secondary) }
 .stage { display:flex; flex-direction:column }
-.scene { flex:1; display:grid; place-items:center; min-width:0 }
+.scene { flex:1; display:grid; grid-template-columns:minmax(0,1fr); place-items:center; min-width:0 }
 .scene > svg { max-width:100%; width:100%; height:auto }
-.legend { margin-top:auto; padding:8px 12px; font-size:11px }
+.legend { margin-top:auto; padding:8px 12px }
 .callout { background:var(--warn); border:1px solid var(--edge); border-radius:9px; padding:10px; margin-block:8px }
 .callout[data-kind="idea"] { background:color-mix(in srgb,var(--active) 55%,var(--panel)) }
 .callout[data-kind="tip"] { background:var(--level) }
@@ -105,6 +109,12 @@ summary::-webkit-details-marker { display:none }
 .goal-mark:not(:empty) { background:var(--active); border-color:var(--ink) }
 .sr-only { position:absolute; width:1px; height:1px; overflow:hidden; clip-path:inset(50%); white-space:nowrap }
 .shortcuts { display:block; text-align:center; margin-block-start:8px; color:var(--secondary) }
+.lesson-caption,[data-slot="breadcrumb"],.rail-head small,.legend,.shortcuts,.step-track button {
+  font-size:.875rem; font-weight:700; line-height:1.6; color:var(--ink)
+}
+.lesson-head [data-slot="lesson-question"],[data-slot="explanation"],[data-slot="changes"],.callout,.outcomes li {
+  font-size:1rem; font-weight:700; line-height:1.7; color:var(--ink)
+}
 .step-actions .primary { flex:1 }
 .tree-toggle { display:none }
 .drawer-scrim { position:fixed; inset:0; z-index:7; border:0; background:rgba(20,18,15,.4) }
