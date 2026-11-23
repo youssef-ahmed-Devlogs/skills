@@ -1,0 +1,5 @@
+interface:
+  display_name: "Learning Path"
+  short_description: "Build a bilingual, project-based learning path"
+policy:
+  allow_implicit_invocation: false
