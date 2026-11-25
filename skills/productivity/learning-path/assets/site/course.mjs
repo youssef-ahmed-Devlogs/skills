@@ -1,6 +1,7 @@
 const bi = (en, ar) => ({ en, ar });
 
 export const course = {
+  language: "both", // Sample course. Set this to the learner's choice: en, ar, or both.
   brand: bi("Python Mastery", "إتقان Python"),
   journey: bi("Spreadsheets → Python", "من الجداول إلى Python"),
   title: bi("Build a reading planner with Python", "ابنِ مخطط قراءة باستخدام Python"),
@@ -27,9 +28,9 @@ const lesson = {
   intro: bi("A list groups several values in one order. Here each number is the duration of a reading session in minutes. Sorting makes the shortest session easy to find.", "القائمة بتجمع قيم بترتيب معيّن. كل رقم عندنا مدة جلسة قراءة بالدقايق. ترتيب الأرقام بيسهّل اختيار أقصر جلسة."),
   mechanism: bi("Python’s `sorted()` returns a new list. Setting `reverse=True` places the largest number first. Save the code as `planner.py` and run `python3 planner.py`.", "الدالة `sorted()` بترجع قائمة جديدة. لو استخدمت `reverse=True` هيظهر أكبر رقم الأول. احفظ الكود في `planner.py` وشغّل `python3 planner.py`."),
   actors: [
-    { name: "Log", kind: "input", description: "Session lengths" },
-    { name: "Sorter", kind: "operation", description: "Order the values" },
-    { name: "Planner", kind: "output", description: "Show first session" }
+    { name: bi("Log", "السجل"), kind: bi("input", "مدخل"), description: bi("Session lengths", "مدد الجلسات") },
+    { name: bi("Sorter", "أداة الترتيب"), kind: bi("operation", "عملية"), description: bi("Order the values", "ترتيب القيم") },
+    { name: bi("Planner", "المخطط"), kind: bi("output", "مخرج"), description: bi("Show first session", "عرض أول جلسة") }
   ],
   cases: [
     {
@@ -55,7 +56,7 @@ const lesson = {
     choices: [bi("8", "8"), bi("30", "30"), bi("12", "12")], answer: 1,
     reason: bi("Descending order puts 30 first. The original list still starts with 8.", "الترتيب التنازلي بيحط 30 الأول. القائمة الأصلية لسه بتبدأ بـ8.")
   },
-  source: ["Python Sorting Techniques", "https://docs.python.org/3/howto/sorting.html#ascending-and-descending"]
+  source: [bi("Python Sorting Techniques", "أساليب الترتيب في Python"), "https://docs.python.org/3/howto/sorting.html#ascending-and-descending"]
 };
 
 export const sections = [{

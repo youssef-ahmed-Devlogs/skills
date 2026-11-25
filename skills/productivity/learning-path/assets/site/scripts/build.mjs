@@ -2,10 +2,34 @@ import fs from "node:fs";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import { course, sections } from "../course.mjs";
-import { validateCourse } from "./validate.mjs";
+import { courseLanguages, validateCourse } from "./validate.mjs";
 
 const OUT_DIR = fileURLToPath(new URL("../", import.meta.url));
 validateCourse(course, sections);
+const languages = courseLanguages(course);
+const firstLanguage = languages[0];
+
+function translations(render) {
+  return Object.fromEntries(languages.map(lang => [lang, render(lang)]));
+}
+
+function valueIn(value, lang) {
+  return typeof value === "string" ? value : value[lang];
+}
+
+function variants(render, tag = "span", attrs = "") {
+  return languages.map(lang => `<${tag} data-lang="${lang}"${attrs}>${render(lang)}</${tag}>`).join("");
+}
+
+function label(value, tag, attrs) {
+  return variants(lang => formatProse(valueIn(value, lang), lang === "ar"), tag, attrs);
+}
+
+// Arguments may contain escaped, formatted HTML.
+function wording(en, ar, tag, attrs) {
+  return variants(lang => lang === "ar" ? ar : en, tag, attrs);
+}
+
 
 const LEVEL_META = {
   junior: { key: "junior", cls: "lvl-junior", en: "Junior", ar: "جينيور" },
@@ -89,7 +113,7 @@ function formatArLabel(text) {
 
 function renderLevelBadge(levelMeta, extraCls = "") {
   const cls = `lvl-badge ${levelMeta.cls}${extraCls ? " " + extraCls : ""}`;
-  return `<span class="${cls}"><span data-lang="en">${levelMeta.en}</span><span data-lang="ar">${levelMeta.ar}</span></span>`;
+  return `<span class="${cls}">${wording(levelMeta.en, levelMeta.ar)}</span>`;
 }
 
 // ---------------------------------------------------------------------------
@@ -195,24 +219,28 @@ function renderNoteBox(cx, y, text, boxClass = "d-note-box", textClass = "d-note
   };
 }
 
-function renderSequenceDiagram(lesson, caseIdx) {
+function actorDescription(actor) {
+  return [actor.description].flat().map(item => label(item)).join(" / ");
+}
+
+function renderSequenceDiagram(lesson, caseIdx, lang) {
   const c = lesson.cases[caseIdx];
-  const markerId = `arr-${lesson.id}-${caseIdx}`;
+  const markerId = `arr-${lesson.id}-${caseIdx}-${lang}`;
   const actors = lesson.actors.map((a) => ({
-    name: a.name,
-    sub: Array.isArray(a.description) ? a.description[caseIdx] : a.description
+    name: valueIn(a.name, lang),
+    sub: valueIn(Array.isArray(a.description) ? a.description[caseIdx] : a.description, lang)
   }));
 
   const xs = [104, 310, 516];
   const boxW = 172;
   const boxH = 48;
-  const obs = c.observations.map((o) => o.en);
+  const obs = c.observations.map((o) => o[lang]);
   const outcomeBoxClass = caseIdx === 0 ? "d-state-green" : "d-state-red";
 
   let curY = 78;
   const parts = [];
 
-  const n1 = renderNoteBox(xs[0], curY, obs[0] || c.name.en, "d-note-box", "d-note-text");
+  const n1 = renderNoteBox(xs[0], curY, obs[0] || c.name[lang], "d-note-box", "d-note-text");
   parts.push(n1.svg);
   curY += n1.height + 24;
 
@@ -256,8 +284,8 @@ function renderSequenceDiagram(lesson, caseIdx) {
     .join("");
 
   return `
-    <div class="diagram-wrap" dir="ltr">
-      <svg viewBox="0 0 620 ${totalH}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(lesson.title.en)} — ${esc(c.name.en)}">
+    <div class="diagram-wrap" dir="ltr" data-lang="${lang}">
+      <svg direction="${lang === "ar" ? "rtl" : "ltr"}" viewBox="0 0 620 ${totalH}" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="${esc(lesson.title[lang])} — ${esc(c.name[lang])}">
         <defs>
           <marker id="${markerId}" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
             <path d="M 0 1 L 10 5 L 0 9 z" class="d-arrowhead" />
@@ -274,74 +302,96 @@ function renderSequenceDiagram(lesson, caseIdx) {
 let navCounter = 0;
 const navGroupsData = [
   {
-    level: null,
-    title: { en: "Roadmap", ar: "خريطة المسار" },
-    items: [
-      { href: "index.html", num: "00", level: null, en: "Curriculum Overview", ar: "نظرة عامة على المنهج" }
-    ]
+    title: wording("Roadmap", "خريطة المسار"),
+    items: [{ href: "index.html", num: "00", title: wording("Curriculum Overview", "نظرة عامة على المنهج") }]
   },
-  ...resolvedSections.map((sec) => ({
-    level: sec.levelMeta,
-    title: { en: esc(sec.title.en), ar: formatArLabel(sec.title.ar) },
-    items: sec.lessons.map((l) => {
-      navCounter += 1;
-      return {
-        href: `${l.id}.html`,
-        num: String(navCounter).padStart(2, "0"),
-        level: l.levelMeta,
-        en: esc(l.title.en),
-        ar: formatArLabel(l.title.ar)
-      };
-    })
+  ...resolvedSections.map(sec => ({
+    badge: renderLevelBadge(sec.levelMeta, "lvl-badge-xs"),
+    title: label(sec.title),
+    items: sec.lessons.map(lesson => ({
+      href: `${lesson.id}.html`,
+      num: String(++navCounter).padStart(2, "0"),
+      title: label(lesson.title)
+    }))
   }))
 ];
 
-const milestones = allLessons.filter((lesson) => lesson.milestone);
-
-const searchIndexData = [
-  {
-    page: "index.html",
-    hash: "",
-    en: `${course.title.en} — ${resolvedSections.length} Sections, ${counts.all} Lessons`,
-    ar: `${course.title.ar} — ${resolvedSections.length} فصلاً و ${counts.all} درساً`,
-    groupEn: "Roadmap",
-    groupAr: "خريطة المسار"
+const milestones = allLessons.filter(lesson => lesson.milestone);
+const searchIndexData = translations(lang => {
+  const overview = lang === "ar"
+    ? `${course.title.ar} · عدد الفصول: ${resolvedSections.length}، عدد الدروس: ${counts.all}`
+    : `${course.title.en} · ${resolvedSections.length} sections, ${counts.all} lessons`;
+  const rows = [{ page: "index.html", hash: "", title: overview, group: lang === "ar" ? "خريطة المسار" : "Roadmap" }];
+  for (const lesson of allLessons) {
+    const page = lesson.id + ".html";
+    const group = lesson.section.title[lang];
+    const title = lesson.title[lang];
+    rows.push({ page, group, hash: "", title: `[${lesson.levelMeta[lang]}] ${title} (${lesson.term[lang]})` });
+    lesson.cases.forEach((item, index) => {
+      const caseLabel = lang === "ar" ? "الحالة" : "Case";
+      rows.push({ page, group, hash: "#case-" + (index + 1), title: `${title} · ${caseLabel} ${index + 1}: ${item.name[lang]}` });
+    });
   }
-];
-
-resolvedSections.forEach((sec) => {
-  sec.lessons.forEach((l) => {
-    searchIndexData.push({
-      page: `${l.id}.html`,
-      hash: "",
-      en: `[${l.levelMeta.en}] ${l.title.en} (${l.term.en})`,
-      ar: `[${l.levelMeta.ar}] ${l.title.ar} (${l.term.ar})`,
-      groupEn: sec.title.en,
-      groupAr: sec.title.ar
-    });
-    l.cases.forEach((c, idx) => {
-      searchIndexData.push({
-        page: `${l.id}.html`,
-        hash: `#case-${idx + 1}`,
-        en: `${l.title.en} — Case ${idx + 1}: ${c.name.en}`,
-        ar: `${l.title.ar} — الحالة ${idx + 1}: ${c.name.ar}`,
-        groupEn: sec.title.en,
-        groupAr: sec.title.ar
-      });
-    });
-  });
+  return rows;
 });
+
+const languageMenu = languages.length === 2 ? `
+  <div class="theme-menu-wrap" id="lang-menu-wrap">
+    <button
+      type="button"
+      class="icon-btn"
+      id="lang-toggle-btn"
+      aria-label="Change language"
+      aria-haspopup="menu"
+      aria-expanded="false"
+      title="Language"
+    >
+      \${ICONS.globe}
+    </button>
+    <div class="theme-menu" id="lang-menu" role="menu">
+      <button type="button" class="theme-menu-item" role="menuitem" data-set-locale="en">
+        <span class="theme-menu-item-left">
+          <span class="lang-code-tag">EN</span>
+          <span>English</span>
+        </span>
+        <span class="theme-menu-check">\${ICONS.check}</span>
+      </button>
+      <button type="button" class="theme-menu-item" role="menuitem" data-set-locale="ar">
+        <span class="theme-menu-item-left">
+          <span class="lang-code-tag">AR</span>
+          <span style="font-family:var(--font-arabic)">العربية</span>
+        </span>
+        <span class="theme-menu-check">\${ICONS.check}</span>
+      </button>
+    </div>
+  </div>` : "";
+
+const interfaceText = {
+  en: {
+    navigation: "Toggle navigation", theme: "Change theme preference",
+    copy: "Copy code", filter: "Filter by level",
+    search: `Search all ${counts.all} lessons...`, empty: "No matching lessons found."
+  },
+  ar: {
+    navigation: "القائمة", theme: "تغيير المظهر",
+    copy: "نسخ الكود", filter: "تصفية حسب المستوى",
+    search: `ابحث في الدروس (${counts.all})...`, empty: "لا توجد نتائج مطابقة."
+  }
+};
 
 const appJsContent = `/* ==========================================================================
    Learning Path — Shared Interactive Shell
-   Junior -> Mid -> Senior Badges · EN/AR · Light/Dark
+   Junior -> Mid -> Senior Badges · Light/Dark
    ========================================================================== */
 
 (function () {
   "use strict";
 
   const escapeHtml = ${esc.toString()};
-  const brand = ${JSON.stringify({en:esc(course.brand.en),ar:formatArLabel(course.brand.ar),title:esc(course.title.en),journeyEn:esc(course.journey.en),journeyAr:formatArLabel(course.journey.ar)})};
+  const languages = ${JSON.stringify(languages)};
+  const ui = ${JSON.stringify(translations(lang => interfaceText[lang]))};
+  const brandHtml = ${JSON.stringify(label(course.brand))};
+  const journeyHtml = ${JSON.stringify(label(course.journey))};
   const NAV_GROUPS = ${JSON.stringify(navGroupsData, null, 2)};
 
   const SEARCH_INDEX = ${JSON.stringify(searchIndexData, null, 2)};
@@ -374,7 +424,8 @@ const appJsContent = `/* =======================================================
   }
 
   function getSavedLocale() {
-    return localStorage.getItem(STORAGE_LOCALE) === "ar" ? "ar" : "en";
+    const saved = localStorage.getItem(STORAGE_LOCALE);
+    return languages.includes(saved) ? saved : languages[0];
   }
 
   function applyThemePref(pref) {
@@ -387,7 +438,7 @@ const appJsContent = `/* =======================================================
     if (trigger) {
       trigger.innerHTML = pref === "light" ? ICONS.sun : pref === "dark" ? ICONS.moon : ICONS.system;
     }
-    document.querySelectorAll(".theme-menu-item").forEach((item) => {
+    document.querySelectorAll("[data-theme-choice]").forEach((item) => {
       item.setAttribute("data-active", item.dataset.themeChoice === pref ? "true" : "false");
     });
   }
@@ -402,19 +453,19 @@ const appJsContent = `/* =======================================================
     document.documentElement.setAttribute("data-locale", locale);
     document.documentElement.setAttribute("lang", locale);
     document.documentElement.setAttribute("dir", locale === "ar" ? "rtl" : "ltr");
-    localStorage.setItem(STORAGE_LOCALE, locale);
+    if (languages.length > 1) localStorage.setItem(STORAGE_LOCALE, locale);
+    document.title = document.querySelector("title").dataset[locale];
 
     document.querySelectorAll("[data-set-locale]").forEach((btn) => {
       btn.setAttribute("data-active", btn.dataset.setLocale === locale ? "true" : "false");
     });
 
+    document.querySelectorAll("[data-ui-label]").forEach(element => {
+      element.setAttribute("aria-label", ui[locale][element.dataset.uiLabel]);
+    });
+    document.querySelectorAll(".code-copy-btn").forEach(btn => { btn.title = ui[locale].copy; });
     const searchInput = document.getElementById("search-modal-input");
-    if (searchInput) {
-      searchInput.placeholder =
-        locale === "ar"
-          ? "ابحث في الـ ${counts.all} درساً (Junior -> Senior)..."
-          : "Search all ${counts.all} lessons (Junior -> Senior)...";
-    }
+    if (searchInput) searchInput.placeholder = ui[locale].search;
   }
 
   applyThemePref(getSavedThemePref());
@@ -434,66 +485,34 @@ const appJsContent = `/* =======================================================
       <header class="navbar">
         <div class="navbar-inner">
           <div class="navbar-left">
-            <button class="mobile-menu-btn" id="mobile-menu-btn" aria-label="Toggle navigation">
+            <button class="mobile-menu-btn" id="mobile-menu-btn" data-ui-label="navigation">
               \${ICONS.menu}
             </button>
-            <a href="index.html" class="brand-logo" title="\${brand.title}">
-              <span data-lang="en">\${brand.en}</span>
-              <span data-lang="ar">\${brand.ar}</span>
+            <a href="index.html" class="brand-logo">
+              \${brandHtml}
               <span class="brand-chevrons">&gt;&gt;</span>
             </a>
-            <span class="version-badge" title="Learning Journey">
-              <span data-lang="en">\${brand.journeyEn}</span>
-              <span data-lang="ar">\${brand.journeyAr}</span>
+            <span class="version-badge">
+              \${journeyHtml}
             </span>
           </div>
 
           <button class="search-trigger" id="search-trigger-btn" type="button">
             <span class="search-trigger-left">
               \${ICONS.search}
-              <span data-lang="en">Search ${counts.all} lessons...</span>
-              <span data-lang="ar">ابحث في ${counts.all} درساً...</span>
+              ${wording(`Search ${counts.all} lessons...`, `ابحث في ${counts.all} درساً...`)}
             </span>
             <span class="search-kbd">Ctrl K</span>
           </button>
 
           <div class="navbar-right">
-            <div class="theme-menu-wrap" id="lang-menu-wrap">
-              <button
-                type="button"
-                class="icon-btn"
-                id="lang-toggle-btn"
-                aria-label="Change language"
-                aria-haspopup="menu"
-                aria-expanded="false"
-                title="Language"
-              >
-                \${ICONS.globe}
-              </button>
-              <div class="theme-menu" id="lang-menu" role="menu">
-                <button type="button" class="theme-menu-item" role="menuitem" data-set-locale="en">
-                  <span class="theme-menu-item-left">
-                    <span class="lang-code-tag">EN</span>
-                    <span>English</span>
-                  </span>
-                  <span class="theme-menu-check">\${ICONS.check}</span>
-                </button>
-                <button type="button" class="theme-menu-item" role="menuitem" data-set-locale="ar">
-                  <span class="theme-menu-item-left">
-                    <span class="lang-code-tag">AR</span>
-                    <span style="font-family:var(--font-arabic)">العربية</span>
-                  </span>
-                  <span class="theme-menu-check">\${ICONS.check}</span>
-                </button>
-              </div>
-            </div>
-
+            ${languageMenu}
             <div class="theme-menu-wrap" id="theme-menu-wrap">
               <button
                 type="button"
                 class="icon-btn"
                 id="theme-toggle-btn"
-                aria-label="Change theme preference"
+                data-ui-label="theme"
                 aria-haspopup="menu"
                 aria-expanded="false"
               >
@@ -503,24 +522,21 @@ const appJsContent = `/* =======================================================
                 <button type="button" class="theme-menu-item" role="menuitem" data-theme-choice="system">
                   <span class="theme-menu-item-left">
                     \${ICONS.system}
-                    <span data-lang="en">System</span>
-                    <span data-lang="ar">النظام</span>
+                    ${wording("System", "النظام")}
                   </span>
                   <span class="theme-menu-check">\${ICONS.check}</span>
                 </button>
                 <button type="button" class="theme-menu-item" role="menuitem" data-theme-choice="light">
                   <span class="theme-menu-item-left">
                     \${ICONS.sun}
-                    <span data-lang="en">Light</span>
-                    <span data-lang="ar">نهاري</span>
+                    ${wording("Light", "نهاري")}
                   </span>
                   <span class="theme-menu-check">\${ICONS.check}</span>
                 </button>
                 <button type="button" class="theme-menu-item" role="menuitem" data-theme-choice="dark">
                   <span class="theme-menu-item-left">
                     \${ICONS.moon}
-                    <span data-lang="en">Dark</span>
-                    <span data-lang="ar">ليلي</span>
+                    ${wording("Dark", "ليلي")}
                   </span>
                   <span class="theme-menu-check">\${ICONS.check}</span>
                 </button>
@@ -604,10 +620,6 @@ const appJsContent = `/* =======================================================
     const current = getCurrentFile();
 
     mount.innerHTML = NAV_GROUPS.map((group) => {
-      const groupBadge = group.level
-        ? \`<span class="lvl-badge \${group.level.cls} lvl-badge-xs"><span data-lang="en">\${group.level.en}</span><span data-lang="ar">\${group.level.ar}</span></span>\`
-        : "";
-
       const itemsHtml = group.items
         .map((item) => {
           const isActive = item.href === current ? " active" : "";
@@ -616,8 +628,7 @@ const appJsContent = `/* =======================================================
             <li>
               <a class="sidebar-link\${isActive}" href="\${item.href}">
                 \${numSpan}
-                <span data-lang="en">\${item.en}</span>
-                <span data-lang="ar">\${item.ar}</span>
+                \${item.title}
               </a>
             </li>
           \`;
@@ -628,10 +639,9 @@ const appJsContent = `/* =======================================================
         <div class="sidebar-group">
           <div class="sidebar-group-head">
             <h4 class="sidebar-group-title">
-              <span data-lang="en">\${group.title.en}</span>
-              <span data-lang="ar">\${group.title.ar}</span>
+              \${group.title}
             </h4>
-            \${groupBadge}
+            \${group.badge || ""}
           </div>
           <ul class="sidebar-list">\${itemsHtml}</ul>
         </div>
@@ -679,12 +689,10 @@ const appJsContent = `/* =======================================================
     const itemsHtml = headings
       .map((h) => {
         const cls = h.tagName === "H3" ? "toc-link toc-h3" : "toc-link";
-        const enSpan = h.querySelector('[data-lang="en"]');
-        const arSpan = h.querySelector('[data-lang="ar"]');
-        const labelHtml =
-          enSpan && arSpan
-            ? \`<span data-lang="en">\${escapeHtml(enSpan.textContent)}</span><span data-lang="ar">\${escapeHtml(arSpan.textContent)}</span>\`
-            : escapeHtml(h.textContent);
+        const labelHtml = languages.map(lang => {
+          const element = h.querySelector('[data-lang="' + lang + '"]');
+          return \`<span data-lang="\${lang}">\${escapeHtml(element.textContent)}</span>\`;
+        }).join("");
         return \`<li><a class="\${cls}" href="#\${h.id}" data-toc-target="\${h.id}">\${labelHtml}</a></li>\`;
       })
       .join("");
@@ -692,8 +700,7 @@ const appJsContent = `/* =======================================================
     tocMount.innerHTML = \`
       <div class="toc-title">
         \${ICONS.toc}
-        <span data-lang="en">On this page</span>
-        <span data-lang="ar">في هذه الصفحة</span>
+        ${wording("On this page", "في هذه الصفحة")}
       </div>
       <ul class="toc-list">\${itemsHtml}</ul>
     \`;
@@ -724,7 +731,7 @@ const appJsContent = `/* =======================================================
       const btn = document.createElement("button");
       btn.type = "button";
       btn.className = "code-copy-btn";
-      btn.title = "Copy code";
+      btn.title = ui[getSavedLocale()].copy;
       btn.innerHTML = ICONS.copy;
 
       btn.addEventListener("click", async () => {
@@ -751,7 +758,7 @@ const appJsContent = `/* =======================================================
         try {
           await navigator.clipboard.writeText(main.innerText.trim());
           const orig = copyPageBtn.innerHTML;
-          copyPageBtn.innerHTML = \`\${ICONS.check}<span data-lang="en">Copied</span><span data-lang="ar">تم النسخ</span>\`;
+          copyPageBtn.innerHTML = \`\${ICONS.check}${wording("Copied", "تم النسخ")}\`;
           setTimeout(() => {
             copyPageBtn.innerHTML = orig;
           }, 1600);
@@ -867,27 +874,22 @@ const appJsContent = `/* =======================================================
     const q = query.trim().toLowerCase();
     const locale = getSavedLocale();
 
-    const matches = SEARCH_INDEX.filter((item) => {
+    const matches = SEARCH_INDEX[locale].filter((item, index) => {
       if (!q) return item.hash === "";
-      return (
-        item.en.toLowerCase().includes(q) ||
-        item.ar.toLowerCase().includes(q) ||
-        item.groupEn.toLowerCase().includes(q) ||
-        item.groupAr.toLowerCase().includes(q)
-      );
+      return languages.some(lang => {
+        const row = SEARCH_INDEX[lang][index];
+        return row.title.toLowerCase().includes(q) || row.group.toLowerCase().includes(q);
+      });
     }).slice(0, 14);
 
     if (!matches.length) {
-      container.innerHTML = \`<div class="search-empty">\${
-        locale === "ar" ? "لا توجد نتائج مطابقة." : "No matching lessons found."
-      }</div>\`;
+      container.innerHTML = \`<div class="search-empty">\${ui[locale].empty}</div>\`;
       return;
     }
 
     container.innerHTML = matches
       .map((m) => {
-        const title = locale === "ar" ? m.ar : m.en;
-        const group = locale === "ar" ? m.groupAr : m.groupEn;
+        const { title, group } = m;
         return \`
           <a class="search-result-item" href="\${m.page}\${m.hash}">
             <span class="search-result-title">\${escapeHtml(title)}</span>
@@ -917,18 +919,18 @@ fs.writeFileSync(path.join(OUT_DIR, "assets/app.js"), appJsContent, "utf8");
 // ---------------------------------------------------------------------------
 // 7. HTML Shell
 // ---------------------------------------------------------------------------
-function pageShell({ titleEn, bodyHtml }) {
+function pageShell({ title, bodyHtml }) {
   return `<!DOCTYPE html>
-<html lang="en" data-locale="en" data-theme="light">
+<html lang="${firstLanguage}" dir="${firstLanguage === "ar" ? "rtl" : "ltr"}" data-locale="${firstLanguage}" data-theme="light">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>${esc(titleEn)} — ${esc(course.brand.en)}</title>
+  <title ${languages.map(lang => `data-${lang}="${esc(title[lang])} · ${esc(course.brand[lang])}"`).join(" ")}>${esc(title[firstLanguage])} · ${esc(course.brand[firstLanguage])}</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700&family=Geist+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="assets/styles.css?v=13" />
-  <script src="assets/app.js?v=13"></script>
+  <link href="https://fonts.googleapis.com/css2?${languages.includes("ar") ? "family=Cairo:wght@400;500;600;700&" : ""}family=Geist+Mono:wght@400;500;600&family=Instrument+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="assets/styles.css?v=14" />
+  <script src="assets/app.js?v=14"></script>
 </head>
 <body>
   <div id="site-navbar"></div>
@@ -963,15 +965,13 @@ const sectionsHtml = resolvedSections
               <div style="display:flex;align-items:baseline;gap:8px;min-width:0;">
                 <span class="sidebar-num">${num}</span>
                 <span class="lesson-tile-title">
-                  <span data-lang="en">${esc(l.title.en)}</span>
-                  <span data-lang="ar">${formatArLabel(l.title.ar)}</span>
+                  ${label(l.title)}
                 </span>
               </div>
               ${renderLevelBadge(l.levelMeta, "lvl-badge-xs")}
             </div>
             <div class="lesson-tile-desc">
-              <span data-lang="en">${esc(l.question.en)}</span>
-              <span data-lang="ar">${formatArLabel(l.question.ar)}</span>
+              ${label(l.question)}
             </div>
           </a>
         `;
@@ -982,19 +982,17 @@ const sectionsHtml = resolvedSections
       <section class="chapter-section" data-level="${sec.level}">
         <h2 id="section-${sec.id}" style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
           <span>
-            <span data-lang="en">${sIdx + 1}. ${esc(sec.title.en)}</span>
-            <span data-lang="ar">${sIdx + 1}. ${formatArLabel(sec.title.ar)}</span>
+            ${wording(`${sIdx + 1}. ${esc(sec.title.en)}`, `${sIdx + 1}. ${formatArLabel(sec.title.ar)}`)}
           </span>
           ${renderLevelBadge(sec.levelMeta)}
         </h2>
         <p style="margin-bottom:12px;">
-          <span data-lang="en">${esc(sec.summary.en)}</span>
-          <span data-lang="ar">${formatProse(sec.summary.ar, true)}</span>
+          ${label(sec.summary)}
         </p>
         <div class="chapter-card">
           <div class="chapter-card-head">
             ${renderLevelBadge(sec.levelMeta)}
-            <span class="lesson-step-pill">${sec.lessons.length} lessons</span>
+            <span class="lesson-step-pill">${wording(`${sec.lessons.length} lessons`, `عدد الدروس: ${sec.lessons.length}`)}</span>
           </div>
           <div class="chapter-lessons-grid">
             ${tiles}
@@ -1009,8 +1007,7 @@ const indexBody = `
   <div class="page-header">
     <div class="page-eyebrow-row">
       <div class="page-eyebrow">
-        <span data-lang="en">Career Transition Roadmap</span>
-        <span data-lang="ar">مسار التحول المهني</span>
+        ${wording("Career Transition Roadmap", "مسار التحول المهني")}
       </div>
       ${renderLevelBadge(LEVEL_META.junior)}
       ${renderLevelBadge(LEVEL_META.mid)}
@@ -1018,18 +1015,15 @@ const indexBody = `
     </div>
     <div class="page-title-row">
       <h1 class="page-title">
-        <span data-lang="en">${esc(course.title.en)}</span>
-        <span data-lang="ar">${formatArLabel(course.title.ar)}</span>
+        ${label(course.title)}
       </h1>
       <button type="button" class="copy-page-btn" id="copy-page-btn">
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-        <span data-lang="en">Copy page</span>
-        <span data-lang="ar">نسخ الصفحة</span>
+        ${wording("Copy page", "نسخ الصفحة")}
       </button>
     </div>
     <p class="page-lead">
-      <span data-lang="en">${formatProse(course.intro.en)}</span>
-      <span data-lang="ar">${formatProse(course.intro.ar, true)}</span>
+      ${label(course.intro)}
     </p>
   </div>
 
@@ -1039,41 +1033,30 @@ const indexBody = `
         <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
       </div>
       <div class="callout-body">
-        <p data-lang="en">
-          ${formatProse(course.study.en)}
-        </p>
-        <p data-lang="ar">
-          ${formatProse(course.study.ar, true)}
-        </p>
+        ${label(course.study, "p")}
       </div>
     </div>
 
-    <h2 id="practice-project"><span data-lang="en">${formatProse(course.project.title.en)}</span><span data-lang="ar">${formatProse(course.project.title.ar, true)}</span></h2>
-    <p data-lang="en">${formatProse(course.project.intro.en)}</p>
-    <p data-lang="ar">${formatProse(course.project.intro.ar, true)}</p>
-    <details><summary><span data-lang="en">${esc(course.project.setupTitle.en)}</span><span data-lang="ar">${formatArLabel(course.project.setupTitle.ar)}</span></summary>
-      <p data-lang="en">${formatProse(course.project.setup.en)}</p>
-      <p data-lang="ar">${formatProse(course.project.setup.ar, true)}</p>
+    <h2 id="practice-project">${label(course.project.title)}</h2>
+    ${label(course.project.intro, "p")}
+    <details><summary>${label(course.project.setupTitle)}</summary>
+      ${label(course.project.setup, "p")}
       <div class="code-block"><pre dir="ltr"><code>${esc(course.project.commands)}</code></pre></div>
     </details>
     <ul>${milestones.map(({ id, level }) => `
-      <li><a href="${id}.html#milestone"><span data-lang="en">${LEVEL_META[level].en} project checkpoint</span><span data-lang="ar">تسليم مرحلة ${LEVEL_META[level].ar}</span></a></li>`).join("")}</ul>
-    <div class="track-filters" role="group" aria-label="Filter by level">
+      <li><a href="${id}.html#milestone">${wording(`${LEVEL_META[level].en} project checkpoint`, `تسليم مرحلة ${LEVEL_META[level].ar}`)}</a></li>`).join("")}</ul>
+    <div class="track-filters" role="group" data-ui-label="filter" aria-label="${interfaceText[firstLanguage].filter}">
       <button type="button" class="track-filter-btn active" data-track-filter="all">
-        <span data-lang="en">All lessons (${counts.all})</span>
-        <span data-lang="ar">كل الدروس (${counts.all})</span>
+        ${wording(`All lessons (${counts.all})`, `كل الدروس (${counts.all})`)}
       </button>
       <button type="button" class="track-filter-btn" data-track-filter="junior">
-        <span data-lang="en">Junior (${counts.junior})</span>
-        <span data-lang="ar">جينيور (${counts.junior})</span>
+        ${wording(`Junior (${counts.junior})`, `جينيور (${counts.junior})`)}
       </button>
       <button type="button" class="track-filter-btn" data-track-filter="mid">
-        <span data-lang="en">Mid-Level (${counts.mid})</span>
-        <span data-lang="ar">ميد ليفل (${counts.mid})</span>
+        ${wording(`Mid-Level (${counts.mid})`, `ميد ليفل (${counts.mid})`)}
       </button>
       <button type="button" class="track-filter-btn" data-track-filter="senior">
-        <span data-lang="en">Senior (${counts.senior})</span>
-        <span data-lang="ar">سينيور (${counts.senior})</span>
+        ${wording(`Senior (${counts.senior})`, `سينيور (${counts.senior})`)}
       </button>
     </div>
 
@@ -1083,8 +1066,7 @@ const indexBody = `
   <nav class="pagination">
     <span></span>
     <a class="page-nav-link next" href="${allLessons[0].id}.html">
-      <span data-lang="en">Start Lesson 01: ${esc(allLessons[0].title.en)}</span>
-      <span data-lang="ar">ابدأ الدرس 01: ${formatArLabel(allLessons[0].title.ar)}</span>
+      ${wording(`Start Lesson 01: ${esc(allLessons[0].title.en)}`, `ابدأ الدرس 01: ${formatArLabel(allLessons[0].title.ar)}`)}
       <span>&rsaquo;</span>
     </a>
   </nav>
@@ -1092,7 +1074,7 @@ const indexBody = `
 
 fs.writeFileSync(
   path.join(OUT_DIR, "index.html"),
-  pageShell({ titleEn: course.title.en, bodyHtml: indexBody }),
+  pageShell({ title: course.title, bodyHtml: indexBody }),
   "utf8"
 );
 
@@ -1118,8 +1100,7 @@ allLessons.forEach((lesson, idx) => {
       <div class="callout callout-info">
         <div class="callout-icon">${INFO_ICON}</div>
         <div class="callout-body">
-          <p data-lang="en"><strong>From the previous concept:</strong> ${formatProse(bridge.en)}</p>
-          <p data-lang="ar"><strong>ربط مع الدرس السابق:</strong> ${formatProse(bridge.ar, true)}</p>
+          ${wording(`<strong>From the previous concept:</strong> ${formatProse(bridge.en)}`, `<strong>ربط مع الدرس السابق:</strong> ${formatProse(bridge.ar, true)}`, "p")}
         </div>
       </div>
     `
@@ -1130,8 +1111,7 @@ allLessons.forEach((lesson, idx) => {
       <div class="callout callout-laravel">
         <div class="callout-icon">${BRIDGE_ICON}</div>
         <div class="callout-body">
-          <p data-lang="en"><strong>${esc(course.bridgeLabel.en)}</strong> ${formatProse(baselineBridge.en)}</p>
-          <p data-lang="ar"><strong>${formatArLabel(course.bridgeLabel.ar)}</strong> ${formatProse(baselineBridge.ar, true)}</p>
+          ${wording(`<strong>${esc(course.bridgeLabel.en)}</strong> ${formatProse(baselineBridge.en)}`, `<strong>${formatArLabel(course.bridgeLabel.ar)}</strong> ${formatProse(baselineBridge.ar, true)}`, "p")}
         </div>
       </div>
     `
@@ -1141,19 +1121,17 @@ allLessons.forEach((lesson, idx) => {
     .map((c, cIdx) => {
       const badgeClass = cIdx === 0 ? "badge-ok" : "badge-warn";
       const fileName = c.file;
-      const fileLabel = `${fileName} — ${c.name.en}`;
       return `
         <h3 id="case-${cIdx + 1}">
-          <span data-lang="en">Case ${cIdx + 1}: ${esc(c.name.en)}</span>
-          <span data-lang="ar">الحالة ${cIdx + 1}: ${formatArLabel(c.name.ar)}</span>
+          ${wording(`Case ${cIdx + 1}: ${esc(c.name.en)}`, `الحالة ${cIdx + 1}: ${formatArLabel(c.name.ar)}`)}
         </h3>
 
-        ${renderSequenceDiagram(lesson, cIdx)}
+        ${languages.map(lang => renderSequenceDiagram(lesson, cIdx, lang)).join("")}
 
         <div class="code-block has-header" dir="ltr">
           <div class="code-block-header">
-            <span>${esc(fileLabel)}</span>
-            <span class="${badgeClass}">${cIdx === 0 ? "Case 1" : "Case 2"}</span>
+            <span>${esc(fileName)} · ${label(c.name)}</span>
+            <span class="${badgeClass}">${wording(`Case ${cIdx + 1}`, `الحالة ${cIdx + 1}`)}</span>
           </div>
           <pre><code>${highlightCode(c.code)}</code></pre>
         </div>
@@ -1168,18 +1146,14 @@ allLessons.forEach((lesson, idx) => {
       return `
         <tr>
           <td>
-            <strong>${esc(actor.name)}</strong><br/>
-            <span style="font-size:0.78rem;color:var(--text-subtle)">${esc(
-              Array.isArray(actor.description) ? actor.description.join(" / ") : actor.description
-            )}</span>
+            <strong>${label(actor.name)}</strong><br/>
+            <span style="font-size:0.78rem;color:var(--text-subtle)">${actorDescription(actor)}</span>
           </td>
           <td>
-            <span data-lang="en">${formatProse(obs0?.en || "")}</span>
-            <span data-lang="ar">${formatProse(obs0?.ar || "", true)}</span>
+            ${label(obs0)}
           </td>
           <td>
-            <span data-lang="en">${formatProse(obs1?.en || "")}</span>
-            <span data-lang="ar">${formatProse(obs1?.ar || "", true)}</span>
+            ${label(obs1)}
           </td>
         </tr>
       `;
@@ -1188,14 +1162,13 @@ allLessons.forEach((lesson, idx) => {
 
   const actorsParamsHtml = lesson.actors
     .map((actor) => {
-      const desc = Array.isArray(actor.description) ? actor.description.join(" / ") : actor.description;
       return `
         <div class="param-item">
           <div class="param-header">
-            <span class="param-name">${esc(actor.name)}</span>
-            <span class="type-pill">${esc(actor.kind)}</span>
+            <span class="param-name">${label(actor.name)}</span>
+            <span class="type-pill">${label(actor.kind)}</span>
           </div>
-          <p class="param-desc">${esc(desc)}</p>
+          <p class="param-desc">${actorDescription(actor)}</p>
         </div>
       `;
     })
@@ -1206,8 +1179,7 @@ allLessons.forEach((lesson, idx) => {
       (chItem, chI) => `
         <button type="button" class="quiz-option">
           <span class="sidebar-num">${String.fromCharCode(65 + chI)}</span>
-          <span data-lang="en">${formatProse(chItem.en)}</span>
-          <span data-lang="ar">${formatProse(chItem.ar, true)}</span>
+          ${label(chItem)}
         </button>
       `
     )
@@ -1219,23 +1191,20 @@ allLessons.forEach((lesson, idx) => {
     ? `
       <a class="page-nav-link prev" href="${prev.id}.html">
         <span>&lsaquo;</span>
-        <span data-lang="en">${esc(prev.title.en)}</span>
-        <span data-lang="ar">${formatArLabel(prev.title.ar)}</span>
+        ${label(prev.title)}
       </a>
     `
     : `
       <a class="page-nav-link prev" href="index.html">
         <span>&lsaquo;</span>
-        <span data-lang="en">Curriculum Overview</span>
-        <span data-lang="ar">نظرة عامة على المنهج</span>
+        ${wording("Curriculum Overview", "نظرة عامة على المنهج")}
       </a>
     `;
 
   const nextLinkHtml = next
     ? `
       <a class="page-nav-link next" href="${next.id}.html">
-        <span data-lang="en">${esc(next.title.en)}</span>
-        <span data-lang="ar">${formatArLabel(next.title.ar)}</span>
+        ${label(next.title)}
         <span>&rsaquo;</span>
       </a>
     `
@@ -1245,8 +1214,7 @@ allLessons.forEach((lesson, idx) => {
     <div class="page-header">
       <div class="page-eyebrow-row">
         <div class="page-eyebrow">
-          <span data-lang="en">${esc(sec.title.en)}</span>
-          <span data-lang="ar">${formatArLabel(sec.title.ar)}</span>
+          ${label(sec.title)}
         </div>
         ${renderLevelBadge(lesson.levelMeta)}
         <span class="lesson-step-pill">${lessonNum} / ${allLessons.length}</span>
@@ -1254,19 +1222,16 @@ allLessons.forEach((lesson, idx) => {
 
       <div class="page-title-row">
         <h1 class="page-title">
-          <span data-lang="en">${esc(lesson.title.en)}</span>
-          <span data-lang="ar">${formatArLabel(lesson.title.ar)}</span>
+          ${label(lesson.title)}
         </h1>
         <button type="button" class="copy-page-btn" id="copy-page-btn">
           <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="14" height="14" x="8" y="8" rx="2" ry="2"/><path d="M4 16c-1.1 0-2-.9-2-2V4c0-1.1.9-2 2-2h10c1.1 0 2 .9 2 2"/></svg>
-          <span data-lang="en">Copy page</span>
-          <span data-lang="ar">نسخ الصفحة</span>
+          ${wording("Copy page", "نسخ الصفحة")}
         </button>
       </div>
 
       <p class="page-lead">
-        <span data-lang="en">${formatProse(lesson.question.en)}</span>
-        <span data-lang="ar">${formatProse(lesson.question.ar, true)}</span>
+        ${label(lesson.question)}
       </p>
     </div>
 
@@ -1275,38 +1240,28 @@ allLessons.forEach((lesson, idx) => {
       ${bridgeHtml}
 
       <h2 id="overview">
-        <span data-lang="en">How It Works</span>
-        <span data-lang="ar">كيف تعمل الآلية</span>
+        ${wording("How It Works", "كيف تعمل الآلية")}
       </h2>
 
-      <p data-lang="en">${formatProse(lesson.intro.en)}</p>
-      <p data-lang="ar">${formatProse(lesson.intro.ar, true)}</p>
+      ${label(lesson.intro, "p")}
 
       <div class="callout callout-warning">
         <div class="callout-icon">${WARN_ICON}</div>
         <div class="callout-body">
-          <p data-lang="en">${formatProse(lesson.mechanism.en)}</p>
-          <p data-lang="ar">${formatProse(lesson.mechanism.ar, true)}</p>
+          ${label(lesson.mechanism, "p")}
         </div>
       </div>
 
       <h2 id="trace-diagrams">
-        <span data-lang="en">Execution Diagrams &amp; Code</span>
-        <span data-lang="ar">المخططات التوضيحية والكود</span>
+        ${wording("Execution Diagrams &amp; Code", "المخططات التوضيحية والكود")}
       </h2>
 
-      <p data-lang="en">
-        Compare the two execution scenarios below. Predict the result of each case, then check which change explains the observations.
-      </p>
-      <p data-lang="ar">
-        قارن بين حالتي التنفيذ التاليتين. توقّع نتيجة كل حالة ثم حدّد التغيير اللي يفسّر الملاحظات.
-      </p>
+      ${wording("Compare the two execution scenarios below. Predict the result of each case, then check which change explains the observations.", "قارن بين حالتي التنفيذ التاليتين. توقّع نتيجة كل حالة ثم حدّد التغيير اللي يفسّر الملاحظات.", "p")}
 
       ${casesHtml}
 
       <h2 id="comparison-matrix">
-        <span data-lang="en">Side-by-Side Comparison</span>
-        <span data-lang="ar">مقارنة تفصيلية بين الحالتين</span>
+        ${wording("Side-by-Side Comparison", "مقارنة تفصيلية بين الحالتين")}
       </h2>
 
       <div class="table-wrap">
@@ -1314,11 +1269,10 @@ allLessons.forEach((lesson, idx) => {
           <thead>
             <tr>
               <th>
-                <span data-lang="en">Stage / Actor</span>
-                <span data-lang="ar">المرحلة / المكوّن</span>
+                ${wording("Stage / Actor", "المرحلة / المكوّن")}
               </th>
-              <th><code>${esc(lesson.cases[0]?.name.en || "Case 1")}</code></th>
-              <th><code>${esc(lesson.cases[1]?.name.en || "Case 2")}</code></th>
+              <th><code>${label(lesson.cases[0].name)}</code></th>
+              <th><code>${label(lesson.cases[1].name)}</code></th>
             </tr>
           </thead>
           <tbody>
@@ -1329,55 +1283,46 @@ allLessons.forEach((lesson, idx) => {
 
 
       <h2 id="key-concepts">
-        <span data-lang="en">Key Concept &amp; Components</span>
-        <span data-lang="ar">المفهوم الأساسي والمكوّنات</span>
+        ${wording("Key Concept &amp; Components", "المفهوم الأساسي والمكوّنات")}
       </h2>
 
       <div class="param-list">
         <div class="param-item">
           <div class="param-header">
-            <span class="param-name">${esc(lesson.term.en)}</span>
-            <span class="type-pill">core term</span>
+            <span class="param-name">${label(lesson.term)}</span>
+            <span class="type-pill">${wording("core term", "مصطلح أساسي")}</span>
           </div>
-          <p class="param-desc" data-lang="en">${formatProse(lesson.definition.en)}</p>
-          <p class="param-desc" data-lang="ar">${formatProse(lesson.definition.ar, true)}</p>
+          ${label(lesson.definition, "p", " class=\"param-desc\"")}
         </div>
         ${actorsParamsHtml}
       </div>
 
       <h2 id="practical-lab">
-        <span data-lang="en">Apply it in ${esc(course.project.name)}</span>
-        <span data-lang="ar">تطبيق الدرس في ${formatArLabel(course.project.name)}</span>
+        ${wording(`Apply it in ${esc(course.project.name)}`, `تطبيق الدرس في ${formatArLabel(course.project.name)}`)}
       </h2>
 
-      <p><span data-lang="en">Start in </span><span data-lang="ar">ابدأ من </span><code dir="ltr">${esc(task.file)}</code></p>
-      <p data-lang="en">${formatProse(task.en)}</p>
-      <p data-lang="ar">${formatProse(task.ar, true)}</p>
+      <p>${wording("Start in ", "ابدأ من ")}<code dir="ltr">${esc(task.file)}</code></p>
+      ${label(task, "p")}
       ${milestone ? `
         <h2 id="milestone">
-          <span data-lang="en">${lesson.levelMeta.en} project checkpoint</span>
-          <span data-lang="ar">تسليم مرحلة ${lesson.levelMeta.ar}</span>
+          ${wording(`${lesson.levelMeta.en} project checkpoint`, `تسليم مرحلة ${lesson.levelMeta.ar}`)}
         </h2>
-        <p data-lang="en">${formatProse(milestone.en)}</p>
-        <p data-lang="ar">${formatProse(milestone.ar, true)}</p>
+        ${label(milestone, "p")}
       ` : ""}
 
       <h2 id="concept-check">
-        <span data-lang="en">Concept Check</span>
-        <span data-lang="ar">اختبر فهمك</span>
+        ${wording("Concept Check", "اختبر فهمك")}
       </h2>
 
       <div class="quiz-card" data-answer="${lesson.quiz.answer}">
         <p class="quiz-question">
-          <span data-lang="en">${formatProse(lesson.quiz.question.en)}</span>
-          <span data-lang="ar">${formatProse(lesson.quiz.question.ar, true)}</span>
+          ${label(lesson.quiz.question)}
         </p>
         <div class="quiz-options">
           ${quizChoicesHtml}
         </div>
         <div class="quiz-feedback">
-          <p data-lang="en" style="margin:0"><strong>Explanation:</strong> ${formatProse(lesson.quiz.reason.en)}</p>
-          <p data-lang="ar" style="margin:0"><strong>التوضيح:</strong> ${formatProse(lesson.quiz.reason.ar, true)}</p>
+          ${wording(`<strong>Explanation:</strong> ${formatProse(lesson.quiz.reason.en)}`, `<strong>التوضيح:</strong> ${formatProse(lesson.quiz.reason.ar, true)}`, "p", " style=\"margin:0\"")}
         </div>
       </div>
 
@@ -1385,9 +1330,8 @@ allLessons.forEach((lesson, idx) => {
         lesson.source
           ? `
         <p style="font-size:0.875rem;color:var(--text-muted);margin-top:20px;">
-          <span data-lang="en">Official Reference:</span>
-          <span data-lang="ar">المرجع الرسمي:</span>
-          <a class="doc-link" href="${esc(lesson.source[1])}" target="_blank" rel="noopener noreferrer">${esc(lesson.source[0])} &nearr;</a>
+          ${wording("Official Reference:", "المرجع الرسمي:")}
+          <a class="doc-link" href="${esc(lesson.source[1])}" target="_blank" rel="noopener noreferrer">${label(lesson.source[0])} &nearr;</a>
         </p>
       `
           : ""
@@ -1402,7 +1346,7 @@ allLessons.forEach((lesson, idx) => {
 
   fs.writeFileSync(
     path.join(OUT_DIR, `${lesson.id}.html`),
-    pageShell({ titleEn: lesson.title.en, bodyHtml }),
+    pageShell({ title: lesson.title, bodyHtml }),
     "utf8"
   );
 });

@@ -1,5 +1,5 @@
 interface:
   display_name: "Learning Path"
-  short_description: "Build a bilingual, project-based learning path"
+  short_description: "Build a project-based course in English, Arabic, or both"
 policy:
   allow_implicit_invocation: false
