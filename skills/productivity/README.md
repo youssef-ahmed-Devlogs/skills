@@ -13,7 +13,7 @@ You can type them, and the agent or another skill can also run them when the tas
 Reachable only when you type them (Claude Code: `disable-model-invocation: true`; Codex: `policy.allow_implicit_invocation: false` in `agents/openai.yaml`).
 
 - **[visual-learning-studio](./visual-learning-studio/SKILL.md)** builds a visual learning website with Arabic and English lessons, experiments and practice.
-- **[learning-path](./learning-path/SKILL.md)** builds a bilingual course in the Learn site template, with paired experiments and a single practice project.
+- **[learning-path](./learning-path/SKILL.md)** builds a course in English, Arabic, or both in the Learn site template, with paired experiments and a single practice project.
 
 - **[add-rule-or-skill](./add-rule-or-skill/SKILL.md)**: Talk through something new you want an agent to know or do, such as a rule, a skill or a check. It finds out whether it exists, and what it should be and where it goes, from today's official docs.
 - **[build-with-me](./build-with-me/SKILL.md)**: Build a real project by hand, with a senior reviewer beside you. It settles first what you build, its stack and how you want to work, gathers trusted sources for each tool and version, then reviews what you ask about against them: what is right, what is wrong and why, with a link. You write the code, and it checks your fixes.

@@ -6,8 +6,10 @@ function text(value, field) {
   check(typeof value === "string" && value.trim(), field, "non-empty text");
 }
 
-function pair(value, field) {
-  for (const lang of ["en", "ar"]) text(value?.[lang], `${field}.${lang}`);
+// Courses created before the language choice was added use both languages.
+export function courseLanguages({ language = "both" }) {
+  check(["en", "ar", "both"].includes(language), "course.language", '"en", "ar", or "both"');
+  return language === "both" ? ["en", "ar"] : [language];
 }
 
 function slug(value, field, seen) {
@@ -17,8 +19,19 @@ function slug(value, field, seen) {
 }
 
 export function validateCourse(course, sections) {
-  for (const key of ["brand", "journey", "title", "intro", "study", "bridgeLabel"]) pair(course[key], key);
-  for (const key of ["title", "intro", "setupTitle", "setup"]) pair(course.project?.[key], "project." + key);
+  const languages = courseLanguages(course);
+  function localized(value, field) {
+    for (const lang of languages) text(value?.[lang], field + "." + lang);
+  }
+
+  // Older courses use shared actor labels and source names.
+  function label(value, field) {
+    if (typeof value === "string") text(value, field);
+    else localized(value, field);
+  }
+
+  for (const key of ["brand", "journey", "title", "intro", "study", "bridgeLabel"]) localized(course[key], key);
+  for (const key of ["title", "intro", "setupTitle", "setup"]) localized(course.project?.[key], "project." + key);
   for (const key of ["name", "commands"]) text(course.project[key], "project." + key);
 
   check(Array.isArray(sections) && sections.length, "sections", "at least one section");
@@ -29,7 +42,7 @@ export function validateCourse(course, sections) {
   for (const section of sections) {
     slug(section.id, "section.id", sectionIds);
     check(levels.includes(section.level), section.id, "a valid section level");
-    for (const key of ["title", "summary"]) pair(section[key], section.id + "." + key);
+    for (const key of ["title", "summary"]) localized(section[key], section.id + "." + key);
     check(Array.isArray(section.lessons) && section.lessons.length, section.id, "lessons");
     for (const lesson of section.lessons) {
       const id = lesson.id;
@@ -38,35 +51,35 @@ export function validateCourse(course, sections) {
       check(rank >= lastLevel, id, "Junior → Mid-Level → Senior order");
       lastLevel = rank;
       for (const key of ["title", "question", "intro", "mechanism", "term", "definition", "bridge", "practical"]) {
-        pair(lesson[key], id + "." + key);
+        localized(lesson[key], id + "." + key);
       }
-      if (lessonIds.size > 2) pair(lesson.previous, id + ".previous");
-      if (lesson.milestone) pair(lesson.milestone, id + ".milestone");
+      if (lessonIds.size > 2) localized(lesson.previous, id + ".previous");
+      if (lesson.milestone) localized(lesson.milestone, id + ".milestone");
       text(lesson.practical.file, id + ".practical.file");
       check(Array.isArray(lesson.actors) && lesson.actors.length === 3, id, "three actors");
       for (const actor of lesson.actors) {
-        text(actor.name, id + ".actor.name");
-        text(actor.kind, id + ".actor.kind");
+        label(actor.name, id + ".actor.name");
+        label(actor.kind, id + ".actor.kind");
         if (Array.isArray(actor.description)) {
           check(actor.description.length === 2, id, "one actor description per case");
-          actor.description.forEach(item => text(item, id + ".actor.description"));
-        } else text(actor.description, id + ".actor.description");
+          actor.description.forEach(item => label(item, id + ".actor.description"));
+        } else label(actor.description, id + ".actor.description");
       }
       check(Array.isArray(lesson.cases) && lesson.cases.length === 2, id, "two cases");
       for (const item of lesson.cases) {
-        pair(item.name, id + ".case.name");
+        localized(item.name, id + ".case.name");
         text(item.file, id + ".case.file");
         text(item.code, id + ".case.code");
         check(Array.isArray(item.observations) && item.observations.length === 3, id, "one observation per actor");
-        item.observations.forEach(observation => pair(observation, id + ".observation"));
+        item.observations.forEach(observation => localized(observation, id + ".observation"));
       }
       const quiz = lesson.quiz;
-      pair(quiz?.question, id + ".quiz.question");
-      pair(quiz.reason, id + ".quiz.reason");
+      localized(quiz?.question, id + ".quiz.question");
+      localized(quiz.reason, id + ".quiz.reason");
       check(Array.isArray(quiz.choices) && quiz.choices.length >= 2, id, "at least two quiz choices");
-      quiz.choices.forEach(choice => pair(choice, id + ".quiz.choice"));
+      quiz.choices.forEach(choice => localized(choice, id + ".quiz.choice"));
       check(Number.isInteger(quiz.answer) && quiz.answer >= 0 && quiz.answer < quiz.choices.length, id, "a zero-based answer index");
-      text(lesson.source?.[0], id + ".source label");
+      label(lesson.source?.[0], id + ".source label");
       check(/^https?:\/\//.test(lesson.source?.[1]), id, "an official source URL");
     }
   }

@@ -24,10 +24,11 @@ After a change reaches the default branch, update this skill with `npx skills up
 
 ## What it does
 
-1. Picks a final task and orders the lessons so each new idea comes before its first use.
-2. Copies the bundled Learn template and writes every lesson in English and Arabic.
-3. Builds two cases per lesson. You change one condition, compare the results and try it in your project.
-4. Checks the sources, builds the site and tests the pages and controls.
+1. Asks whether to use Arabic only, English only, or both. If you include your choice in the request, it uses that choice.
+2. Picks a final task and orders the lessons so each new idea comes before its first use.
+3. Copies the bundled Learn template and writes lessons and quizzes in the language or languages you chose.
+4. Builds two cases per lesson. You change one condition, compare the results and try it in your project.
+5. Checks the sources, builds the site and tests the pages and controls.
 
 ## When to use it
 
@@ -40,6 +41,8 @@ After a change reaches the default branch, update this skill with `npx skills up
 
 ```text
 You:    /learning-path Teach me Python. I use spreadsheets to plan my reading.
+Agent:  Which language should the course use: Arabic only, English only, or both?
+You:    English only.
 Agent:  Open the first lesson. Predict which session the planner will suggest
         from 25, 10 and 40 minutes. Run both examples, then change the list.
         Your exercise is to recommend the shortest session and keep the
@@ -53,4 +56,4 @@ Agent:  Open the first lesson. Predict which session the planner will suggest
 
 ## What you get
 
-Open `index.html` in the course folder. It links to the lessons, practice tasks and quizzes. The folder also contains the editable course data, the generator and its stylesheet.
+Open `index.html` in the course folder. It links to the lessons, practice tasks and quizzes. Courses with both languages include a language switch. A single-language course opens directly in that language. The folder also contains the editable course data, the generator and its stylesheet.
